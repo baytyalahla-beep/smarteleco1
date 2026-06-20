@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+  <script src="site-data.js?v=1781846973825"></script>
+  <script src="site-renderer.js?v=1781846973825" defer></script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>عربة التسوق | شركة الكهرباء الذكية</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#f1f3ff",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#b65949",
+            "on-secondary-container": "#306d5d",
+            "outline": "#6d7a74",
+            "deep-forest": "#004A3C",
+            "primary": "#006954",
+            "error": "#ba1a1a",
+            "tertiary-fixed-dim": "#ffb4a6",
+            "secondary-container": "#aeecd9",
+            "surface-container-high": "#e1e8fd",
+            "on-surface-variant": "#3d4945",
+            "error-container": "#ffdad6",
+            "background": "#f9f9ff",
+            "outline-variant": "#bccac3",
+            "tertiary": "#974233",
+            "primary-fixed": "#86f7d6",
+            "on-primary": "#ffffff",
+            "surface-container-highest": "#dce2f7",
+            "on-error": "#ffffff",
+            "surface-variant": "#dce2f7",
+            "surface-tint": "#006b56",
+            "surface-gray": "#F3F4F6",
+            "on-tertiary-fixed": "#3f0300",
+            "inverse-surface": "#293040",
+            "primary-container": "#00846b",
+            "success-teal": "#009478",
+            "on-surface": "#141b2b",
+            "secondary-fixed": "#b1efdb",
+            "on-error-container": "#93000a",
+            "tertiary-fixed": "#ffdad4",
+            "on-secondary-fixed-variant": "#0b5042",
+            "inverse-on-surface": "#edf0ff",
+            "on-secondary-fixed": "#002019",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#002018",
+            "inverse-primary": "#68daba",
+            "on-tertiary": "#ffffff",
+            "white": "#FFFFFF",
+            "on-primary-fixed-variant": "#005140",
+            "primary-fixed-dim": "#68daba",
+            "surface": "#f9f9ff",
+            "surface-dim": "#d3daef",
+            "secondary-fixed-dim": "#95d3c0",
+            "on-primary-container": "#f5fff9",
+            "surface-bright": "#f9f9ff",
+            "secondary": "#2b6959",
+            "on-tertiary-fixed-variant": "#7b2d21",
+            "on-background": "#141b2b",
+            "on-tertiary-container": "#fffbff",
+            "surface-container": "#e9edff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "stack-md": "1rem",
+            "container-max": "1280px",
+            "margin-desktop": "2rem",
+            "stack-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "stack-lg": "2rem",
+            "margin-mobile": "1rem"
+          },
+          "fontFamily": {
+            "headline-xl-mobile": ["Cairo"],
+            "label-sm": ["Cairo"],
+            "headline-md": ["Cairo"],
+            "body-lg": ["Cairo"],
+            "body-md": ["Cairo"],
+            "headline-xl": ["Cairo"],
+            "label-lg": ["Cairo"],
+            "headline-lg": ["Cairo"],
+            "headline-lg-mobile": ["Cairo"]
+          },
+          "fontSize": {
+            "headline-xl-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-xl": ["48px", { "lineHeight": "60px", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #F3F4F6;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+
+    .whatsapp-gradient {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    }
+  </style>
+</head>
+
+<body class="text-on-background bg-surface-gray"
+  style="background-image: radial-gradient(circle at 2px 2px, rgba(0, 105, 84, 0.03) 1px, transparent 0px); background-size: 40px 40px; background-attachment: fixed;">
+  <!-- TopAppBar -->
+  <header class="bg-white sticky top-0 z-50 shadow-sm border-b border-outline-variant">
+    <div class="max-w-container-max mx-auto px-margin-desktop flex flex-col">
+      <!-- Top Utility Bar -->
+      <div
+        class="flex justify-between items-center py-2 text-label-lg font-label-lg text-on-surface-variant border-b border-surface-variant/50">
+        <div class="flex gap-4">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">location_on</span>
+            فروعنا</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">call</span>
+            920000000</span>
+        </div>
+        <div class="flex gap-4">
+          <span>English</span>
+          <span>الليره السورية</span>
+        </div>
+      </div>
+      <!-- Main Header Bar -->
+      <div class="flex items-center justify-between py-4 gap-gutter">
+        <div class="shrink-0 h-12 w-auto">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4nouzhXpYneqSQt08kVW_kjXmtskDEO6_7Ay7_pITtMEx1KAyTqwqZBJ4qiLyFn78O4Exmt1OhRbT-UPzyvFBWXz03UidmiJ1R-IZjSHf2P9Ys6vQLDlIFiZKTH2Kvz_XeyfEeeE-bemGqGtYa7ylIzvWmbMBNeRgk2KfTIX-safg1uKpPjNcRADqDJSoE9EdDbkTmiWTeNdjsDjc0cbz465OmtlrdGcqS5AZ6SEMsUOgV6RpCTv87AQrtmaC_UmR9gI5UT94rRU"
+            alt="Smart Electricity Company Logo" class="h-full w-auto object-contain">
+        </div>
+        <div class="flex-1 max-w-2xl relative">
+          <input
+            class="w-full bg-surface-gray border-none rounded-full py-3 px-6 pr-12 text-body-md font-body-md focus:ring-2 focus:ring-primary transition-all"
+            placeholder="ما الذي تبحث عنه؟" type="text">
+          <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="dashboard.html"
+            class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-label-sm font-label-sm">حسابي</span>
+          </a>
+          <button class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">favorite</span>
+            <span class="text-label-sm font-label-sm">المفضلة</span>
+          </button>
+          <a href="cart.html"
+            class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors relative">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span class="text-label-sm font-label-sm">عربة التسوق</span>
+            <span
+              class="absolute -top-1 -right-1 bg-primary text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+          </a>
+        </div>
+      </div>
+      <!-- Navigation Links -->
+      <nav class="flex items-center gap-8 py-3">
+        <a class="text-primary border-b-2 border-primary font-bold pb-1 text-label-lg font-label-lg"
+          href="index.html">الرئيسية</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="about.html">من نحن</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="products.html">المنتجات</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="brands.html">العلامات التجارية</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="projects.html">المشاريع</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="#">العروض</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="blog.html">المدونة</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg"
+          href="contact.html">اتصل بنا</a>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg relative">
+    <div class="absolute inset-0 -z-10 opacity-[0.02] pointer-events-none overflow-hidden" aria-hidden="true"><svg
+        width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="circuit-pattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+            <path d="M0 100 h40 M60 100 h80 M160 100 h40 M100 0 v40 M100 60 v80 M100 160 v40" stroke="#006954"
+              stroke-width="1" fill="none"></path>
+            <circle cx="50" cy="100" r="4" fill="#006954"></circle>
+            <circle cx="150" cy="100" r="4" fill="#006954"></circle>
+            <circle cx="100" cy="50" r="4" fill="#006954"></circle>
+            <circle cx="100" cy="150" r="4" fill="#006954"></circle>
+            <path d="M50 100 L100 50 L150 100 L100 150 Z" stroke="#006954" stroke-width="0.5" fill="none"></path>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#circuit-pattern)"></rect>
+      </svg></div>
+    <!-- Page Title -->
+    <div class="mb-stack-lg flex items-center gap-4">
+      <span class="material-symbols-outlined text-primary text-4xl" data-icon="shopping_basket">shopping_basket</span>
+      <div>
+        <h1 class="font-headline-lg text-headline-lg text-on-surface">عربة التسوق</h1>
+        <p class="text-on-surface-variant font-body-md">راجع طلباتك قبل التواصل معنا لإتمام العملية</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+      <!-- Product List Section -->
+      <div class="lg:col-span-8 space-y-stack-md">
+        <!-- Cart Item 1 -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-outline-variant p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center hover:shadow-md transition-shadow">
+          <div class="w-32 h-32 flex-shrink-0 bg-surface-gray rounded-lg overflow-hidden border border-outline-variant">
+            <img class="w-full h-full object-cover"
+              data-alt="A professional product photograph of a high-quality industrial circuit breaker set against a clean white background. The device features crisp labeling, a sturdy green and gray casing, and detailed copper components. Soft overhead lighting highlights the matte textures of the electrical equipment in a modern corporate style."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJf1z4goLh9R3gK_WR8i6QjI-y-i5uI1vbEUrTMgfZxsH12LKhlXrkUJu-TuJKJVbfvQkoDQBFlIH2-SI61a45JSW29ahZUeUu9X5stlHPfwof-fpQB4zqdluQ1Jf8X6bwtnt0PH7W87DuftxOLWh1V-uDqChHCcuC7mDeAwVEwe6PDYEBXNU8pXv3U8HEzQwXRVMt_Jc4-4EbF7bYB7lnXqGh14dPs2KNvzAQl_pS_EBmi7Hgt59Nb8tUYIKVo4TOZ1RfHOP8P3k">
+          </div>
+          <div class="flex-grow text-center md:text-right">
+            <span
+              class="text-primary font-label-lg text-label-lg px-2 py-1 bg-secondary-container/30 rounded mb-2 inline-block">شنايدر
+              إلكتريك</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">قاطع تيار كهربائي 3 فاز - 100 أمبير</h3>
+            <p class="text-on-surface-variant font-body-md">رقم الموديل: SE-100-ABC-X</p>
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="flex items-center border border-outline-variant rounded-lg overflow-hidden">
+              <button
+                class="px-3 py-1 hover:bg-surface-gray transition-colors border-l border-outline-variant text-primary font-bold">+</button>
+              <span class="px-4 py-1 font-bold text-on-surface">02</span>
+              <button class="px-3 py-1 hover:bg-surface-gray transition-colors text-error font-bold">-</button>
+            </div>
+            <div class="text-left md:text-right min-w-[120px]">
+              <p class="text-on-surface-variant font-label-sm text-label-sm">السعر الإجمالي</p>
+              <p class="text-primary font-headline-md text-headline-md font-bold">450.00 ر.س</p>
+            </div>
+            <button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+              <span class="material-symbols-outlined" data-icon="delete">delete</span>
+            </button>
+          </div>
+        </div>
+        <!-- Cart Item 2 -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-outline-variant p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center hover:shadow-md transition-shadow">
+          <div class="w-32 h-32 flex-shrink-0 bg-surface-gray rounded-lg overflow-hidden border border-outline-variant">
+            <img class="w-full h-full object-cover"
+              data-alt="A macro studio shot of a heavy-duty industrial power cable coil with high-visibility copper wiring and a durable black insulation jacket. The product is arranged in a professional, spiral presentation on a gray surface, evoking industrial scale and reliability. The lighting is crisp and technical, typical of a high-end engineering catalog."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6PZSEtC4J8wbOufg-6jHZc06IsEVXShDHne_CnaBOJlmBAOc3PeqmzVpfdg3IIyIMTIqL3eHEJhPs3gvzDgXN9hs1DhT8209S-Iivx30flfxaM2S1QnUV1sj1m6a3eTn_UGBiQn18Rc7wgClGjmgYyMahDx100nddaz8S1LNuazB1KABzad_aeI5AkPNjQCFEyr1Y_EYc4xNKNa9FbBHSuH8z5HmX5sMX3UiEzFk2HBob8gZgVTG-TD_g3Fj1N18zvC3UiJaf9Bs">
+          </div>
+          <div class="flex-grow text-center md:text-right">
+            <span
+              class="text-primary font-label-lg text-label-lg px-2 py-1 bg-secondary-container/30 rounded mb-2 inline-block">كابلات
+              الرياض</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">سلك كهرباء نحاس 6 ملم - 100 متر</h3>
+            <p class="text-on-surface-variant font-body-md">اللون: أحمر - عزل حراري عالي</p>
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="flex items-center border border-outline-variant rounded-lg overflow-hidden">
+              <button
+                class="px-3 py-1 hover:bg-surface-gray transition-colors border-l border-outline-variant text-primary font-bold">+</button>
+              <span class="px-4 py-1 font-bold text-on-surface">01</span>
+              <button class="px-3 py-1 hover:bg-surface-gray transition-colors text-error font-bold">-</button>
+            </div>
+            <div class="text-left md:text-right min-w-[120px]">
+              <p class="text-on-surface-variant font-label-sm text-label-sm">السعر الإجمالي</p>
+              <p class="text-primary font-headline-md text-headline-md font-bold">280.00 ر.س</p>
+            </div>
+            <button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+              <span class="material-symbols-outlined" data-icon="delete">delete</span>
+            </button>
+          </div>
+        </div>
+        <!-- Cart Item 3 -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-outline-variant p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center hover:shadow-md transition-shadow">
+          <div class="w-32 h-32 flex-shrink-0 bg-surface-gray rounded-lg overflow-hidden border border-outline-variant">
+            <img class="w-full h-full object-cover"
+              data-alt="A detailed commercial product image of a high-performance LED floodlight designed for industrial outdoor use. The fixture features a rugged aluminum housing in a dark charcoal finish with a clear glass lens. It is presented in a 45-degree angle under professional studio lights that emphasize its robust construction and technical design, set against a pristine light-mode background."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTALpQCDY-MvHV4jndMlTSbo2XksWAtD2pOZs22pIbTgYNedH_Po06CCw5Qns_KXI2EQTBtm68tbsrO8GKaZGlZd7peT_6oZpeGcw-Tasc3YwPArLS_tKdGaGpGYyySI3kwFqh3OMKpHlQY1_1-0LoQrfbUu2nOxSxdE-wtkUT28fotw8-yQk5ta41AJ3AGnbuHpqfiE5Yb5D6bBWYmpm7MlxOn23UTk-wWc8RaDZMTwzvyFLX4YCywof58w6XtGZQgW2HY-lTcg4">
+          </div>
+          <div class="flex-grow text-center md:text-right">
+            <span
+              class="text-primary font-label-lg text-label-lg px-2 py-1 bg-secondary-container/30 rounded mb-2 inline-block">فيلبس</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-1">كشاف ليد خارجي 50 واط - مقاوم للماء</h3>
+            <p class="text-on-surface-variant font-body-md">إضاءة بيضاء - ضمان سنتين</p>
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="flex items-center border border-outline-variant rounded-lg overflow-hidden">
+              <button
+                class="px-3 py-1 hover:bg-surface-gray transition-colors border-l border-outline-variant text-primary font-bold">+</button>
+              <span class="px-4 py-1 font-bold text-on-surface">05</span>
+              <button class="px-3 py-1 hover:bg-surface-gray transition-colors text-error font-bold">-</button>
+            </div>
+            <div class="text-left md:text-right min-w-[120px]">
+              <p class="text-on-surface-variant font-label-sm text-label-sm">السعر الإجمالي</p>
+              <p class="text-primary font-headline-md text-headline-md font-bold">625.00 ر.س</p>
+            </div>
+            <button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+              <span class="material-symbols-outlined" data-icon="delete">delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Order Summary Section -->
+      <div class="lg:col-span-4">
+        <div class="bg-white rounded-xl shadow-lg border border-outline-variant p-8 sticky top-28">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-outline-variant pb-4">ملخص
+            الطلب</h2>
+          <div class="space-y-4 mb-8">
+            <div class="flex justify-between items-center text-body-md">
+              <span class="text-on-surface-variant">عدد الأصناف</span>
+              <span class="font-bold text-on-surface">03 منتجات</span>
+            </div>
+            <div class="flex justify-between items-center text-body-md">
+              <span class="text-on-surface-variant">المجموع الفرعي</span>
+              <span class="font-bold text-on-surface">1,355.00 ر.س</span>
+            </div>
+            <div class="flex justify-between items-center text-body-md">
+              <span class="text-on-surface-variant">ضريبة القيمة المضافة (15%)</span>
+              <span class="font-bold text-on-surface">203.25 ر.س</span>
+            </div>
+            <div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+              <span class="text-headline-md font-bold text-on-surface">الإجمالي النهائي</span>
+              <span class="text-headline-md font-bold text-deep-forest">1,558.25 ر.س</span>
+            </div>
+          </div>
+          <!-- CRITICAL: WhatsApp Order Button -->
+          <div class="space-y-4">
+            <p class="text-center text-on-surface-variant font-label-sm leading-relaxed mb-4">لإتمام عملية الشراء
+              والحصول على أفضل عرض سعر للمؤسسات، يرجى التواصل معنا مباشرة عبر الواتساب.</p>
+            <a class="whatsapp-gradient text-white flex items-center justify-center gap-3 py-5 px-6 rounded-xl font-headline-md text-headline-md hover:opacity-90 active:scale-95 transition-all shadow-lg hover:shadow-xl w-full"
+              href="https://wa.me/966XXXXXXXXX">
+              <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z">
+                </path>
+              </svg>
+              طلب عبر الواتساب
+            </a>
+            <div class="flex items-center justify-center gap-2 text-on-surface-variant mt-4">
+              <span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+              <span class="font-label-sm text-label-sm">تواصل آمن ومباشر مع مبيعاتنا</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-stack-md bg-secondary-container/20 p-6 rounded-xl border border-secondary-container">
+          <div class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-secondary" data-icon="info">info</span>
+            <div>
+              <h4 class="font-bold text-secondary mb-1">لماذا الواتساب؟</h4>
+              <p class="text-on-surface-variant font-label-sm leading-relaxed">بصفتنا شركة متخصصة، نفضل التواصل المباشر
+                لضمان توافر الكميات الضخمة، وتنسيق الخدمات اللوجستية، وتقديم خصومات خاصة للمشاريع الكبرى.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Continue Shopping -->
+    <div class="mt-stack-lg">
+      <a class="inline-flex items-center gap-2 text-primary hover:gap-4 transition-all font-bold" href="#">
+        <span class="material-symbols-outlined">arrow_forward</span>
+        متابعة التسوق وإضافة المزيد من المنتجات
+      </a>
+    </div>
+  </main>
+  <!-- Footer -->
+  <footer class="bg-deep-forest text-white py-stack-lg border-t border-secondary-fixed-dim/20">
+    <div
+      class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+      <div class="space-y-4">
+        <div class="font-headline-md text-headline-md font-bold text-white">Smart Electricity Company (SEC)</div>
+        <p class="text-white/80 font-body-md text-body-md">شركة رائدة في مجال تقديم الحلول الكهربائية والصناعية
+          المتكاملة والأتمتة في سوريا.</p>
+        <div class="flex gap-4">
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+            href="#"><span class="material-symbols-outlined text-white">share</span></a>
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+            href="#"><span class="material-symbols-outlined text-white">camera</span></a>
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+            href="#"><span class="material-symbols-outlined text-white">public</span></a>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-headline-md text-body-lg font-bold">روابط سريعة</h3>
+        <ul class="space-y-2 text-white/80 font-body-md">
+          <li><a class="hover:text-primary-fixed transition-colors" href="about.html">عن الشركة</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">المنتجات</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="brands.html">العلامات التجارية</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="projects.html">المشاريع</a></li>
+        </ul>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-headline-md text-body-lg font-bold">تسوق حسب القسم</h3>
+        <ul class="space-y-2 text-white/80 font-body-md">
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">المفاتيح والأفياش</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">القواطع الكهربائية</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">الأسلاك والكابلات</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">الإضاءة المنزلية</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">أنظمة المراقبة</a></li>
+        </ul>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-headline-md text-body-lg font-bold">اشترك في النشرة البريدية</h3>
+        <p class="text-white/80 font-body-md">ابقَ على اطلاع بأحدث المنتجات والعروض الحصرية.</p>
+        <div class="flex">
+          <input
+            class="flex-1 rounded-r-lg bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-primary"
+            placeholder="بريدك الإلكتروني" type="email">
+          <button class="bg-primary px-4 rounded-l-lg hover:bg-primary-container transition-all">اشترك</button>
+        </div>
+        <div class="pt-4 border-t border-white/10 flex gap-4">
+          <img class="h-6"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPigDjnBL0FlPHveGsCtmYTDdOd9M1k3UTD0SaTA-8jzFBjc1c8QnsuD07kB8emAEz-jFi6Ago4YIYsFfDdTD6AreS9KOrzLAqEeHLMWUT3a4qhWegFa0p4QPvcbNkD2FcG9gGL9IGhJMeOTg5pllg78Eaio0QhjJ0JjloQ-96DxoVUbcIKaFd1LhkEf4IlIMfKtDW3KGE2VweNuxLKuP5CDjrwshFKnwDcp2EjB9xtZD0VliIyysSrEJ_XNri8bMUhyU1HnHkRfs">
+          <img class="h-6"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1-JWnGm5pQHq4xJOq2zwQuH9VStVZROnzNeAoypa34AQExXS_zjnm7HAZbk6vqn30k--ypmXFeo3zcyfawn0LNdqsnmtP2D2i-vAfZ3iJrxiB9rY611CZn7YFUm8M52GrIp2dTexF-u5nflZDzLQaCE-1tMzgNvjSLRlgLPCApDZDg101vDMyKDaZJhbwYtzZZB6XZ5YeUqETsvd0QdTyHnpP3kbjRoC9DD65jopYhdssuN-O3LDiU3VJ51Vx2kQCGo4K2Qi7OMs">
+          <img class="h-6"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XL4AVD6uoI9yLnxYubvD9K3Ae0IuiXHwSbEv6pojRC0x6UKOMywsxOHBxvEGngakBu1BmkG5bY2q6Gxk2MOQhCy7oTYQBBvOOtgOzX1vap9MI2O3UVVCO7x_5Syx2rGThuiuBakt-TfF0kdRaCkPiJ09mV9PoJ9JWnV7Hr3L2tQPBXq3jy1xl6lUzkPgKewYrsJ7FYTKmx_PGdjBAHPfIGwnqqcPgu-Uwoopl7_SONKNHrpw_9n1tSyoNp5_b5TINhTiB12pN10">
+        </div>
+      </div>
+    </div>
+    <div
+      class="max-w-container-max mx-auto px-margin-desktop mt-stack-lg pt-stack-md border-t border-white/10 text-center text-white/60 text-label-sm font-label-sm">
+      جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2024
+    </div>
+  </footer>
+  <script>
+    // Simple quantity interaction simulation
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (btn.innerText === '+' || btn.innerText === '-') {
+          const span = btn.parentElement.querySelector('span');
+          let val = parseInt(span.innerText);
+          if (btn.innerText === '+') val++;
+          if (btn.innerText === '-' && val > 1) val--;
+          span.innerText = val < 10 ? '0' + val : val;
+        }
+      });
+    });
+  </script>
+
+
+</body>
+
+</html>

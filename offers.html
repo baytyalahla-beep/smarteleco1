@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <script src="site-data.js?v=1781846973825"></script>
+  <script src="site-renderer.js?v=1781846973825" defer></script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>العروض الحصرية - شركة الكهرباء الذكية</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#fffbff",
+            "deep-forest": "#004A3C",
+            "on-secondary": "#ffffff",
+            "surface-container": "#e9edff",
+            "surface-bright": "#f9f9ff",
+            "secondary-fixed-dim": "#95d3c0",
+            "on-primary-container": "#f5fff9",
+            "secondary-fixed": "#b1efdb",
+            "inverse-surface": "#293040",
+            "surface": "#f9f9ff",
+            "surface-tint": "#006b56",
+            "primary-fixed": "#86f7d6",
+            "error": "#ba1a1a",
+            "secondary-container": "#aeecd9",
+            "surface-container-highest": "#dce2f7",
+            "surface-dim": "#d3daef",
+            "on-surface-variant": "#3d4945",
+            "secondary": "#2b6959",
+            "tertiary-fixed": "#ffdad4",
+            "success-teal": "#009478",
+            "on-primary-fixed": "#002018",
+            "tertiary-container": "#b65949",
+            "inverse-on-surface": "#edf0ff",
+            "outline": "#6d7a74",
+            "outline-variant": "#bccac3",
+            "surface-container-low": "#f1f3ff",
+            "on-tertiary-fixed-variant": "#7b2d21",
+            "on-error": "#ffffff",
+            "on-surface": "#141b2b",
+            "surface-container-high": "#e1e8fd",
+            "on-secondary-fixed-variant": "#0b5042",
+            "on-error-container": "#93000a",
+            "inverse-primary": "#68daba",
+            "primary-container": "#00846b",
+            "tertiary": "#974233",
+            "primary-fixed-dim": "#68daba",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed": "#002019",
+            "on-secondary-container": "#306d5d",
+            "primary": "#006954"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "stack-sm": "0.5rem",
+            "margin-mobile": "1rem",
+            "stack-md": "1rem",
+            "container-max": "1280px",
+            "stack-lg": "2rem",
+            "margin-desktop": "2rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Cairo"],
+            "headline-xl": ["Cairo"],
+            "headline-lg": ["Cairo"],
+            "headline-md": ["Cairo"],
+            "body-md": ["Cairo"],
+            "body-lg": ["Cairo"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "headline-xl": ["48px", {"lineHeight": "60px", "fontWeight": "700"}],
+            "headline-lg": ["32px", {"lineHeight": "44px", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col overflow-x-hidden" style="background-image: radial-gradient(circle at 2px 2px, rgba(0, 105, 84, 0.03) 1px, transparent 0px); background-size: 40px 40px; background-attachment: fixed;">
+
+  <!-- Header Section -->
+  <header class="bg-white sticky top-0 z-50 shadow-sm border-b border-outline-variant">
+    <div class="max-w-container-max mx-auto px-margin-desktop flex flex-col">
+      <!-- Top Utility Bar -->
+      <div class="flex justify-between items-center py-2 text-label-lg font-label-lg text-on-surface-variant border-b border-surface-variant/50">
+        <div class="flex gap-4">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">location_on</span> فروعنا</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">call</span> 920000000</span>
+        </div>
+        <div class="flex gap-4">
+          <button onclick="toggleLanguage()" class="hover:text-primary font-bold transition-colors" id="lang-switcher">English</button>
+          <span>الليره السورية</span>
+        </div>
+      </div>
+      <!-- Main Header Bar -->
+      <div class="flex items-center justify-between py-4 gap-gutter">
+        <div class="shrink-0 h-12 w-auto">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4nouzhXpYneqSQt08kVW_kjXmtskDEO6_7Ay7_pITtMEx1KAyTqwqZBJ4qiLyFn78O4Exmt1OhRbT-UPzyvFBWXz03UidmiJ1R-IZjSHf2P9Ys6vQLDlIFiZKTH2Kvz_XeyfEeeE-bemGqGtYa7ylIzvWmbMBNeRgk2KfTIX-safg1uKpPjNcRADqDJSoE9EdDbkTmiWTeNdjsDjc0cbz465OmtlrdGcqS5AZ6SEMsUOgV6RpCTv87AQrtmaC_UmR9gI5UT94rRU" alt="Smart Electricity Company Logo" class="h-full w-auto object-contain">
+        </div>
+        <div class="flex-1 max-w-2xl relative">
+          <input class="w-full bg-surface-gray border-none rounded-full py-3 px-6 pr-12 text-body-md font-body-md focus:ring-2 focus:ring-primary transition-all" placeholder="ما الذي تبحث عنه؟" type="text">
+          <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="dashboard.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-label-sm font-label-sm">حسابي</span>
+          </a>
+          <button class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">favorite</span>
+            <span class="text-label-sm font-label-sm">المفضلة</span>
+          </button>
+          <a href="cart.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors relative">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span class="text-label-sm font-label-sm">عربة التسوق</span>
+            <span class="absolute -top-1 -right-1 bg-primary text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+          </a>
+        </div>
+      </div>
+      <!-- Navigation Links -->
+      <nav class="flex items-center gap-8 py-3">
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="index.html">الرئيسية</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="about.html">من نحن</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="services.html">الخدمات</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="products.html">المنتجات</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="brands.html">العلامات التجارية</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="projects.html">المشاريع</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="offers.html">العروض</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="blog.html">المدونة</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="contact.html">اتصل بنا</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg animate-fade-in">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 mb-8 text-on-surface-variant font-label-sm text-label-sm">
+      <a class="hover:text-primary" href="index.html" data-i18n="home">الرئيسية</a>
+      <span class="material-symbols-outlined text-[16px] dir-arrow">chevron_left</span>
+      <span class="text-primary font-bold" data-i18n="offers">العروض الحالية</span>
+    </nav>
+
+    <!-- Large Offers Hero Promo Banner -->
+    <section class="relative h-[360px] rounded-2xl overflow-hidden mb-8 shadow-md">
+      <div class="absolute inset-0 z-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLufHTv1RcfFmu5l24UHVEpzx0r7tnaZ6tK5YeyDVOh9FJIzNcFDNKpu684xD_LlCKfI19iGg4e-EW6gVCCffQ7mVcD7WN9-gixgyoyFXMf8R1oYtLfmzZkp26XTFKS0ujnXIx3sbvhtnlsb-VNdSPENuye7P_8MCTNgSZvdfQf5bqWYns2jQ7HcajiAHW3DG4dAmdoDW5Mvc9M-5Go7Uy7Qph2dhlB0ZBFpvcCYPdRIFwS_4OvgvtFXrg');"></div>
+      <div class="absolute inset-0 bg-gradient-to-l from-deep-forest/95 via-deep-forest/55 to-transparent z-10"></div>
+      <div class="relative z-20 h-full flex flex-col justify-center max-w-2xl px-8 md:px-12 text-white">
+        <span class="px-3 py-1 bg-red-600 text-white text-[11px] font-bold rounded-full w-max mb-4 uppercase tracking-wider" data-i18n="limited_offer">عرض لفترة محدودة</span>
+        <h1 class="font-headline-xl text-[30px] md:text-headline-xl leading-tight mb-4" data-i18n="promo_banner_title">وفر حتى 25% على كافة المعدات الصناعية</h1>
+        <p class="font-body-lg text-body-lg text-white/90 mb-6" data-i18n="promo_banner_desc">احصل على خصومات حصرية للمؤسسات والشركات على لوحات التوزيع، القواطع الكهربائية، وأنظمة الطاقة الذكية.</p>
+        <a href="#deals-anchor" class="bg-white text-deep-forest px-8 py-3.5 rounded-xl font-bold text-md hover:bg-surface-gray transition-all inline-block w-max" data-i18n="shop_now">تسوق العروض الآن</a>
+      </div>
+    </section>
+
+    <!-- Sub Promo Grid (2 cards) -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      <!-- Sub-banner 1 -->
+      <div class="relative h-[180px] rounded-xl overflow-hidden shadow-sm group">
+        <div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLsnpy4022xkmFtr7cTyuaGtEWHVZ3NAWERlxj_Zg6QVYYZqswxbuM68jm5o3-dhzyJ4JcivoQxB5aDSTqxWPXCSjdHkqPglSP6KrbeC3sHzC_Q4mMIri_zrjmsL_nXQrlY8n9u15JnJwiTuIKBWtoysGx-E72dic5WadNodKMLzYGsAMVRDXEv8a8Ge-BojbWlYg4B9wQ-uaieLkR0MxxfXF6xVGhU2Q1qTi0VfOLofuD8vHVL6n_AF5v8');"></div>
+        <div class="absolute inset-0 bg-gradient-to-l from-deep-forest/90 to-transparent z-10"></div>
+        <div class="relative z-20 h-full flex flex-col justify-center px-8 text-white">
+          <h3 class="font-bold text-lg mb-1" data-i18n="sub_promo_1_title">المفاتيح الكهربائية الذكية</h3>
+          <p class="text-sm text-white/80 mb-3" data-i18n="sub_promo_1_desc">وفر حتى 15% على مفاتيح لوغراند ولوحات التحكم</p>
+        </div>
+      </div>
+      <!-- Sub-banner 2 -->
+      <div class="relative h-[180px] rounded-xl overflow-hidden shadow-sm group">
+        <div class="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtpW-u6FDbM9omdB-2M5dS70vbGx6_rB3Ep9tH8Kh3FhNL_1tuG6NkX2OVy3YzA-etfKGs5s3kJOPi72BaxKDcbkymFaaFqtL0Pw5c65ItooFC1JrJdiG46E_hfjX8TkpSQLmPWrQPUIjy6G9GBTFW3o2TqcJxrLAoOpOCVu-lP2w3LCKeb4XJ2bbVNMW6SkXxoKXwkoWq8Toz8zEBM4QDVzZV1VqMS3noLnGNv6EAZg6h_5VPsPGBRH3s');"></div>
+        <div class="absolute inset-0 bg-gradient-to-l from-deep-forest/90 to-transparent z-10"></div>
+        <div class="relative z-20 h-full flex flex-col justify-center px-8 text-white">
+          <h3 class="font-bold text-lg mb-1" data-i18n="sub_promo_2_title">أدوات ومعدات احترافية</h3>
+          <p class="text-sm text-white/80 mb-3" data-i18n="sub_promo_2_desc">وفر حتى 20% على المفكات وأجهزة القياس المتقدمة</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Anchored Deals Section -->
+    <div id="deals-anchor" class="bg-white rounded-2xl border border-outline-variant/30 p-8 shadow-sm mb-16">
+      
+      <!-- Section Title & Countdown Clock -->
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6 border-b border-outline-variant/20 pb-6 mb-8">
+        <div>
+          <h2 class="font-headline-md text-headline-md text-deep-forest flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">campaign</span>
+            <span data-i18n="active_offers">العروض الحالية النشطة</span>
+          </h2>
+          <p class="text-sm text-on-surface-variant mt-1" data-i18n="active_offers_desc">الأسعار المخفضة سارية حتى انتهاء الوقت الموضح أو نفاد الكمية المخصصة للعرض.</p>
+        </div>
+        
+        <!-- Countdown Clock -->
+        <div class="flex items-center gap-3 bg-red-50 border border-red-200/50 rounded-2xl px-6 py-3">
+          <span class="text-xs font-bold text-red-600 uppercase" data-i18n="offer_ends">ينتهي العرض في:</span>
+          <div class="flex gap-2 text-center" dir="ltr">
+            <!-- Days -->
+            <div>
+              <span id="timer-days" class="bg-red-600 text-white font-extrabold text-sm px-2.5 py-1.5 rounded-lg inline-block min-w-[36px]">00</span>
+              <span class="block text-[9px] text-red-600 font-bold mt-1 uppercase">Days</span>
+            </div>
+            <span class="font-bold text-red-600 mt-1">:</span>
+            <!-- Hours -->
+            <div>
+              <span id="timer-hours" class="bg-red-600 text-white font-extrabold text-sm px-2.5 py-1.5 rounded-lg inline-block min-w-[36px]">00</span>
+              <span class="block text-[9px] text-red-600 font-bold mt-1 uppercase">Hrs</span>
+            </div>
+            <span class="font-bold text-red-600 mt-1">:</span>
+            <!-- Minutes -->
+            <div>
+              <span id="timer-mins" class="bg-red-600 text-white font-extrabold text-sm px-2.5 py-1.5 rounded-lg inline-block min-w-[36px]">00</span>
+              <span class="block text-[9px] text-red-600 font-bold mt-1 uppercase">Mins</span>
+            </div>
+            <span class="font-bold text-red-600 mt-1">:</span>
+            <!-- Seconds -->
+            <div>
+              <span id="timer-secs" class="bg-red-600 text-white font-extrabold text-sm px-2.5 py-1.5 rounded-lg inline-block min-w-[36px]">00</span>
+              <span class="block text-[9px] text-red-600 font-bold mt-1 uppercase">Secs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Offers Grid (Sidebar Filters + Products Grid) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Sidebar Filters (3 cols) -->
+        <aside class="lg:col-span-3 space-y-6">
+          <div class="bg-surface-gray/30 border border-outline-variant/40 rounded-xl p-5">
+            <h3 class="font-bold text-on-surface mb-4 pb-2 border-b border-outline-variant/20 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-primary">filter_list</span>
+              <span data-i18n="filter_by">فلترة العروض</span>
+            </h3>
+            
+            <!-- Category filters list -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-bold text-on-surface-variant mb-2" data-i18n="categories_title">حسب الفئة</h4>
+              <div id="offers-categories-list" class="flex flex-col gap-1.5">
+                <!-- Dynamically populated filter tags -->
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Products List Column (9 cols) -->
+        <div class="lg:col-span-9">
+          <div id="offers-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamically populated discounted products list -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Success Partners Grid (ABB, LEGRAND, PHILIPS, SCHNEIDER) -->
+    <section class="mb-16">
+      <h2 class="font-headline-md text-headline-md text-deep-forest text-center mb-8" data-i18n="partners">شركاء النجاح والعلامات العالمية المعروضة</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+        <!-- ABB -->
+        <div class="bg-white rounded-xl border border-outline-variant/30 h-24 flex items-center justify-center p-6 hover:shadow-md transition-shadow">
+          <img class="max-h-full max-w-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDKmEVX4OHPhmPljmZhSGmwV4Vn7xorDulUVDR4MWwJCSDsoUttxXQ1WgIJqpPCNwhK5urQ3nyhJQCUvPqlQKgzjoqL46nVPe-nBeTWPkjulnG4vR0VhZUAExB-sc8jsq1eyt-rEJrCnfCxwH3lHBiu1P3_3INaBWt7jAtbVEjotEqjmsEeGZp7QXGDM4hn_fWrl0eex-oOjBWG77RcGfUHNbgHimIvoRr5QfRRC1icUZ8GHX3mx0Fyr4tDYVZTVl43f6c75jsWxs" alt="ABB">
+        </div>
+        <!-- LEGRAND -->
+        <div class="bg-white rounded-xl border border-outline-variant/30 h-24 flex items-center justify-center p-6 hover:shadow-md transition-shadow">
+          <img class="max-h-full max-w-full object-contain" src="https://lh3.googleusercontent.com/aida/AP1WRLvtoMIrcmP_THrxUQPxHuzwHW6MB42VHZ81MS3O_OUR1wiPR9tjjjaQq_vn5THGzfgHDNNaRXkNZtzp3VJHNkq-4dwvGqBUTzWDDzjBZaln7jmLMyUouOTmjrEWQzGxGyQXYN5va7h3gdH_7U_FlhTfUIlUie-ozVKe871QJ_A9GEYx7GhRL1Ac3WbyQwLlJScMufnXVOMpzD45Gx8LxBPQTSrAjA5bjcXjiGFGy3-VuOHs_3mZsCEBcjg" alt="Legrand">
+        </div>
+        <!-- PHILIPS -->
+        <div class="bg-white rounded-xl border border-outline-variant/30 h-24 flex items-center justify-center p-6 hover:shadow-md transition-shadow">
+          <img class="max-h-full max-w-full object-contain" src="https://lh3.googleusercontent.com/aida/AP1WRLsnpy4022xkmFtr7cTyuaGtEWHVZ3NAWERlxj_Zg6QVYYZqswxbuM68jm5o3-dhzyJ4JcivoQxB5aDSTqxWPXCSjdHkqPglSP6KrbeC3sHzC_Q4mMIri_zrjmsL_nXQrlY8n9u15JnJwiTuIKBWtoysGx-E72dic5WadNodKMLzYGsAMVRDXEv8a8Ge-BojbWlYg4B9wQ-uaieLkR0MxxfXF6xVGhU2Q1qTi0VfOLofuD8vHVL6n_AF5v8" alt="Philips">
+        </div>
+        <!-- SCHNEIDER -->
+        <div class="bg-white rounded-xl border border-outline-variant/30 h-24 flex items-center justify-center p-6 hover:shadow-md transition-shadow">
+          <img class="max-h-full max-w-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZPLWgz3OlXQj-8UXiJwwPJbYSCZjR5l5nV0C5Wd0UBE1S0GDdrk3S2KpG8d2tpVlXe8Tpv5hGlMDTxL5dBzzRVBkUADfMFnGnIX1GqvSNQWNLZGm0ZY8xxE9INc6IxC1cOCdVLwZU7Dkq2Jv8cM3wwbQKTHSVEL1OIzANqVLkm1TfPm50d6ycDRIzm8U-Y81Rz6WqLhqedJBdaGV9bCiNqcNf8jbilANy8sGWlR73yO1FEh2Mds9HZ84_7KdSUXSFi8i-UOk" alt="Schneider Electric">
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Newsletter Subscription block -->
+    <section class="bg-deep-forest rounded-2xl p-8 md:p-12 text-white shadow-xl relative text-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(0,148,120,0.2),transparent_60%)] z-0"></div>
+      <div class="relative z-10 max-w-xl mx-auto space-y-4">
+        <h2 class="font-headline-md text-headline-md" data-i18n="newsletter_title">اشترك لتصلك العروض الحصرية أولاً بأول</h2>
+        <p class="text-sm text-white/80" data-i18n="footer_newsletter_desc">ابقَ على اطلاع بأحدث المنتجات والعروض الحصرية.</p>
+        <div class="flex max-w-md mx-auto pt-2">
+          <input class="flex-1 rounded-r-lg bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-primary text-sm px-4" placeholder="بريدك الإلكتروني" type="email">
+          <button class="bg-primary px-6 rounded-l-lg hover:bg-primary-container transition-all font-bold" data-i18n="subscribe">اشترك</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-deep-forest text-white py-stack-lg border-t border-secondary-fixed-dim/20 mt-auto">
+    <div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+      <div class="space-y-4">
+        <div class="font-headline-md text-headline-md font-bold text-white">Smart Electricity Company (SEC)</div>
+        <p class="text-white/80 font-body-md text-body-md" data-i18n="footer_desc">شركة رائدة في مجال تقديم الحلول الكهربائية والصناعية المتكاملة والأتمتة في سوريا.</p>
+        <div class="flex gap-4">
+          <!-- Social icons dynamically injected -->
+        </div>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-headline-md text-body-lg font-bold" data-i18n="footer_links">روابط سريعة</h3>
+        <ul class="space-y-2 text-white/80 font-body-md">
+          <li><a class="hover:text-primary-fixed transition-colors" href="about.html" data-i18n="about">عن الشركة</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html" data-i18n="products">المنتجات</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="brands.html" data-i18n="brands">العلامات التجارية</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="projects.html" data-i18n="projects">المشاريع</a></li>
+        </ul>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-headline-md text-body-lg font-bold" data-i18n="footer_categories">تسوق حسب القسم</h3>
+        <ul class="space-y-2 text-white/80 font-body-md">
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">القواطع الكهربائية</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">الأسلاك والكابلات</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">الإضاءة</a></li>
+          <li><a class="hover:text-primary-fixed transition-colors" href="products.html">أجهزة القياس</a></li>
+        </ul>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-headline-md text-body-lg font-bold" data-i18n="footer_newsletter">اشترك في النشرة البريدية</h3>
+        <p class="text-white/80 font-body-md" data-i18n="footer_newsletter_desc">ابقَ على اطلاع بأحدث المنتجات والعروض الحصرية.</p>
+        <div class="flex">
+          <input class="flex-1 rounded-r-lg bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-primary text-sm px-3" placeholder="بريدك الإلكتروني" type="email">
+          <button class="bg-primary px-4 rounded-l-lg hover:bg-primary-container transition-all" data-i18n="subscribe">اشترك</button>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-container-max mx-auto px-margin-desktop mt-stack-lg pt-stack-md border-t border-white/10 text-center text-white/60 text-label-sm font-label-sm" data-i18n="rights_reserved">
+      جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2026
+    </div>
+  </footer>
+
+</body>
+</html>

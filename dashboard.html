@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html class="light" dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>لوحة التحكم | شركة الكهرباء الذكية</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="site-data.js?v=1781846973825"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "deep-forest": "#004A3C",
+        "primary": "#006954",
+        "primary-container": "#00846b",
+        "on-primary": "#ffffff",
+        "on-primary-container": "#f5fff9",
+        "secondary": "#2b6959",
+        "secondary-container": "#aeecd9",
+        "on-secondary-container": "#306d5d",
+        "tertiary-container": "#b65949",
+        "surface": "#f9f9ff",
+        "surface-gray": "#F3F4F6",
+        "surface-container-low": "#f1f3ff",
+        "surface-container": "#e9edff",
+        "surface-container-high": "#e1e8fd",
+        "surface-variant": "#dce2f7",
+        "on-surface": "#141b2b",
+        "on-surface-variant": "#3d4945",
+        "outline": "#6d7a74",
+        "outline-variant": "#bccac3",
+        "error": "#ba1a1a",
+        "error-container": "#ffdad6",
+        "success-teal": "#009478",
+        "primary-fixed": "#86f7d6",
+        "primary-fixed-dim": "#68daba",
+        "white": "#FFFFFF"
+      },
+      fontFamily: { "cairo": ["Cairo"] },
+      spacing: { "container-max": "1280px" }
+    }
+  }
+}
+</script>
+<style>
+body { font-family: 'Cairo', sans-serif; background: #F3F4F6; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+.panel { display: none; }
+.panel.active { display: block; }
+.sidebar-link.active { background: #aeecd9; color: #306d5d; }
+.sidebar-link:not(.active):hover { background: #f1f3ff; }
+.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #004A3C; color: white; padding: 1rem 2rem; border-radius: 0.75rem; z-index: 9999; font-weight: 600; animation: fadeInUp 0.3s ease; }
+@keyframes fadeInUp { from { opacity:0; transform: translateX(-50%) translateY(20px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+.form-input { width: 100%; padding: 0.75rem 1rem; border: 1px solid #bccac3; border-radius: 0.5rem; font-family: 'Cairo'; font-size: 14px; outline: none; transition: all 0.2s; }
+.form-input:focus { border-color: #006954; box-shadow: 0 0 0 3px rgba(0,105,84,0.1); }
+.btn-primary { background: #006954; color: white; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; transition: all 0.2s; border: none; font-family: 'Cairo'; }
+.btn-primary:hover { background: #004A3C; }
+.btn-danger { background: #ba1a1a; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: 'Cairo'; font-size: 13px; }
+.btn-danger:hover { background: #93000a; }
+.btn-secondary { background: white; color: #006954; padding: 0.75rem 2rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; transition: all 0.2s; border: 2px solid #006954; font-family: 'Cairo'; }
+.btn-secondary:hover { background: #f1f3ff; }
+.card { background: white; border: 1px solid #bccac3; border-radius: 0.75rem; padding: 1.5rem; }
+.item-card { background: white; border: 1px solid #e1e8fd; border-radius: 0.75rem; padding: 1rem; display: flex; gap: 1rem; align-items: center; transition: all 0.2s; }
+.item-card:hover { border-color: #006954; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; }
+.modal-content { background: white; border-radius: 1rem; padding: 2rem; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
+textarea.form-input { min-height: 100px; resize: vertical; }
+.stat-badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 12px; font-weight: 600; }
+</style>
+</head>
+<body class="text-on-surface">
+<!-- Login Overlay -->
+<div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-deep-forest/40 backdrop-blur-md" style="display: none;">
+  <div class="bg-white p-8 rounded-2xl border border-outline-variant shadow-2xl w-full max-w-md text-center space-y-6">
+    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto">
+      <span class="material-symbols-outlined text-4xl">lock</span>
+    </div>
+    <div>
+      <h2 class="font-bold text-2xl text-deep-forest">تسجيل الدخول لوحة التحكم</h2>
+      <p class="text-on-surface-variant text-sm mt-1">الرجاء إدخال اسم المستخدم وكلمة المرور للمتابعة</p>
+    </div>
+    <div class="space-y-4 text-right">
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">اسم المستخدم</label>
+        <input id="login-username" class="form-input" placeholder="admin" required>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">كلمة المرور</label>
+        <input id="login-password" type="password" class="form-input" placeholder="••••••••" required>
+      </div>
+      <div id="login-error" class="text-error text-xs font-bold hidden">اسم المستخدم أو كلمة المرور غير صحيحة!</div>
+    </div>
+    <button onclick="attemptLogin()" class="btn-primary w-full py-3 flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[20px]">login</span>
+      <span>دخول</span>
+    </button>
+  </div>
+</div>
+
+<!-- Layout -->
+<div class="flex h-screen overflow-hidden">
+
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col h-screen border-l border-outline-variant bg-white w-72 fixed right-0 top-0 shadow-lg z-50 overflow-y-auto">
+<div class="p-6 flex items-center gap-3 border-b border-outline-variant/30">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+</div>
+<div>
+<h1 class="font-bold text-lg text-deep-forest">لوحة التحكم</h1>
+<span class="text-xs text-on-surface-variant">إدارة الموقع</span>
+</div>
+</div>
+
+<nav class="flex-1 px-3 py-4 space-y-1">
+<a href="index.html" class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all text-sm">
+<span class="material-symbols-outlined text-[20px]">home</span>
+<span>العودة للموقع</span>
+</a>
+<div class="h-px bg-outline-variant/30 my-3"></div>
+
+<button onclick="showPanel('settings')" class="sidebar-link active flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="settings">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>إعدادات الموقع</span>
+</button>
+<button onclick="showPanel('homepage')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="homepage">
+<span class="material-symbols-outlined text-[20px]">home_app_logo</span>
+<span>الصفحة الرئيسية</span>
+</button>
+<button onclick="showPanel('products')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="products">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span>المنتجات</span>
+</button>
+<button onclick="showPanel('categories')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="categories">
+<span class="material-symbols-outlined text-[20px]">category</span>
+<span>التصنيفات</span>
+</button>
+<button onclick="showPanel('brands')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="brands">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+<span>العلامات التجارية</span>
+</button>
+<button onclick="showPanel('projects')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="projects">
+<span class="material-symbols-outlined text-[20px]">engineering</span>
+<span>المشاريع</span>
+</button>
+<button onclick="showPanel('blog')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="blog">
+<span class="material-symbols-outlined text-[20px]">article</span>
+<span>المدونة</span>
+</button>
+<button onclick="showPanel('about')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="about">
+<span class="material-symbols-outlined text-[20px]">info</span>
+<span>من نحن</span>
+</button>
+<button onclick="showPanel('contact')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="contact">
+<span class="material-symbols-outlined text-[20px]">call</span>
+<span>معلومات التواصل</span>
+</button>
+<button onclick="showPanel('orders')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="orders">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span>الطلبات</span>
+</button>
+<button onclick="showPanel('banners')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="banners">
+<span class="material-symbols-outlined text-[20px]">image</span>
+<span>صور وبانرات الموقع</span>
+</button>
+
+<div class="h-px bg-outline-variant/30 my-3"></div>
+<button onclick="if(confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')){ SiteData.resetData(); location.reload(); }" class="flex items-center gap-3 px-4 py-2.5 text-error hover:bg-error-container/30 rounded-lg transition-all text-sm w-full text-right">
+<span class="material-symbols-outlined text-[20px]">restart_alt</span>
+<span>إعادة تعيين البيانات</span>
+</button>
+</nav>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 md:mr-72 overflow-y-auto">
+<!-- Top Bar -->
+<header class="sticky top-0 z-40 bg-white shadow-sm border-b border-outline-variant flex items-center justify-between px-8 h-16">
+<h2 id="panelTitle" class="font-bold text-xl text-deep-forest">إعدادات الموقع</h2>
+<div class="flex items-center gap-3">
+<span class="text-sm text-on-surface-variant">آخر حفظ: </span>
+<span id="lastSaved" class="text-sm text-primary font-bold">-</span>
+</div>
+</header>
+
+<div class="p-8 max-w-5xl mx-auto space-y-6">
+
+<!-- ============ SETTINGS PANEL ============ -->
+<div id="panel-settings" class="panel active space-y-6">
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">business</span> معلومات الموقع الأساسية</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">اسم الموقع (إنجليزي)</label><input id="s-siteName" class="form-input" placeholder="Smart Electricity Company (SEC)"></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">اسم الموقع (عربي)</label><input id="s-siteNameAr" class="form-input" placeholder="شركة الكهرباء الذكية"></div>
+<div class="md:col-span-2">
+  <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط الشعار (Logo URL)</label>
+  <div class="flex gap-2">
+    <input id="s-logoUrl" class="form-input flex-1" placeholder="https://...">
+    <input type="file" id="file-logo" accept="image/*" class="hidden" onchange="handleImageUpload(this, 's-logoUrl')">
+    <button type="button" onclick="document.getElementById('file-logo').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+  </div>
+</div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">العملة (عربي)</label><input id="s-currency" class="form-input" placeholder="ل.س"></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">العملة (إنجليزي)</label><input id="s-currencyEn" class="form-input" placeholder="SYP"></div>
+</div>
+</div>
+
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">contact_mail</span> معلومات التواصل</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Phones section -->
+<div class="md:col-span-2">
+  <div class="flex items-center justify-between mb-2">
+    <label class="block text-sm font-semibold text-on-surface-variant">أرقام الجوال / الهاتف</label>
+    <button type="button" onclick="addSettingItem('phones')" class="text-primary text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">add</span> إضافة رقم</button>
+  </div>
+  <div id="settings-phones-list" class="space-y-2"></div>
+</div>
+
+<!-- Emails section -->
+<div class="md:col-span-2">
+  <div class="flex items-center justify-between mb-2">
+    <label class="block text-sm font-semibold text-on-surface-variant">عناوين البريد الإلكتروني</label>
+    <button type="button" onclick="addSettingItem('emails')" class="text-primary text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">add</span> إضافة بريد</button>
+  </div>
+  <div id="settings-emails-list" class="space-y-2"></div>
+</div>
+
+<!-- Addresses section -->
+<div class="md:col-span-2">
+  <div class="flex items-center justify-between mb-2">
+    <label class="block text-sm font-semibold text-on-surface-variant">العناوين والفروع</label>
+    <button type="button" onclick="addSettingItem('addresses')" class="text-primary text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">add</span> إضافة عنوان</button>
+  </div>
+  <div id="settings-addresses-list" class="space-y-2"></div>
+</div>
+
+<!-- Google Maps Embed Url -->
+<div class="md:col-span-2">
+  <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط خريطة Google Maps Embed (iframe src)</label>
+  <input id="s-mapEmbedUrl" class="form-input" placeholder="https://www.google.com/maps/embed?...">
+</div>
+
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">ساعات العمل (أيام العمل)</label><input id="s-workingHoursWeekday" class="form-input" placeholder="الأحد - الخميس: 8:00 ص - 5:30 م"></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">ساعات العمل (عطلة)</label><input id="s-workingHoursWeekend" class="form-input" placeholder="الجمعة - السبت: مغلق"></div>
+</div>
+</div>
+
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">share</span> روابط التواصل الاجتماعي</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط فيسبوك (Facebook)</label><input id="s-facebook" class="form-input" placeholder="https://facebook.com/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط إنستغرام (Instagram)</label><input id="s-instagram" class="form-input" placeholder="https://instagram.com/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط تويتر (Twitter / X)</label><input id="s-twitter" class="form-input" placeholder="https://twitter.com/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط لينكد إن (LinkedIn)</label><input id="s-linkedin" class="form-input" placeholder="https://linkedin.com/in/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط يوتيوب (YouTube)</label><input id="s-youtube" class="form-input" placeholder="https://youtube.com/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط تيك توك (TikTok)</label><input id="s-tiktok" class="form-input" placeholder="https://tiktok.com/@..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط سناب شات (Snapchat)</label><input id="s-snapchat" class="form-input" placeholder="https://snapchat.com/add/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط تليجرام (Telegram)</label><input id="s-telegram" class="form-input" placeholder="https://t.me/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط بنترست (Pinterest)</label><input id="s-pinterest" class="form-input" placeholder="https://pinterest.com/..."></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط الواتساب (WhatsApp Link)</label><input id="s-whatsapp" class="form-input" placeholder="https://wa.me/..."></div>
+</div>
+</div>
+
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">lock</span> إعدادات حساب المسؤول (لوحة التحكم)</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">اسم المستخدم الجديد</label><input id="s-username" class="form-input" placeholder="admin"></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">كلمة المرور الجديدة</label><input id="s-password" class="form-input" type="password" placeholder="admin123"></div>
+</div>
+</div>
+
+<button onclick="saveSettings()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ الإعدادات</button>
+</div>
+
+<!-- ============ HOMEPAGE PANEL ============ -->
+<div id="panel-homepage" class="panel space-y-6">
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">slideshow</span> قسم الهيرو (البانر الرئيسي)</h3>
+<div class="space-y-4">
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">العنوان الرئيسي</label><input id="h-heroTitle" class="form-input"></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">العنوان الفرعي</label><input id="h-heroSubtitle" class="form-input"></div>
+<div><label class="block text-sm font-semibold text-on-surface-variant mb-1">الوصف</label><textarea id="h-heroDescription" class="form-input"></textarea></div>
+<div>
+  <div class="flex items-center justify-between mb-1">
+    <label class="block text-sm font-semibold text-on-surface-variant">صور الخلفية المتحركة (تتغير كل 5 ثواني)</label>
+    <button type="button" onclick="addHeroImage()" class="text-primary text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">add</span> إضافة صورة</button>
+  </div>
+  <div id="hero-images-list" class="space-y-2"></div>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">bar_chart</span> الإحصائيات</h3>
+</div>
+<div id="stats-list" class="space-y-3"></div>
+</div>
+<div class="card">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">design_services</span> الخدمات</h3>
+<button type="button" onclick="openServiceModal()" class="px-2 py-1 bg-surface-container hover:bg-outline-variant/30 text-primary rounded text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">add</span> إضافة خدمة</button>
+</div>
+<div id="services-list" class="space-y-3"></div>
+</div>
+<button onclick="saveHomepage()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ الصفحة الرئيسية</button>
+</div>
+
+<!-- ============ PRODUCTS PANEL ============ -->
+<div id="panel-products" class="panel space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">inventory_2</span> إدارة المنتجات</h3>
+<button onclick="openProductModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة منتج</button>
+</div>
+<div id="products-list" class="space-y-3"></div>
+</div>
+
+<!-- ============ CATEGORIES PANEL ============ -->
+<div id="panel-categories" class="panel space-y-6">
+<div class="card">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">category</span> التصنيفات</h3>
+<button onclick="addCategory()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة تصنيف</button>
+</div>
+<div id="categories-list" class="space-y-2"></div>
+</div>
+</div>
+
+<!-- ============ BRANDS PANEL ============ -->
+<div id="panel-brands" class="panel space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">verified</span> العلامات التجارية</h3>
+<button onclick="openBrandModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة علامة</button>
+</div>
+<div id="brands-list" class="space-y-3"></div>
+</div>
+
+<!-- ============ PROJECTS PANEL ============ -->
+<div id="panel-projects" class="panel space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">engineering</span> المشاريع</h3>
+<button onclick="openProjectModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة مشروع</button>
+</div>
+<div id="projects-list" class="space-y-3"></div>
+</div>
+
+<!-- ============ BLOG PANEL ============ -->
+<div id="panel-blog" class="panel space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">article</span> المدونة</h3>
+<button onclick="openBlogModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة مقال</button>
+</div>
+<div id="blog-list" class="space-y-3"></div>
+</div>
+
+<!-- ============ ABOUT PANEL ============ -->
+<div id="panel-about" class="panel space-y-6">
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">rocket_launch</span> المهمة</h3>
+<textarea id="a-mission" class="form-input" rows="4"></textarea>
+</div>
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">visibility</span> الرؤية</h3>
+<textarea id="a-vision" class="form-input" rows="3"></textarea>
+</div>
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">format_quote</span> الاقتباس</h3>
+<input id="a-quote" class="form-input">
+</div>
+<div class="card">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">timeline</span> التاريخ الزمني</h3>
+<button onclick="addTimelineItem()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة</button>
+</div>
+<div id="timeline-list" class="space-y-3"></div>
+</div>
+<button onclick="saveAbout()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ صفحة من نحن</button>
+</div>
+
+<!-- ============ CONTACT PANEL ============ -->
+<div id="panel-contact" class="panel space-y-6">
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">call</span> معلومات التواصل</h3>
+<p class="text-sm text-on-surface-variant mb-4">هذه المعلومات مرتبطة بإعدادات الموقع. يمكنك تعديلها من قسم <button onclick="showPanel('settings')" class="text-primary font-bold underline">إعدادات الموقع</button>.</p>
+<div id="contact-preview" class="space-y-3"></div>
+</div>
+</div>
+
+<!-- ============ ORDERS PANEL ============ -->
+<div id="panel-orders" class="panel space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">receipt_long</span> الطلبات</h3>
+<button onclick="openOrderModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة طلب</button>
+</div>
+<div id="orders-list" class="space-y-3"></div>
+</div>
+
+<!-- ============ BANNERS PANEL ============ -->
+<div id="panel-banners" class="panel space-y-6">
+  <div class="card">
+    <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">image</span> صور وبانرات الصفحة الرئيسية</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط البانر الفرعي الأول (2 في صف واحد)</label>
+        <div class="flex gap-2">
+          <input id="b-secondaryBanner1" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-sb1" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-secondaryBanner1')">
+          <button type="button" onclick="document.getElementById('file-sb1').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط البانر الفرعي الثاني (2 في صف واحد)</label>
+        <div class="flex gap-2">
+          <input id="b-secondaryBanner2" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-sb2" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-secondaryBanner2')">
+          <button type="button" onclick="document.getElementById('file-sb2').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط بانر فيليبس (Philips Banner)</label>
+        <div class="flex gap-2">
+          <input id="b-philipsBanner" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-philips" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-philipsBanner')">
+          <button type="button" onclick="document.getElementById('file-philips').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط بانر العدد والأدوات اليدوية (Tools Section Banner)</label>
+        <div class="flex gap-2">
+          <input id="b-toolsBanner" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-tools" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-toolsBanner')">
+          <button type="button" onclick="document.getElementById('file-tools').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط بانر أنظمة المراقبة (CCTV Section Banner)</label>
+        <div class="flex gap-2">
+          <input id="b-cctvBanner" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-cctv" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-cctvBanner')">
+          <button type="button" onclick="document.getElementById('file-cctv').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">electric_bolt</span> صور قسم ليجراند (Legrand Section)</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الأولى</label>
+        <div class="flex gap-2">
+          <input id="b-legrand1" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-leg1" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-legrand1')">
+          <button type="button" onclick="document.getElementById('file-leg1').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الثانية</label>
+        <div class="flex gap-2">
+          <input id="b-legrand2" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-leg2" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-legrand2')">
+          <button type="button" onclick="document.getElementById('file-leg2').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الثالثة</label>
+        <div class="flex gap-2">
+          <input id="b-legrand3" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-leg3" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-legrand3')">
+          <button type="button" onclick="document.getElementById('file-leg3').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الرابعة</label>
+        <div class="flex gap-2">
+          <input id="b-legrand4" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-leg4" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-legrand4')">
+          <button type="button" onclick="document.getElementById('file-leg4').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">settings_input_hdmi</span> صور قسم كابلات بحرة (Bahra Cables)</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">شعار كابلات بحرة (Bahra Logo)</label>
+        <div class="flex gap-2">
+          <input id="b-bahraLogo" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-bahraLogo" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-bahraLogo')">
+          <button type="button" onclick="document.getElementById('file-bahraLogo').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الأولى (الجانبية 1)</label>
+        <div class="flex gap-2">
+          <input id="b-bahra1" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-bahra1" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-bahra1')">
+          <button type="button" onclick="document.getElementById('file-bahra1').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الثانية (الجانبية 2)</label>
+        <div class="flex gap-2">
+          <input id="b-bahra2" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-bahra2" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-bahra2')">
+          <button type="button" onclick="document.getElementById('file-bahra2').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الثالثة (الرئيسية الكبيرة)</label>
+        <div class="flex gap-2">
+          <input id="b-bahra3" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-bahra3" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-bahra3')">
+          <button type="button" onclick="document.getElementById('file-bahra3').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-on-surface-variant mb-1">الصورة الرابعة (السفلية الطويلة)</label>
+        <div class="flex gap-2">
+          <input id="b-bahra4" class="form-input flex-1" placeholder="https://...">
+          <input type="file" id="file-bahra4" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'b-bahra4')">
+          <button type="button" onclick="document.getElementById('file-bahra4').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="saveBanners()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ صور الموقع</button>
+</div>
+</div>
+</main>
+</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
+<div class="modal-content" onclick="event.stopPropagation()">
+<div class="flex items-center justify-between mb-6">
+<h3 id="modal-title" class="font-bold text-xl text-deep-forest"></h3>
+<button onclick="closeModal()" class="p-1 hover:bg-surface-gray rounded-full"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div id="modal-body"></div>
+</div>
+</div>
+
+<script>
+// ========== PANEL NAVIGATION ==========
+const panelTitles = {
+  settings: 'إعدادات الموقع', homepage: 'الصفحة الرئيسية', products: 'المنتجات',
+  categories: 'التصنيفات', brands: 'العلامات التجارية', projects: 'المشاريع',
+  blog: 'المدونة', about: 'من نحن', contact: 'معلومات التواصل', orders: 'الطلبات',
+  banners: 'صور وبانرات الموقع'
+};
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  const btn = document.querySelector(`[data-panel="${name}"]`);
+  if (btn) btn.classList.add('active');
+  document.getElementById('panelTitle').textContent = panelTitles[name] || name;
+  // Load data for the panel
+  if (loaders[name]) loaders[name]();
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+  document.getElementById('lastSaved').textContent = new Date().toLocaleTimeString('ar-SA');
+}
+
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+function handleImageUpload(inputEl, targetInputId, previewImgId) {
+  const file = inputEl.files[0];
+  if (!file) return;
+  
+  showToast('جاري رفع الصورة...');
+  
+  const formData = new FormData();
+  formData.append('image', file);
+  
+  fetch('/api/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success && res.url) {
+      document.getElementById(targetInputId).value = res.url;
+      if (previewImgId) {
+        const p = document.getElementById(previewImgId);
+        if (p) {
+          p.src = res.url;
+          p.style.display = 'block';
+        }
+      }
+      showToast('تم رفع الصورة بنجاح ✓');
+    } else {
+      showToast('فشل رفع الصورة: ' + (res.message || 'خطأ غير معروف'));
+    }
+  })
+  .catch(err => {
+    console.error('Upload error:', err);
+    showToast('حدث خطأ أثناء اتصال الرفع بالخادم');
+  });
+}
+function openModal(title, html) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+// ========== SETTINGS ==========
+function renderSettingsList(type, items) {
+  const container = document.getElementById(`settings-${type}-list`);
+  if (!container) return;
+  if (!items) {
+    const s = SiteData.getData('settings');
+    items = s[type] || [];
+  }
+  container.innerHTML = items.map((val, idx) => `
+    <div class="flex gap-2 items-center">
+      <input class="form-input text-sm flex-1 s-${type}-item" value="${val}" placeholder="${type === 'phones' ? 'رقم الهاتف/الجوال' : type === 'emails' ? 'البريد الإلكتروني' : 'العنوان/الفرع'}">
+      <button type="button" onclick="removeSettingItem('${type}', ${idx})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+    </div>
+  `).join('');
+}
+function addSettingItem(type) {
+  const items = Array.from(document.querySelectorAll(`.s-${type}-item`)).map(el => el.value);
+  items.push('');
+  renderSettingsList(type, items);
+}
+function removeSettingItem(type, idx) {
+  const items = Array.from(document.querySelectorAll(`.s-${type}-item`)).map(el => el.value);
+  items.splice(idx, 1);
+  renderSettingsList(type, items);
+}
+function loadSettings() {
+  const s = SiteData.getData('settings');
+  Object.keys(s).forEach(k => {
+    const el = document.getElementById('s-' + k);
+    if (el) el.value = s[k] || '';
+  });
+  renderSettingsList('phones', s.phones || []);
+  renderSettingsList('emails', s.emails || []);
+  renderSettingsList('addresses', s.addresses || []);
+}
+function saveSettings() {
+  const s = SiteData.getData('settings');
+  Object.keys(s).forEach(k => {
+    const el = document.getElementById('s-' + k);
+    if (el) s[k] = el.value;
+  });
+  s.phones = Array.from(document.querySelectorAll('.s-phones-item')).map(el => el.value).filter(val => val.trim() !== '');
+  s.emails = Array.from(document.querySelectorAll('.s-emails-item')).map(el => el.value).filter(val => val.trim() !== '');
+  s.addresses = Array.from(document.querySelectorAll('.s-addresses-item')).map(el => el.value).filter(val => val.trim() !== '');
+  
+  if (s.phones.length > 0) s.phone = s.phones[0];
+  if (s.emails.length > 0) s.email = s.emails[0];
+  if (s.addresses.length > 0) s.address = s.addresses[0];
+  
+  SiteData.saveData('settings', s);
+  showToast('تم حفظ الإعدادات بنجاح ✓');
+  loadSettings();
+}
+
+// ========== HOMEPAGE ==========
+function renderHeroImagesList(images) {
+  const container = document.getElementById('hero-images-list');
+  if (!container) return;
+  container.innerHTML = images.map((val, idx) => `
+    <div class="flex gap-2 items-center">
+      <input class="form-input text-sm flex-1 h-hero-image-item" value="${val}" placeholder="رابط صورة الخلفية">
+      <button type="button" onclick="removeHeroImage(${idx})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+    </div>
+  `).join('');
+}
+function addHeroImage() {
+  const items = Array.from(document.querySelectorAll('.h-hero-image-item')).map(el => el.value);
+  items.push('');
+  renderHeroImagesList(items);
+}
+function removeHeroImage(idx) {
+  const items = Array.from(document.querySelectorAll('.h-hero-image-item')).map(el => el.value);
+  items.splice(idx, 1);
+  renderHeroImagesList(items);
+}
+function loadHomepage() {
+  const h = SiteData.getData('homepage');
+  document.getElementById('h-heroTitle').value = h.heroTitle || '';
+  document.getElementById('h-heroSubtitle').value = h.heroSubtitle || '';
+  document.getElementById('h-heroDescription').value = h.heroDescription || '';
+  renderHeroImagesList(h.heroImages || [h.heroImage || '']);
+  renderStatsList(h.stats);
+  renderServicesList(h.services);
+}
+function renderStatsList(stats) {
+  const c = document.getElementById('stats-list');
+  c.innerHTML = stats.map((s, i) => `
+    <div class="item-card">
+      <div class="flex-1 grid grid-cols-2 gap-3">
+        <input class="form-input text-sm" value="${s.number}" placeholder="الرقم" onchange="updateStat(${i},'number',this.value)">
+        <input class="form-input text-sm" value="${s.label}" placeholder="الوصف" onchange="updateStat(${i},'label',this.value)">
+      </div>
+    </div>
+  `).join('');
+}
+function updateStat(i, key, val) {
+  const h = SiteData.getData('homepage');
+  h.stats[i][key] = val;
+  SiteData.saveData('homepage', h);
+}
+function renderServicesList(services) {
+  const c = document.getElementById('services-list');
+  c.innerHTML = services.map((s, i) => `
+    <div class="item-card justify-between w-full flex items-center">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-2xl">${s.icon || 'engineering'}</span>
+        <div class="text-right">
+          <h4 class="font-bold text-sm text-on-surface">${s.title} <span class="text-xs text-on-surface-variant font-normal">(${s.titleEn || ''})</span></h4>
+          <p class="text-xs text-on-surface-variant line-clamp-1">${s.description || ''}</p>
+        </div>
+      </div>
+      <div class="flex gap-1">
+        <button type="button" onclick="openServiceModal(${i})" class="p-1.5 hover:bg-surface-gray rounded-lg text-primary" title="تعديل"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button type="button" onclick="deleteService(${i})" class="p-1.5 hover:bg-surface-gray rounded-lg text-error" title="حذف"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+function deleteService(i) {
+  if (!confirm('هل أنت متأكد من حذف هذه الخدمة؟')) return;
+  const h = SiteData.getData('homepage');
+  h.services.splice(i, 1);
+  SiteData.saveData('homepage', h);
+  renderServicesList(h.services);
+  showToast('تم حذف الخدمة ✓');
+}
+function openServiceModal(i) {
+  const h = SiteData.getData('homepage');
+  const isNew = (i === undefined || i === null);
+  const s = isNew ? {
+    title: '',
+    titleEn: '',
+    description: '',
+    descriptionEn: '',
+    icon: 'precision_manufacturing',
+    image: '',
+    style: 'light',
+    features: [],
+    featuresEn: [],
+    stats: []
+  } : h.services[i];
+  
+  if (s.style === undefined) s.style = 'light';
+  if (s.features === undefined) s.features = [];
+  if (s.featuresEn === undefined) s.featuresEn = [];
+  if (s.titleEn === undefined) s.titleEn = s.title || '';
+  if (s.descriptionEn === undefined) s.descriptionEn = s.description || '';
+  if (s.stats === undefined) s.stats = [];
+  
+  const featuresText = (s.features || []).join('\n');
+  const featuresEnText = (s.featuresEn || []).join('\n');
+  const statsText = (s.stats || []).map(st => `${st.number} | ${st.label} | ${st.labelEn || ''}`).join('\n');
+  
+  openModal(isNew ? 'إضافة خدمة جديدة' : 'تعديل الخدمة', `
+    <div class="space-y-4 text-right" dir="rtl">
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">عنوان الخدمة (عربي)</label><input id="ms-title" class="form-input" value="${s.title}"></div>
+        <div><label class="block text-sm font-semibold mb-1">عنوان الخدمة (إنجليزي)</label><input id="ms-titleEn" class="form-input" value="${s.titleEn}"></div>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">أيقونة (Material Icon)</label><input id="ms-icon" class="form-input" value="${s.icon}" placeholder="bolt, engineering..."></div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">نمط تصميم الكارد</label>
+          <select id="ms-style" class="form-input" onchange="toggleServiceModalFields(this.value)">
+            <option value="light" ${s.style==='light'?'selected':''}>فاتح كلاسيكي (Light)</option>
+            <option value="dark" ${s.style==='dark'?'selected':''}>داكن بلون الشركة (Dark)</option>
+            <option value="image" ${s.style==='image'?'selected':''}>صورة خلفية (Image Overlay)</option>
+            <option value="stats" ${s.style==='stats'?'selected':''}>أرقام وإحصائيات (Stats Boxes)</option>
+          </select>
+        </div>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-semibold mb-1">رابط الصورة (مطلوب لجميع الأنماط لعرضها)</label>
+        <div class="flex gap-2">
+          <input id="ms-image" class="form-input flex-1" value="${s.image || ''}" placeholder="رابط الصورة أو ارفع ملفاً">
+          <input type="file" id="file-ms-image" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'ms-image', 'preview-ms-image')">
+          <button type="button" onclick="document.getElementById('file-ms-image').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+          <div class="w-10 h-10 rounded border border-outline-variant overflow-hidden bg-surface-gray flex-shrink-0 flex items-center justify-center">
+            <img id="preview-ms-image" src="${s.image || ''}" class="w-full h-full object-cover" style="display: ${s.image ? 'block' : 'none'}">
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Features Checklist fields -->
+      <div id="ms-features-container" class="space-y-2">
+        <label class="block text-sm font-semibold">قائمة الميزات الفرعية (كل ميزة في سطر)</label>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-on-surface-variant mb-1">الميزات (عربي)</label>
+            <textarea id="ms-features" class="form-input text-xs" rows="3" placeholder="ميزة 1\nميزة 2">${featuresText}</textarea>
+          </div>
+          <div>
+            <label class="block text-xs text-on-surface-variant mb-1">الميزات (إنجليزي)</label>
+            <textarea id="ms-featuresEn" class="form-input text-xs" rows="3" placeholder="Feature 1\nFeature 2">${featuresEnText}</textarea>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Stats Grid fields -->
+      <div id="ms-stats-container" class="space-y-2" style="display: ${s.style === 'stats' ? 'block' : 'none'}">
+        <label class="block text-sm font-semibold">قائمة الإحصائيات (إحصائية في سطر)</label>
+        <p class="text-[10px] text-on-surface-variant">الصيغة: الرقم | العنوان بالعربي | العنوان بالإنجليزي (مثال: +40 | عاماً من الخبرة | Years of Experience)</p>
+        <textarea id="ms-stats" class="form-input text-xs" rows="3" placeholder="الرقم | العنوان بالعربي | العنوان بالإنجليزي">${statsText}</textarea>
+      </div>
+ 
+      <div><label class="block text-sm font-semibold mb-1">الوصف (عربي)</label><textarea id="ms-description" class="form-input" rows="2">${s.description || ''}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">الوصف (إنجليزي)</label><textarea id="ms-descriptionEn" class="form-input" rows="2">${s.descriptionEn || ''}</textarea></div>
+      
+      <button onclick="saveServiceModal(${isNew ? 'null' : i})" class="btn-primary w-full mt-4">حفظ الخدمة</button>
+    </div>
+  `);
+}
+window.toggleServiceModalFields = function(val) {
+  const statsContainer = document.getElementById('ms-stats-container');
+  if (statsContainer) {
+    statsContainer.style.display = val === 'stats' ? 'block' : 'none';
+  }
+};
+function saveServiceModal(i) {
+  const h = SiteData.getData('homepage');
+  const isNew = (i === null || i === undefined);
+  const features = document.getElementById('ms-features').value.split('\n').map(x => x.trim()).filter(x => x);
+  const featuresEn = document.getElementById('ms-featuresEn').value.split('\n').map(x => x.trim()).filter(x => x);
+  
+  const statsText = document.getElementById('ms-stats').value;
+  const stats = statsText.split('\n')
+    .map(line => line.split('|').map(x => x.trim()))
+    .filter(parts => parts.length >= 2 && parts[0] && parts[1])
+    .map(parts => ({ number: parts[0], label: parts[1], labelEn: parts[2] || parts[1] }));
+ 
+  const serviceObj = {
+    title: document.getElementById('ms-title').value,
+    titleEn: document.getElementById('ms-titleEn').value,
+    icon: document.getElementById('ms-icon').value,
+    style: document.getElementById('ms-style').value,
+    image: document.getElementById('ms-image').value,
+    features: features,
+    featuresEn: featuresEn,
+    stats: stats,
+    description: document.getElementById('ms-description').value,
+    descriptionEn: document.getElementById('ms-descriptionEn').value
+  };
+
+  if (isNew) {
+    if (!h.services) h.services = [];
+    h.services.push(serviceObj);
+  } else {
+    h.services[i] = serviceObj;
+  }
+  
+  SiteData.saveData('homepage', h);
+  closeModal();
+  renderServicesList(h.services);
+  showToast('تم حفظ الخدمة بنجاح ✓');
+}
+function saveHomepage() {
+  const h = SiteData.getData('homepage');
+  h.heroTitle = document.getElementById('h-heroTitle').value;
+  h.heroSubtitle = document.getElementById('h-heroSubtitle').value;
+  h.heroDescription = document.getElementById('h-heroDescription').value;
+  
+  const images = Array.from(document.querySelectorAll('.h-hero-image-item'))
+    .map(el => el.value)
+    .filter(val => val.trim() !== '');
+  
+  h.heroImages = images;
+  if (images.length > 0) {
+    h.heroImage = images[0];
+  } else {
+    h.heroImage = '';
+  }
+  
+  SiteData.saveData('homepage', h);
+  showToast('تم حفظ الصفحة الرئيسية بنجاح ✓');
+}
+
+// ========== PRODUCTS ==========
+function loadProducts() {
+  const products = SiteData.getData('products');
+  const c = document.getElementById('products-list');
+  if (!products.length) { c.innerHTML = '<p class="text-center text-on-surface-variant py-8">لا توجد منتجات بعد</p>'; return; }
+  c.innerHTML = products.map(p => `
+    <div class="item-card">
+      <div class="w-14 h-14 rounded-lg bg-surface-gray flex-shrink-0 overflow-hidden">
+        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover">` : '<span class="material-symbols-outlined text-3xl text-outline flex items-center justify-center w-full h-full">image</span>'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-bold text-sm truncate">${p.name}</h4>
+        <p class="text-xs text-on-surface-variant">${p.brand} · ${p.category}</p>
+      </div>
+      <div class="text-left font-bold text-primary text-sm whitespace-nowrap">${p.price} ${SiteData.getData('settings').currency}</div>
+      <div class="flex gap-1">
+        <button onclick="openProductModal(${p.id})" class="p-1.5 hover:bg-surface-gray rounded-lg" title="تعديل"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button onclick="deleteProduct(${p.id})" class="p-1.5 hover:bg-error-container rounded-lg text-error" title="حذف"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+function openProductModal(id) {
+  const products = SiteData.getData('products');
+  const categories = SiteData.getData('categories');
+  const p = id ? products.find(x => x.id === id) : { id: 0, name: '', nameEn: '', brand: '', price: 0, originalPrice: 0, isOffer: false, stockTotal: 100, stockSold: 0, category: '', image: '', description: '', descriptionEn: '', featured: false, showPrice: true, images: ['', '', '', ''] };
+  
+  if (!p.images || !Array.isArray(p.images)) {
+    p.images = [p.image || '', '', '', ''];
+  }
+  while (p.images.length < 4) p.images.push('');
+  if (p.showPrice === undefined) p.showPrice = true;
+  if (p.originalPrice === undefined) p.originalPrice = p.price;
+  if (p.isOffer === undefined) p.isOffer = false;
+  if (p.stockTotal === undefined) p.stockTotal = 100;
+  if (p.stockSold === undefined) p.stockSold = 0;
+  if (p.nameEn === undefined) p.nameEn = p.name;
+  if (p.descriptionEn === undefined) p.descriptionEn = p.description || '';
+  
+  const catOptions = categories.map(c => `<option ${c === p.category ? 'selected' : ''}>${c}</option>`).join('');
+  openModal(id ? 'تعديل المنتج' : 'إضافة منتج جديد', `
+    <div class="space-y-4 text-right" dir="rtl">
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">اسم المنتج (عربي)</label><input id="mp-name" class="form-input" value="${p.name}"></div>
+        <div><label class="block text-sm font-semibold mb-1">اسم المنتج (إنجليزي)</label><input id="mp-nameEn" class="form-input" value="${p.nameEn}"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">العلامة التجارية</label><input id="mp-brand" class="form-input" value="${p.brand}"></div>
+        <div><label class="block text-sm font-semibold mb-1">التصنيف</label><select id="mp-category" class="form-input"><option value="">اختر تصنيف</option>${catOptions}</select></div>
+      </div>
+      
+      <div class="border border-outline-variant/30 rounded-xl p-4 bg-surface-gray/10 space-y-3">
+        <h4 class="text-xs font-bold text-primary">خيارات التسعير والعروض الترويجية</h4>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-xs font-semibold mb-1">السعر الحالي (أو سعر العرض)</label><input id="mp-price" class="form-input text-sm" type="number" value="${p.price}"></div>
+          <div><label class="block text-xs font-semibold mb-1">السعر الأصلي (قبل الخصم)</label><input id="mp-originalPrice" class="form-input text-sm" type="number" value="${p.originalPrice}"></div>
+        </div>
+        <div class="flex items-center gap-2 py-1">
+          <input type="checkbox" id="mp-isOffer" ${p.isOffer ? 'checked' : ''}>
+          <label for="mp-isOffer" class="text-xs font-semibold text-error">تفعيل كمنتج ترويجي في صفحة العروض</label>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-xs font-semibold mb-1">إجمالي مخزون العرض</label><input id="mp-stockTotal" class="form-input text-sm" type="number" value="${p.stockTotal}"></div>
+          <div><label class="block text-xs font-semibold mb-1">الكمية المباعة من العرض</label><input id="mp-stockSold" class="form-input text-sm" type="number" value="${p.stockSold}"></div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-sm font-semibold">صور المنتج (حتى 4 صور)</label>
+        <div class="grid grid-cols-1 gap-2">
+          ${[0, 1, 2, 3].map(idx => {
+            const imgVal = p.images[idx] || '';
+            return `
+              <div class="flex gap-2 items-center">
+                <span class="text-xs text-on-surface-variant w-8">صورة ${idx+1}:</span>
+                <input id="mp-image-${idx}" class="form-input text-xs flex-1" value="${imgVal}" placeholder="رابط الصورة أو ارفع ملفاً">
+                <input type="file" id="file-mp-${idx}" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'mp-image-${idx}', 'preview-mp-${idx}')">
+                <button type="button" onclick="document.getElementById('file-mp-${idx}').click()" class="px-2 py-1 bg-surface-gray border border-outline-variant rounded text-xs hover:bg-outline-variant/30">رفع</button>
+                <div class="w-8 h-8 rounded border border-outline-variant overflow-hidden bg-surface-gray flex-shrink-0 flex items-center justify-center">
+                  <img id="preview-mp-${idx}" src="${imgVal}" class="w-full h-full object-cover" style="display: ${imgVal ? 'block' : 'none'}">
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <div><label class="block text-sm font-semibold mb-1">الوصف (عربي)</label><textarea id="mp-description" class="form-input" rows="2">${p.description}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">الوصف (إنجليزي)</label><textarea id="mp-descriptionEn" class="form-input" rows="2">${p.descriptionEn}</textarea></div>
+      
+      <div class="flex items-center gap-4 mt-2">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="mp-showPrice" ${p.showPrice ? 'checked' : ''}>
+          <label for="mp-showPrice" class="text-sm font-semibold">عرض السعر للمستخدمين</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="mp-featured" ${p.featured ? 'checked' : ''}>
+          <label for="mp-featured" class="text-sm font-semibold">منتج مميز (الرئيسية)</label>
+        </div>
+      </div>
+      
+      <button onclick="saveProduct(${p.id})" class="btn-primary w-full mt-4">حفظ المنتج</button>
+    </div>
+  `);
+}
+function saveProduct(id) {
+  const products = SiteData.getData('products');
+  const images = [
+    document.getElementById('mp-image-0').value,
+    document.getElementById('mp-image-1').value,
+    document.getElementById('mp-image-2').value,
+    document.getElementById('mp-image-3').value
+  ];
+  const p = {
+    name: document.getElementById('mp-name').value,
+    nameEn: document.getElementById('mp-nameEn').value,
+    brand: document.getElementById('mp-brand').value,
+    price: +document.getElementById('mp-price').value,
+    originalPrice: +document.getElementById('mp-originalPrice').value,
+    isOffer: document.getElementById('mp-isOffer').checked,
+    stockTotal: +document.getElementById('mp-stockTotal').value,
+    stockSold: +document.getElementById('mp-stockSold').value,
+    category: document.getElementById('mp-category').value,
+    image: images[0] || '',
+    images: images,
+    description: document.getElementById('mp-description').value,
+    descriptionEn: document.getElementById('mp-descriptionEn').value,
+    featured: document.getElementById('mp-featured').checked,
+    showPrice: document.getElementById('mp-showPrice').checked
+  };
+  if (id) { const idx = products.findIndex(x => x.id === id); if (idx > -1) { p.id = id; products[idx] = p; } }
+  else { p.id = SiteData.newId(products); products.push(p); }
+  SiteData.saveData('products', products);
+  closeModal(); loadProducts(); showToast('تم حفظ المنتج ✓');
+}
+function deleteProduct(id) {
+  if (!confirm('هل تريد حذف هذا المنتج؟')) return;
+  const products = SiteData.getData('products').filter(p => p.id !== id);
+  SiteData.saveData('products', products);
+  loadProducts(); showToast('تم حذف المنتج');
+}
+
+// ========== CATEGORIES ==========
+function loadCategories() {
+  const cats = SiteData.getData('categories');
+  const c = document.getElementById('categories-list');
+  c.innerHTML = cats.map((cat, i) => `
+    <div class="item-card">
+      <span class="material-symbols-outlined text-primary text-[20px]">folder</span>
+      <input class="form-input flex-1 text-sm" value="${cat}" onchange="updateCategory(${i}, this.value)">
+      <button onclick="deleteCategory(${i})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+    </div>
+  `).join('');
+}
+function addCategory() {
+  const cats = SiteData.getData('categories');
+  cats.push('تصنيف جديد');
+  SiteData.saveData('categories', cats);
+  loadCategories(); showToast('تم إضافة تصنيف ✓');
+}
+function updateCategory(i, val) { const cats = SiteData.getData('categories'); cats[i] = val; SiteData.saveData('categories', cats); }
+function deleteCategory(i) { if (!confirm('حذف هذا التصنيف؟')) return; const cats = SiteData.getData('categories'); cats.splice(i, 1); SiteData.saveData('categories', cats); loadCategories(); showToast('تم حذف التصنيف'); }
+
+// ========== BRANDS ==========
+function loadBrands() {
+  const brands = SiteData.getData('brands');
+  const c = document.getElementById('brands-list');
+  c.innerHTML = brands.map(b => `
+    <div class="item-card">
+      <div class="w-12 h-12 rounded-lg bg-surface-gray flex-shrink-0 overflow-hidden flex items-center justify-center">
+        ${b.logo ? `<img src="${b.logo}" class="w-full h-full object-contain p-1">` : '<span class="material-symbols-outlined text-2xl text-outline">verified</span>'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-bold text-sm">${b.name} <span class="text-on-surface-variant font-normal">(${b.nameEn})</span></h4>
+        <p class="text-xs text-on-surface-variant truncate">${b.description}</p>
+      </div>
+      <span class="stat-badge bg-surface-container-low text-on-surface-variant">${b.country}</span>
+      <div class="flex gap-1">
+        <button onclick="openBrandModal(${b.id})" class="p-1.5 hover:bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button onclick="deleteBrand(${b.id})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+function openBrandModal(id) {
+  const brands = SiteData.getData('brands');
+  const b = id ? brands.find(x => x.id === id) : { id: 0, name: '', nameEn: '', logo: '', description: '', country: '' };
+  openModal(id ? 'تعديل العلامة التجارية' : 'إضافة علامة تجارية', `
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">الاسم (عربي)</label><input id="mb-name" class="form-input" value="${b.name}"></div>
+        <div><label class="block text-sm font-semibold mb-1">الاسم (إنجليزي)</label><input id="mb-nameEn" class="form-input" value="${b.nameEn}"></div>
+      </div>
+      <div><label class="block text-sm font-semibold mb-1">رابط الشعار</label><input id="mb-logo" class="form-input" value="${b.logo}"></div>
+      <div><label class="block text-sm font-semibold mb-1">الوصف</label><textarea id="mb-description" class="form-input" rows="2">${b.description}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">بلد المنشأ</label><input id="mb-country" class="form-input" value="${b.country}"></div>
+      <button onclick="saveBrand(${b.id})" class="btn-primary w-full mt-4">حفظ</button>
+    </div>
+  `);
+}
+function saveBrand(id) {
+  const brands = SiteData.getData('brands');
+  const b = { name: document.getElementById('mb-name').value, nameEn: document.getElementById('mb-nameEn').value, logo: document.getElementById('mb-logo').value, description: document.getElementById('mb-description').value, country: document.getElementById('mb-country').value };
+  if (id) { const idx = brands.findIndex(x => x.id === id); if (idx > -1) { b.id = id; brands[idx] = b; } }
+  else { b.id = SiteData.newId(brands); brands.push(b); }
+  SiteData.saveData('brands', brands);
+  closeModal(); loadBrands(); showToast('تم حفظ العلامة التجارية ✓');
+}
+function deleteBrand(id) { if (!confirm('حذف؟')) return; SiteData.saveData('brands', SiteData.getData('brands').filter(b => b.id !== id)); loadBrands(); showToast('تم الحذف'); }
+
+// ========== PROJECTS ==========
+function loadProjects() {
+  const projects = SiteData.getData('projects');
+  const c = document.getElementById('projects-list');
+  c.innerHTML = projects.map(p => `
+    <div class="item-card">
+      <div class="w-14 h-14 rounded-lg bg-surface-gray flex-shrink-0 overflow-hidden">
+        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover">` : '<span class="material-symbols-outlined text-3xl text-outline flex items-center justify-center w-full h-full">engineering</span>'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-bold text-sm">${p.name}</h4>
+        <p class="text-xs text-on-surface-variant truncate">${p.description}</p>
+      </div>
+      <span class="stat-badge ${p.status === 'مكتمل' ? 'bg-secondary-container text-on-secondary-container' : 'bg-primary-fixed text-deep-forest'}">${p.status}</span>
+      <div class="flex gap-1">
+        <button onclick="openProjectModal(${p.id})" class="p-1.5 hover:bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button onclick="deleteProject(${p.id})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+function openProjectModal(id) {
+  const projects = SiteData.getData('projects');
+  const p = id ? projects.find(x => x.id === id) : { id: 0, name: '', nameEn: '', description: '', descriptionEn: '', image: '', status: 'قيد التنفيذ', statusEn: 'In Progress', category: 'تجاري', categoryEn: 'Commercial', owner: 'الشركة العامة للكهرباء', ownerEn: 'General Electricity Company', location: 'المملكة العربية السعودية', locationEn: 'Kingdom of Saudi Arabia', duration: '120 يوم', durationEn: '120 Days', value: '15,000,000 ر.س', valueEn: '15,000,000 SAR', images: ['', '', '', '', ''], techFiles: [] };
+  
+  if (!p.images || !Array.isArray(p.images)) {
+    p.images = [p.image || '', '', '', '', ''];
+  }
+  while (p.images.length < 5) p.images.push('');
+  
+  if (p.owner === undefined) p.owner = "الشركة العامة للكهرباء";
+  if (p.ownerEn === undefined) p.ownerEn = "General Electricity Company";
+  if (p.location === undefined) p.location = "المملكة العربية السعودية";
+  if (p.locationEn === undefined) p.locationEn = "Kingdom of Saudi Arabia";
+  if (p.duration === undefined) p.duration = "120 يوم";
+  if (p.durationEn === undefined) p.durationEn = "120 Days";
+  if (p.value === undefined) p.value = "غير محدد";
+  if (p.valueEn === undefined) p.valueEn = "Not Specified";
+  if (p.nameEn === undefined) p.nameEn = p.name;
+  if (p.descriptionEn === undefined) p.descriptionEn = p.description || '';
+  if (p.categoryEn === undefined) p.categoryEn = p.category;
+  if (p.statusEn === undefined) p.statusEn = p.status;
+  if (p.techFiles === undefined) {
+    p.techFiles = [
+      { nameAr: "مواصفات الملف الفني", nameEn: "Technical Specifications Sheet", size: "2.4 MB" },
+      { nameAr: "رسومات هندسية ومخططات", nameEn: "Engineering Design Drawings", size: "8.1 MB" }
+    ];
+  }
+
+  const filesText = p.techFiles.map(f => `${f.nameAr} | ${f.nameEn} | ${f.size}`).join('\n');
+
+  openModal(id ? 'تعديل المشروع' : 'إضافة مشروع', `
+    <div class="space-y-4 text-right" dir="rtl">
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">اسم المشروع (عربي)</label><input id="mj-name" class="form-input" value="${p.name}"></div>
+        <div><label class="block text-sm font-semibold mb-1">اسم المشروع (إنجليزي)</label><input id="mj-nameEn" class="form-input" value="${p.nameEn}"></div>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">الحالة (عربي)</label><select id="mj-status" class="form-input"><option ${p.status==='قيد التنفيذ'?'selected':''}>قيد التنفيذ</option><option ${p.status==='مكتمل'?'selected':''}>مكتمل</option></select></div>
+        <div><label class="block text-sm font-semibold mb-1">الحالة (إنجليزي)</label><select id="mj-statusEn" class="form-input"><option ${p.statusEn==='In Progress'?'selected':''}>In Progress</option><option ${p.statusEn==='Completed'?'selected':''}>Completed</option></select></div>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">الفئة (عربي)</label><select id="mj-category" class="form-input"><option ${p.category==='تجاري'?'selected':''}>تجاري</option><option ${p.category==='صناعي'?'selected':''}>صناعي</option><option ${p.category==='سكني'?'selected':''}>سكني</option><option ${p.category==='طبي'?'selected':''}>طبي</option><option ${p.category==='حكومي'?'selected':''}>حكومي</option></select></div>
+        <div><label class="block text-sm font-semibold mb-1">الفئة (إنجليزي)</label><select id="mj-categoryEn" class="form-input"><option ${p.categoryEn==='Commercial'?'selected':''}>Commercial</option><option ${p.categoryEn==='Industrial'?'selected':''}>Industrial</option><option ${p.categoryEn==='Residential'?'selected':''}>Residential</option><option ${p.categoryEn==='Medical'?'selected':''}>Medical</option><option ${p.categoryEn==='Governmental'?'selected':''}>Governmental</option></select></div>
+      </div>
+
+      <div class="border border-outline-variant/30 rounded-xl p-4 bg-surface-gray/10 space-y-3">
+        <h4 class="text-xs font-bold text-primary">تفاصيل ومعلومات المشروع (بيانات الجانب)</h4>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-[11px] font-semibold mb-0.5">المالك (عربي)</label><input id="mj-owner" class="form-input text-xs" value="${p.owner}"></div>
+          <div><label class="block text-[11px] font-semibold mb-0.5">المالك (إنجليزي)</label><input id="mj-ownerEn" class="form-input text-xs" value="${p.ownerEn}"></div>
+          
+          <div><label class="block text-[11px] font-semibold mb-0.5">الموقع (عربي)</label><input id="mj-location" class="form-input text-xs" value="${p.location}"></div>
+          <div><label class="block text-[11px] font-semibold mb-0.5">الموقع (إنجليزي)</label><input id="mj-locationEn" class="form-input text-xs" value="${p.locationEn}"></div>
+          
+          <div><label class="block text-[11px] font-semibold mb-0.5">المدة (عربي)</label><input id="mj-duration" class="form-input text-xs" value="${p.duration}"></div>
+          <div><label class="block text-[11px] font-semibold mb-0.5">المدة (إنجليزي)</label><input id="mj-durationEn" class="form-input text-xs" value="${p.durationEn}"></div>
+          
+          <div><label class="block text-[11px] font-semibold mb-0.5">القيمة (عربي)</label><input id="mj-value" class="form-input text-xs" value="${p.value}"></div>
+          <div><label class="block text-[11px] font-semibold mb-0.5">القيمة (إنجليزي)</label><input id="mj-valueEn" class="form-input text-xs" value="${p.valueEn}"></div>
+        </div>
+      </div>
+      
+      <div class="space-y-2">
+        <label class="block text-sm font-semibold">صور المشروع (حتى 5 صور)</label>
+        <div class="grid grid-cols-1 gap-2">
+          ${[0, 1, 2, 3, 4].map(idx => {
+            const imgVal = p.images[idx] || '';
+            return `
+              <div class="flex gap-2 items-center">
+                <span class="text-xs text-on-surface-variant w-8">صورة ${idx+1}:</span>
+                <input id="mj-image-${idx}" class="form-input text-xs flex-1" value="${imgVal}" placeholder="رابط الصورة أو ارفع ملفاً">
+                <input type="file" id="file-mj-${idx}" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'mj-image-${idx}', 'preview-mj-${idx}')">
+                <button type="button" onclick="document.getElementById('file-mj-${idx}').click()" class="px-2 py-1 bg-surface-gray border border-outline-variant rounded text-xs hover:bg-outline-variant/30">رفع</button>
+                <div class="w-8 h-8 rounded border border-outline-variant overflow-hidden bg-surface-gray flex-shrink-0 flex items-center justify-center">
+                  <img id="preview-mj-${idx}" src="${imgVal}" class="w-full h-full object-cover" style="display: ${imgVal ? 'block' : 'none'}">
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold mb-1">مستندات التحميل الفنية (بصيغة PDF)</label>
+        <p class="text-[10px] text-on-surface-variant mb-1">صيغة الإدخال: الاسم بالعربي | الاسم بالإنجليزي | الحجم (مثال: مواصفات فنية | Specs Sheet | 2.5 MB) (سطر جديد لكل ملف)</p>
+        <textarea id="mj-techFiles" class="form-input text-xs" rows="3" placeholder="الاسم بالعربي | الاسم بالإنجليزي | الحجم">${filesText}</textarea>
+      </div>
+
+      <div><label class="block text-sm font-semibold mb-1">الوصف (عربي)</label><textarea id="mj-description" class="form-input" rows="2">${p.description}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">الوصف (إنجليزي)</label><textarea id="mj-descriptionEn" class="form-input" rows="2">${p.descriptionEn}</textarea></div>
+      
+      <button onclick="saveProject(${p.id})" class="btn-primary w-full mt-4">حفظ المشروع</button>
+    </div>
+  `);
+}
+function saveProject(id) {
+  const projects = SiteData.getData('projects');
+  const images = [
+    document.getElementById('mj-image-0').value,
+    document.getElementById('mj-image-1').value,
+    document.getElementById('mj-image-2').value,
+    document.getElementById('mj-image-3').value,
+    document.getElementById('mj-image-4').value
+  ];
+  
+  const techFilesText = document.getElementById('mj-techFiles').value;
+  const techFiles = techFilesText.split('\n')
+    .map(line => line.split('|').map(x => x.trim()))
+    .filter(parts => parts.length >= 3 && parts[0] && parts[1])
+    .map(parts => ({ nameAr: parts[0], nameEn: parts[1], size: parts[2] }));
+
+  const p = {
+    name: document.getElementById('mj-name').value,
+    nameEn: document.getElementById('mj-nameEn').value,
+    description: document.getElementById('mj-description').value,
+    descriptionEn: document.getElementById('mj-descriptionEn').value,
+    image: images[0] || '',
+    images: images.filter(img => img.trim() !== ''),
+    status: document.getElementById('mj-status').value,
+    statusEn: document.getElementById('mj-statusEn').value,
+    category: document.getElementById('mj-category').value,
+    categoryEn: document.getElementById('mj-categoryEn').value,
+    owner: document.getElementById('mj-owner').value,
+    ownerEn: document.getElementById('mj-ownerEn').value,
+    location: document.getElementById('mj-location').value,
+    locationEn: document.getElementById('mj-locationEn').value,
+    duration: document.getElementById('mj-duration').value,
+    durationEn: document.getElementById('mj-durationEn').value,
+    value: document.getElementById('mj-value').value,
+    valueEn: document.getElementById('mj-valueEn').value,
+    techFiles: techFiles
+  };
+  if (id) { const idx = projects.findIndex(x => x.id === id); if (idx > -1) { p.id = id; projects[idx] = p; } }
+  else { p.id = SiteData.newId(projects); projects.push(p); }
+  SiteData.saveData('projects', projects);
+  closeModal(); loadProjects(); showToast('تم حفظ المشروع ✓');
+}
+function deleteProject(id) { if (!confirm('حذف؟')) return; SiteData.saveData('projects', SiteData.getData('projects').filter(p => p.id !== id)); loadProjects(); showToast('تم الحذف'); }
+
+// ========== BLOG ==========
+function loadBlog() {
+  const posts = SiteData.getData('blogPosts');
+  const c = document.getElementById('blog-list');
+  c.innerHTML = posts.map(p => `
+    <div class="item-card">
+      <div class="w-14 h-14 rounded-lg bg-surface-gray flex-shrink-0 overflow-hidden">
+        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover">` : '<span class="material-symbols-outlined text-3xl text-outline flex items-center justify-center w-full h-full">article</span>'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-bold text-sm truncate">${p.title}</h4>
+        <p class="text-xs text-on-surface-variant">${p.date} · ${p.category}</p>
+      </div>
+      <div class="flex gap-1">
+        <button onclick="openBlogModal(${p.id})" class="p-1.5 hover:bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button onclick="deleteBlogPost(${p.id})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+function openBlogModal(id) {
+  const posts = SiteData.getData('blogPosts');
+  const p = id ? posts.find(x => x.id === id) : { id: 0, title: '', excerpt: '', image: '', date: new Date().toISOString().slice(0,10), category: '', content: '' };
+  openModal(id ? 'تعديل المقال' : 'إضافة مقال', `
+    <div class="space-y-4">
+      <div><label class="block text-sm font-semibold mb-1">عنوان المقال</label><input id="mbl-title" class="form-input" value="${p.title}"></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">التاريخ</label><input id="mbl-date" class="form-input" type="date" value="${p.date}"></div>
+        <div><label class="block text-sm font-semibold mb-1">الفئة</label><input id="mbl-category" class="form-input" value="${p.category}" placeholder="مثال: نصائح فنية"></div>
+      </div>
+      <div><label class="block text-sm font-semibold mb-1">رابط الصورة</label><input id="mbl-image" class="form-input" value="${p.image}"></div>
+      <div><label class="block text-sm font-semibold mb-1">المقتطف</label><textarea id="mbl-excerpt" class="form-input" rows="2">${p.excerpt}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">المحتوى الكامل</label><textarea id="mbl-content" class="form-input" rows="6">${p.content}</textarea></div>
+      <button onclick="saveBlogPost(${p.id})" class="btn-primary w-full mt-4">حفظ</button>
+    </div>
+  `);
+}
+function saveBlogPost(id) {
+  const posts = SiteData.getData('blogPosts');
+  const p = { title: document.getElementById('mbl-title').value, date: document.getElementById('mbl-date').value, category: document.getElementById('mbl-category').value, image: document.getElementById('mbl-image').value, excerpt: document.getElementById('mbl-excerpt').value, content: document.getElementById('mbl-content').value };
+  if (id) { const idx = posts.findIndex(x => x.id === id); if (idx > -1) { p.id = id; posts[idx] = p; } }
+  else { p.id = SiteData.newId(posts); posts.push(p); }
+  SiteData.saveData('blogPosts', posts);
+  closeModal(); loadBlog(); showToast('تم حفظ المقال ✓');
+}
+function deleteBlogPost(id) { if (!confirm('حذف؟')) return; SiteData.saveData('blogPosts', SiteData.getData('blogPosts').filter(p => p.id !== id)); loadBlog(); showToast('تم الحذف'); }
+
+// ========== ABOUT ==========
+function loadAbout() {
+  const a = SiteData.getData('about');
+  document.getElementById('a-mission').value = a.mission || '';
+  document.getElementById('a-vision').value = a.vision || '';
+  document.getElementById('a-quote').value = a.quote || '';
+  renderTimeline(a.timeline);
+}
+function renderTimeline(timeline) {
+  const c = document.getElementById('timeline-list');
+  c.innerHTML = timeline.map((t, i) => `
+    <div class="item-card flex-col items-start">
+      <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
+        <input class="form-input text-sm" value="${t.year}" placeholder="السنة" onchange="updateTimeline(${i},'year',this.value)">
+        <input class="form-input text-sm md:col-span-2" value="${t.title}" placeholder="العنوان" onchange="updateTimeline(${i},'title',this.value)">
+        <textarea class="form-input text-sm md:col-span-3" rows="2" placeholder="الوصف" onchange="updateTimeline(${i},'description',this.value)">${t.description}</textarea>
+      </div>
+      <button onclick="deleteTimeline(${i})" class="btn-danger text-xs mt-2">حذف</button>
+    </div>
+  `).join('');
+}
+function updateTimeline(i, key, val) { const a = SiteData.getData('about'); a.timeline[i][key] = val; SiteData.saveData('about', a); }
+function addTimelineItem() { const a = SiteData.getData('about'); a.timeline.push({ year: '', title: '', description: '' }); SiteData.saveData('about', a); renderTimeline(a.timeline); }
+function deleteTimeline(i) { const a = SiteData.getData('about'); a.timeline.splice(i, 1); SiteData.saveData('about', a); renderTimeline(a.timeline); }
+function saveAbout() {
+  const a = SiteData.getData('about');
+  a.mission = document.getElementById('a-mission').value;
+  a.vision = document.getElementById('a-vision').value;
+  a.quote = document.getElementById('a-quote').value;
+  SiteData.saveData('about', a);
+  showToast('تم حفظ صفحة من نحن ✓');
+}
+
+// ========== CONTACT ==========
+function loadContact() {
+  const s = SiteData.getData('settings');
+  document.getElementById('contact-preview').innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">call</span> <strong>الهاتف:</strong> ${s.phone}</div>
+      <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">mail</span> <strong>البريد:</strong> ${s.email}</div>
+      <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">location_on</span> <strong>العنوان:</strong> ${s.address}</div>
+      <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">schedule</span> <strong>ساعات العمل:</strong> ${s.workingHoursWeekday}</div>
+    </div>
+  `;
+}
+
+// ========== ORDERS ==========
+function loadOrders() {
+  const orders = SiteData.getData('orders');
+  const c = document.getElementById('orders-list');
+  const statusColors = { 'تم الشحن': 'bg-secondary-container text-on-secondary-container', 'قيد المعالجة': 'bg-primary-fixed text-deep-forest', 'مكتمل': 'bg-surface-variant text-on-surface-variant', 'جديد': 'bg-tertiary-container text-white' };
+  c.innerHTML = orders.map(o => `
+    <div class="item-card">
+      <div class="flex-shrink-0 font-bold text-primary text-sm">#${o.id}</div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-bold text-sm">${o.product}</h4>
+        <p class="text-xs text-on-surface-variant">${o.customer} · ${o.date}</p>
+      </div>
+      <div class="text-sm font-bold whitespace-nowrap">${o.total} ${SiteData.getData('settings').currency}</div>
+      <select class="form-input text-xs w-28 py-1" onchange="updateOrderStatus('${o.id}', this.value)" style="font-size:12px">
+        <option ${o.status==='جديد'?'selected':''}>جديد</option>
+        <option ${o.status==='قيد المعالجة'?'selected':''}>قيد المعالجة</option>
+        <option ${o.status==='تم الشحن'?'selected':''}>تم الشحن</option>
+        <option ${o.status==='مكتمل'?'selected':''}>مكتمل</option>
+      </select>
+      <button onclick="deleteOrder('${o.id}')" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+    </div>
+  `).join('');
+}
+function updateOrderStatus(id, status) { const orders = SiteData.getData('orders'); const o = orders.find(x => x.id === id); if (o) { o.status = status; SiteData.saveData('orders', orders); showToast('تم تحديث الحالة ✓'); } }
+function deleteOrder(id) { if (!confirm('حذف هذا الطلب؟')) return; SiteData.saveData('orders', SiteData.getData('orders').filter(o => o.id !== id)); loadOrders(); showToast('تم الحذف'); }
+function openOrderModal() {
+  openModal('إضافة طلب جديد', `
+    <div class="space-y-4">
+      <div><label class="block text-sm font-semibold mb-1">رقم الطلب</label><input id="mo-id" class="form-input" placeholder="EH-99001"></div>
+      <div><label class="block text-sm font-semibold mb-1">اسم العميل</label><input id="mo-customer" class="form-input"></div>
+      <div><label class="block text-sm font-semibold mb-1">المنتج</label><input id="mo-product" class="form-input"></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">المبلغ</label><input id="mo-total" class="form-input" type="number"></div>
+        <div><label class="block text-sm font-semibold mb-1">التاريخ</label><input id="mo-date" class="form-input" value="${new Date().toLocaleDateString('ar-SA')}"></div>
+      </div>
+      <button onclick="saveOrder()" class="btn-primary w-full mt-4">إضافة الطلب</button>
+    </div>
+  `);
+}
+function saveOrder() {
+  const orders = SiteData.getData('orders');
+  orders.push({ id: document.getElementById('mo-id').value, customer: document.getElementById('mo-customer').value, product: document.getElementById('mo-product').value, total: +document.getElementById('mo-total').value, date: document.getElementById('mo-date').value, status: 'جديد' });
+  SiteData.saveData('orders', orders);
+  closeModal(); loadOrders(); showToast('تم إضافة الطلب ✓');
+}
+
+// ========== BANNERS ==========
+function loadBanners() {
+  const b = SiteData.getData('banners') || {};
+  Object.keys(b).forEach(k => {
+    const el = document.getElementById('b-' + k);
+    if (el) el.value = b[k] || '';
+  });
+}
+function saveBanners() {
+  const b = SiteData.getData('banners') || {};
+  const inputs = document.querySelectorAll('[id^="b-"]');
+  inputs.forEach(el => {
+    const k = el.id.substring(2);
+    b[k] = el.value;
+  });
+  SiteData.saveData('banners', b);
+  showToast('تم حفظ صور الموقع بنجاح ✓');
+}
+
+// ========== LOADERS MAP ==========
+const loaders = { settings: loadSettings, homepage: loadHomepage, products: loadProducts, categories: loadCategories, brands: loadBrands, projects: loadProjects, blog: loadBlog, about: loadAbout, contact: loadContact, orders: loadOrders, banners: loadBanners };
+
+// ========== AUTHENTICATION ==========
+function attemptLogin() {
+  const s = SiteData.getData('settings');
+  const u = document.getElementById('login-username').value;
+  const p = document.getElementById('login-password').value;
+  const errorEl = document.getElementById('login-error');
+  
+  if (u === (s.username || 'admin') && p === (s.password || 'admin123')) {
+    sessionStorage.setItem('cms_authenticated', 'true');
+    document.getElementById('login-overlay').style.display = 'none';
+    errorEl.classList.add('hidden');
+    loadSettings();
+  } else {
+    errorEl.classList.remove('hidden');
+  }
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  const auth = sessionStorage.getItem('cms_authenticated');
+  if (auth !== 'true') {
+    document.getElementById('login-overlay').style.display = 'flex';
+  } else {
+    loadSettings();
+  }
+});
+</script>
+</body></html>

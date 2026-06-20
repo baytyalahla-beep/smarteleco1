@@ -1,0 +1,381 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<script src="site-data.js?v=1781846973825"></script>
+<script src="site-renderer.js?v=1781846973825" defer></script>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>المدونة | شركة الكهرباء الذكية</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f1f3ff",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#b65949",
+                    "on-secondary-container": "#306d5d",
+                    "outline": "#6d7a74",
+                    "deep-forest": "#004A3C",
+                    "primary": "#006954",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#ffb4a6",
+                    "secondary-container": "#aeecd9",
+                    "surface-container-high": "#e1e8fd",
+                    "on-surface-variant": "#3d4945",
+                    "error-container": "#ffdad6",
+                    "background": "#f9f9ff",
+                    "outline-variant": "#bccac3",
+                    "tertiary": "#974233",
+                    "primary-fixed": "#86f7d6",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#dce2f7",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#dce2f7",
+                    "surface-tint": "#006b56",
+                    "surface-gray": "#F3F4F6",
+                    "on-tertiary-fixed": "#3f0300",
+                    "inverse-surface": "#293040",
+                    "primary-container": "#00846b",
+                    "success-teal": "#009478",
+                    "on-surface": "#141b2b",
+                    "secondary-fixed": "#b1efdb",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#ffdad4",
+                    "on-secondary-fixed-variant": "#0b5042",
+                    "inverse-on-surface": "#edf0ff",
+                    "on-secondary-fixed": "#002019",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#002018",
+                    "inverse-primary": "#68daba",
+                    "on-tertiary": "#ffffff",
+                    "white": "#FFFFFF",
+                    "on-primary-fixed-variant": "#005140",
+                    "primary-fixed-dim": "#68daba",
+                    "surface": "#f9f9ff",
+                    "surface-dim": "#d3daef",
+                    "secondary-fixed-dim": "#95d3c0",
+                    "on-primary-container": "#f5fff9",
+                    "surface-bright": "#f9f9ff",
+                    "secondary": "#2b6959",
+                    "on-tertiary-fixed-variant": "#7b2d21",
+                    "on-background": "#141b2b",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-container": "#e9edff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-md": "1rem",
+                    "container-max": "1280px",
+                    "margin-desktop": "2rem",
+                    "stack-sm": "0.5rem",
+                    "gutter": "1.5rem",
+                    "stack-lg": "2rem",
+                    "margin-mobile": "1rem"
+            },
+            "fontFamily": {
+                    "headline-xl-mobile": ["Cairo"],
+                    "label-sm": ["Cairo"],
+                    "headline-md": ["Cairo"],
+                    "body-lg": ["Cairo"],
+                    "body-md": ["Cairo"],
+                    "headline-xl": ["Cairo"],
+                    "label-lg": ["Cairo"],
+                    "headline-lg": ["Cairo"],
+                    "headline-lg-mobile": ["Cairo"]
+            },
+            "fontSize": {
+                    "headline-xl-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "60px", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "44px", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Cairo', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col" style="background-image: radial-gradient(circle at 2px 2px, rgba(0, 105, 84, 0.03) 1px, transparent 0px); background-size: 40px 40px; background-attachment: fixed;">
+<!-- TopAppBar -->
+<header class="bg-white sticky top-0 z-50 shadow-sm border-b border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col">
+<!-- Top Utility Bar -->
+<div class="flex justify-between items-center py-2 text-label-lg font-label-lg text-on-surface-variant border-b border-surface-variant/50">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">location_on</span> فروعنا</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">call</span> 920000000</span>
+</div>
+<div class="flex gap-4">
+<span>English</span>
+<span>الليره السورية</span>
+</div>
+</div>
+<!-- Main Header Bar -->
+<div class="flex items-center justify-between py-4 gap-gutter">
+<div class="shrink-0 h-12 w-auto">
+  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4nouzhXpYneqSQt08kVW_kjXmtskDEO6_7Ay7_pITtMEx1KAyTqwqZBJ4qiLyFn78O4Exmt1OhRbT-UPzyvFBWXz03UidmiJ1R-IZjSHf2P9Ys6vQLDlIFiZKTH2Kvz_XeyfEeeE-bemGqGtYa7ylIzvWmbMBNeRgk2KfTIX-safg1uKpPjNcRADqDJSoE9EdDbkTmiWTeNdjsDjc0cbz465OmtlrdGcqS5AZ6SEMsUOgV6RpCTv87AQrtmaC_UmR9gI5UT94rRU" alt="Smart Electricity Company Logo" class="h-full w-auto object-contain">
+</div>
+<div class="flex-1 max-w-2xl relative">
+<input class="w-full bg-surface-gray border-none rounded-full py-3 px-6 pr-12 text-body-md font-body-md focus:ring-2 focus:ring-primary transition-all" placeholder="ما الذي تبحث عنه؟" type="text">
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+</div>
+<div class="flex items-center gap-6">
+<a href="dashboard.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="text-label-sm font-label-sm">حسابي</span>
+</a>
+<button class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-label-sm font-label-sm">المفضلة</span>
+</button>
+<a href="cart.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-label-sm font-label-sm">عربة التسوق</span>
+<span class="absolute -top-1 -right-1 bg-primary text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+</a>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex items-center gap-8 py-3">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="index.html">الرئيسية</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="about.html">من نحن</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="products.html">المنتجات</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="brands.html">العلامات التجارية</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="projects.html">المشاريع</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="#">العروض</a>
+<a class="text-primary border-b-2 border-primary font-bold pb-1 text-label-lg font-label-lg" href="blog.html">المدونة</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="contact.html">اتصل بنا</a>
+</nav>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-desktop py-stack-lg RTL">
+<!-- Blog Hero Section -->
+<section class="mb-stack-lg">
+<div class="relative rounded-xl overflow-hidden h-[400px] group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A professional industrial electrical site at dusk with glowing safety lights and high-tech electrical infrastructure. The scene is clean, modern, and high-contrast, featuring deep teals and sharp metallic surfaces under a dramatic twilight sky. The mood is authoritative and innovative." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzLgDhp0bxwADdVfOXrieSY1jiEP9etIJDe_wbspOmSPMpYwSyTwI2A5eG_4kRrrTPwEZsaTZnUMG4OPaMLoWch8b3cV6y2UBX0qmBogX-aONa3bfK_lxChiOLPYtsB75-FMJS8fc6jRQJ_dFPX1U6-6GPq8fySRydVvYgGHhE1ggmR0C7n15pFu4iL59WvjswDqTLO8QBl3UtRTH2iyD2xvndPIAIR6I9s-gaHoWJ_s7fJF84H1xNwNI9KKCfRe4wK072JhJFI7s')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/40 to-transparent flex flex-col justify-end p-stack-lg">
+<span class="bg-primary text-white px-3 py-1 rounded-full font-label-lg text-label-lg w-fit mb-4">أخبار التكنولوجيا</span>
+<h1 class="font-headline-xl text-headline-xl text-white mb-4 max-w-3xl">مستقبل الطاقة الذكية: كيف تغير تقنيات إنترنت الأشياء المنشآت الصناعية</h1>
+<p class="font-body-lg text-body-lg text-white/80 max-w-2xl mb-6">استكشف كيف تساهم الحلول الكهربائية المتقدمة في تحسين كفاءة الطاقة وتقليل التكاليف التشغيلية في المصانع الحديثة.</p>
+<div class="flex items-center gap-4 text-white/70 font-label-lg text-label-lg">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_month</span> ٢٤ أكتوبر ٢٠٢٤</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">person</span> م. أحمد محمود</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Filter Chips -->
+<nav class="flex flex-wrap gap-3 mb-stack-lg overflow-x-auto pb-2">
+<button class="bg-primary text-white px-6 py-2 rounded-full font-label-lg text-label-lg transition-all shadow-md">الكل</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-lg text-label-lg hover:bg-surface-container-low transition-all">السلامة الكهربائية</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-lg text-label-lg hover:bg-surface-container-low transition-all">هندسة القوى</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-lg text-label-lg hover:bg-surface-container-low transition-all">أحدث المنتجات</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-lg text-label-lg hover:bg-surface-container-low transition-all">دليل المشتري</button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-label-lg text-label-lg hover:bg-surface-container-low transition-all">قصص النجاح</button>
+</nav>
+<!-- Bento Grid Articles -->
+<div class="bento-grid">
+<!-- Featured Card (Large) -->
+<article class="col-span-12 lg:col-span-8 bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col md:flex-row group hover:shadow-lg transition-all duration-300">
+<div class="md:w-1/2 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close up of a high-tech circuit breaker panel with clean wiring and precision components. The lighting is crisp and surgical, emphasizing industrial reliability. Colors are dominated by forest green, steel gray, and copper accents. The style is sharp and corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQeZhEKCEQv02EC1upHV7A2P90wlGesL1_xSuDwn63r6gBdjZ_cTxHcsQ-pNQXGlR4iBy-DQL92LVRzR4OlAt0cIQpojimgNwdwA0rQdLX50ydgv1KOv5eXufzkmsyZdkY0ICpv4WoLPVT9q7c1zR0qtCViE3IzYlY_xEdesDJsT7tuULmmOZYoPyOfZF42Bp7pkoyWQF4dImFmyLWtqhM4zauOrGtRClTwdkyEUVpDQJXIHmhsIwtUjG6BAljZSVp_XrdKHEXB8A">
+</div>
+<div class="md:w-1/2 p-stack-lg flex flex-col justify-center">
+<span class="text-primary font-bold font-label-lg text-label-lg mb-2">السلامة المهنية</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">دليل شامل لمعايير السلامة في اللوحات الكهربائية الكبرى</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">تعرف على أهم المعايير العالمية المتبعة في عزل وصيانة اللوحات الكهربائية عالية الجهد لضمان أمن وسلامة الفنيين والمعدات.</p>
+<a class="flex items-center gap-2 text-primary font-bold font-label-lg text-label-lg group/link" href="#">
+                        اقرأ المزيد 
+                        <span class="material-symbols-outlined group-hover/link:translate-x-[-4px] transition-transform">arrow_back</span>
+</a>
+</div>
+</article>
+<!-- Small Card 1 -->
+<article class="col-span-12 md:col-span-6 lg:col-span-4 bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A futuristic smart home interface showing energy consumption graphs on a tablet screen, held by a professional in a modern office. The background is blurred with hints of smart lighting fixtures. Soft teal glow and clean white aesthetic, evoking a sense of efficiency and technological control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEj5l2vdGYoJ_6GWfOjeqBolxLiLxbx5rEv7f7Mg_sQ-oTJ7mc2Jvx4bN7Kv0l7Pj7LaBjDsk3wPjwLF7K2A4PKiBpZmo2C-Mupo0Dgd8IXzo8PglNtw_CU410qW8QoijEYJ3TMb90s2Oaba3KPA6u5UOtOPImzDp_FunNfP-rnp9BPeEcDnAjm-O8AKhtJUwiu6ti3yHeqanpNDlFucisLofchFmKPlsJWfo-GwfMfB5DynsOboOcXgvmy6tVcdLz0a16b8yL1og">
+</div>
+<div class="p-stack-md">
+<span class="text-secondary font-bold font-label-lg text-label-lg mb-2">تكنولوجيا</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2">٥ تقنيات جديدة ستغير مفهوم الإضاءة في المشاريع التجارية ٢٠٢٥</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">من استشعار الحركة الذكي إلى الإضاءة الحيوية، اكتشف التوجهات الجديدة.</p>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/30">
+<span class="text-on-surface-variant/60 text-xs">١٨ أكتوبر ٢٠٢٤</span>
+<a class="text-primary font-bold text-sm" href="#">اقرأ الخبر</a>
+</div>
+</div>
+</article>
+<!-- Small Card 2 -->
+<article class="col-span-12 md:col-span-6 lg:col-span-4 bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Professional electrical testing equipment and multimeters laying on an architectural blueprint. The lighting is warm yet professional, showing a workspace of an electrical engineer. Industrial green and crisp white accents define the aesthetic. Reliable and technical mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi5WIZiYjfKHIdKbQOKJ5a-OOKiEpWkuhCTfPQ7BsFf-m2wyqnsLIz-3B73HboNTgEzSOpdQSbBGSomlrkvorFhZqRzTGU_g-cH557IvqzcCNa68bd6ftJjpbTLsAzkjCrvPf6I7iDL8QmJyDDAmRadUK8Xt2NA48ygwzQ55LbPCF7AUNAL3NZcS5BPnfo5eumTZJXGbDbtn0BYYdGCO4oUGcBJeQq9Xpga_iiC_JuAeC1-ZcNUpDs-ReFkwZB7GtAjqI9TKr7GpU">
+</div>
+<div class="p-stack-md">
+<span class="text-secondary font-bold font-label-lg text-label-lg mb-2">دليل المنتجات</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2">كيف تختار القواطع الكهربائية المناسبة لحماية منزلك؟</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">دليل تقني مبسط لأصحاب المنازل والمقاولين لاختيار أفضل حلول الحماية الكهربائية.</p>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/30">
+<span class="text-on-surface-variant/60 text-xs">١٥ أكتوبر ٢٠٢٤</span>
+<a class="text-primary font-bold text-sm" href="#">اقرأ الخبر</a>
+</div>
+</div>
+</article>
+<!-- Middle Featured (Tall) -->
+<article class="col-span-12 lg:col-span-4 lg:row-span-2 bg-deep-forest text-white rounded-xl border border-outline-variant shadow-lg overflow-hidden flex flex-col group transition-all duration-300">
+<div class="flex-grow p-stack-lg flex flex-col justify-center relative overflow-hidden">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-lg text-label-lg w-fit mb-4">حصري</span>
+<h2 class="font-headline-lg text-headline-lg mb-6 leading-tight">شراكة استراتيجية جديدة مع "شنايدر إلكتريك" لتعزيز التوريد الرقمي</h2>
+<p class="font-body-lg text-body-lg text-white/80 mb-8">خطوة كبيرة نحو التحول الرقمي في قطاع التوريدات الكهربائية في المملكة، نعلن عن توفير منصة طلبات ذكية لعملائنا في القطاع الصناعي.</p>
+<button class="bg-white text-deep-forest px-8 py-3 rounded-lg font-bold hover:bg-primary-fixed transition-colors self-start">اعرف أكثر عن الشراكة</button>
+</div>
+<div class="h-64">
+<img class="w-full h-full object-cover" data-alt="Two professional engineers in hard hats shaking hands in front of a modern logistics center. High-key lighting, corporate atmosphere, featuring branding of industrial electrical companies. The visual style is clean, sharp, and optimistic, with a palette of deep greens and bright whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMoOYUO-KqHMxRavn5xheFGIervVT4fF-r94gBUsKdYSL1PW6q7QBf0TCjbSOxRYvcOqUAkpCnMOSFWzjrzsVmPx2x1e3CUjnOIuvfRdA0BWM0lRkvh8DPkz-rvGTGWRyU5B68mnXqM8QxIYlZ5Zs_5b05xzZ2tM8WJNkwTc76P07YKqZUQb4mCOIBkJwRhTX0fGhrpVWm52QSqF2oYp_2UzpK49w4SyonDN3A4ZisvXBm1_inneZaQkUCrVjdSN7atveaAaD6Dbs">
+</div>
+</article>
+<!-- Small Card 3 -->
+<article class="col-span-12 md:col-span-6 lg:col-span-4 bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Solar panels on an industrial warehouse roof under a bright clear sky. The focus is on the scale and clean energy aspect. Visuals are sharp and high-contrast, emphasizing sustainability and modern industrial engineering. Vibrant greens and deep blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHju3GrePvmmAMwWwLMoZZ_DPqlJlZAdfAHMAQxe4-q9LrOCI0vDVV7t8egr8puxHgTfbvq1zhB08hkgvlk23RoG440vYni-rOITCpBTn7BSkwFy9W2ASvG4z-Tp7JQrCNwkKc6PmBkK1M_lrQm5l4tWosf8bfh6E8PTaaKOjfs0ELDSOoVSJQGEafxSFlw3J6U7IATa_sgTfOwVjsGe5RbjraCWPUAjGxEiMfiCtcHuUoFFMFAbtL5g9r-sQzWzrt5vWbjFkzlhg">
+</div>
+<div class="p-stack-md">
+<span class="text-secondary font-bold font-label-lg text-label-lg mb-2">طاقة متجددة</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2">خطوات التحول نحو الطاقة الشمسية في المنشآت الصغيرة</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">لماذا الآن هو الوقت الأنسب للاستثمار في الطاقة المتجددة لمشروعك؟</p>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/30">
+<span class="text-on-surface-variant/60 text-xs">١٠ أكتوبر ٢٠٢٤</span>
+<a class="text-primary font-bold text-sm" href="#">اقرأ الخبر</a>
+</div>
+</div>
+</article>
+<!-- Small Card 4 -->
+<article class="col-span-12 md:col-span-6 lg:col-span-4 bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A futuristic electric vehicle charging station in a corporate parking lot. Sleek design, glowing neon status lights in teal. Modern urban environment. Lighting is high-end and atmospheric. Focus on technology and the green energy future." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBetMMNO1q7CLAB78zjmghpcTduy_7EL_2qQ0EcemIDbHlksYAGeYLvPLXyDcz2DqAtOvun0cd-tMi16tIN_BXYMhq3yD2861WfZGElXaPfodlyQfaMHk8l_SspbqL4y4PYmItcbKvMNUQ67_KRDNmQp_njV_g_ZQCFC980h681s0xHQMYEXfuO1n_Ud4U8vVxnykYAjmbyBToGXffSZMd91ZDjZtrg7i8ADBN0-yA6cSoj3vjVoA7XMrOVw2EEEmMPIkVr3J_x7CM">
+</div>
+<div class="p-stack-md">
+<span class="text-secondary font-bold font-label-lg text-label-lg mb-2">البنية التحتية</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2">شبكة الشواحن الكهربائية: توسعات "شركة الكهرباء الذكية" الجديدة</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">تعرف على مواقع نقاط الشحن الجديدة وحلولنا المتكاملة للسيارات الكهربائية.</p>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/30">
+<span class="text-on-surface-variant/60 text-xs">٥ أكتوبر ٢٠٢٤</span>
+<a class="text-primary font-bold text-sm" href="#">اقرأ الخبر</a>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="mt-stack-lg flex justify-center items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">١</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors">٢</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors">٣</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+</div>
+<!-- Newsletter Subscription -->
+<section class="mt-stack-lg bg-surface-container-low border border-primary/20 rounded-xl p-stack-lg text-center relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline-lg text-headline-lg text-deep-forest mb-2">ابقَ على اطلاع دائم</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">اشترك في نشرتنا البريدية لتصلك أحدث المقالات التقنية والعروض الحصرية مباشرة</p>
+<form class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+<input class="flex-grow px-4 py-3 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent text-right" placeholder="بريدك الإلكتروني" type="email">
+<button class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:shadow-lg active:scale-95 transition-all">اشترك الآن</button>
+</form>
+</div>
+<!-- Abstract background shapes -->
+<div class="absolute -left-10 bottom-0 opacity-10">
+<span class="material-symbols-outlined text-[120px]">bolt</span>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-deep-forest text-white py-stack-lg border-t border-secondary-fixed-dim/20">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+<div class="space-y-4">
+<div class="font-headline-md text-headline-md font-bold text-white">Smart Electricity Company (SEC)</div>
+<p class="text-white/80 font-body-md text-body-md">شركة رائدة في مجال تقديم الحلول الكهربائية والصناعية المتكاملة والأتمتة في سوريا.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-symbols-outlined text-white">share</span></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-symbols-outlined text-white">camera</span></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-symbols-outlined text-white">public</span></a>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-body-lg font-bold">روابط سريعة</h3>
+<ul class="space-y-2 text-white/80 font-body-md">
+<li><a class="hover:text-primary-fixed transition-colors" href="about.html">عن الشركة</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html">المنتجات</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="brands.html">العلامات التجارية</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="projects.html">المشاريع</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-body-lg font-bold">تسوق حسب القسم</h3>
+<ul class="space-y-2 text-white/80 font-body-md">
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html">المفاتيح والأفياش</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html">القواطع الكهربائية</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html">الأسلاك والكابلات</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html">الإضاءة المنزلية</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html">أنظمة المراقبة</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-body-lg font-bold">اشترك في النشرة البريدية</h3>
+<p class="text-white/80 font-body-md">ابقَ على اطلاع بأحدث المنتجات والعروض الحصرية.</p>
+<div class="flex">
+<input class="flex-1 rounded-r-lg bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-primary" placeholder="بريدك الإلكتروني" type="email">
+<button class="bg-primary px-4 rounded-l-lg hover:bg-primary-container transition-all">اشترك</button>
+</div>
+<div class="pt-4 border-t border-white/10 flex gap-4">
+<img class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPigDjnBL0FlPHveGsCtmYTDdOd9M1k3UTD0SaTA-8jzFBjc1c8QnsuD07kB8emAEz-jFi6Ago4YIYsFfDdTD6AreS9KOrzLAqEeHLMWUT3a4qhWegFa0p4QPvcbNkD2FcG9gGL9IGhJMeOTg5pllg78Eaio0QhjJ0JjloQ-96DxoVUbcIKaFd1LhkEf4IlIMfKtDW3KGE2VweNuxLKuP5CDjrwshFKnwDcp2EjB9xtZD0VliIyysSrEJ_XNri8bMUhyU1HnHkRfs">
+<img class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1-JWnGm5pQHq4xJOq2zwQuH9VStVZROnzNeAoypa34AQExXS_zjnm7HAZbk6vqn30k--ypmXFeo3zcyfawn0LNdqsnmtP2D2i-vAfZ3iJrxiB9rY611CZn7YFUm8M52GrIp2dTexF-u5nflZDzLQaCE-1tMzgNvjSLRlgLPCApDZDg101vDMyKDaZJhbwYtzZZB6XZ5YeUqETsvd0QdTyHnpP3kbjRoC9DD65jopYhdssuN-O3LDiU3VJ51Vx2kQCGo4K2Qi7OMs">
+<img class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XL4AVD6uoI9yLnxYubvD9K3Ae0IuiXHwSbEv6pojRC0x6UKOMywsxOHBxvEGngakBu1BmkG5bY2q6Gxk2MOQhCy7oTYQBBvOOtgOzX1vap9MI2O3UVVCO7x_5Syx2rGThuiuBakt-TfF0kdRaCkPiJ09mV9PoJ9JWnV7Hr3L2tQPBXq3jy1xl6lUzkPgKewYrsJ7FYTKmx_PGdjBAHPfIGwnqqcPgu-Uwoopl7_SONKNHrpw_9n1tSyoNp5_b5TINhTiB12pN10">
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-stack-lg pt-stack-md border-t border-white/10 text-center text-white/60 text-label-sm font-label-sm">
+            جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2024
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for scroll effects
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+
+
+</body></html>
