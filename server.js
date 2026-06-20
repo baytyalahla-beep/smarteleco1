@@ -396,22 +396,15 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   res.json({ success: true, url: fileUrl });
 });
 
-// Fallback for SPA routing if needed (with clean URL support)
+// Fallback for SPA routing if needed
 app.get('*', (req, res, next) => {
   const ext = path.extname(req.path);
   if (!ext) {
-    const cleanPath = req.path.replace(/\/$/, ''); // Remove trailing slash
-    const filename = cleanPath ? cleanPath.substring(1) : 'index'; // Remove leading slash
-    const htmlFilePath = path.join(__dirname, `${filename}.html`);
-    if (fs.existsSync(htmlFilePath)) {
-      return res.sendFile(htmlFilePath);
-    }
     res.sendFile(path.join(__dirname, 'index.html'));
   } else {
     next();
   }
 });
-
 
 // Initialize DB first, then start server
 initializeDatabase()

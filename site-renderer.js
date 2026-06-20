@@ -395,44 +395,26 @@ window.openCatalogsModal = function() {
   modal.style.display = 'flex';
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof SiteData === 'undefined') return;
-
-  // Clear old cached data for version upgrade once to ensure clean update
-  const CURRENT_VERSION = 'v1.0.3';
-  if (localStorage.getItem('site_version') !== CURRENT_VERSION) {
-    localStorage.removeItem('electric_house_cms');
-    localStorage.setItem('site_version', CURRENT_VERSION);
-    console.log('Cache cleared for version upgrade');
-    location.reload();
-    return;
-  }
-
-
-
-
-
-  const data = SiteData.getData();
-  let page = location.pathname.split('/').pop() || 'index.html';
-  if (page && !page.includes('.')) {
-    page = page + '.html';
-  }
-  const lang = localStorage.getItem('electric_house_lang') || 'ar';
-
-  // Apply Custom Fonts & Logo Size dynamically from settings
-  const settings = data.settings || {};
-  if (settings.siteFont) {
-    let fontName = settings.siteFont;
-    const linkId = 'custom-site-font-link';
-    if (!document.getElementById(linkId)) {
-      const link = document.createElement('link');
-      link.id = linkId;
-      link.rel = 'stylesheet';
-      link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
-      document.head.appendChild(link);
+function applyGlobalCustomSettings(s) {
+  if (!s) return;
+  
+  // 1. Font Family
+  if (s.fontFamily) {
+    const fontName = s.fontFamily;
+    const googleFonts = ['Cairo', 'Tajawal', 'Amiri', 'El Messiri', 'Montserrat', 'Inter', 'Roboto', 'Outfit'];
+    if (googleFonts.includes(fontName)) {
+      const linkId = 'custom-google-font';
+      let link = document.getElementById(linkId);
+      if (!link) {
+        link = document.createElement('link');
+        link.id = linkId;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+      }
+      link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(' ', '+')}:wght@300;400;500;600;700;800&display=swap`;
     }
     
-    const styleId = 'custom-site-font-style';
+    const styleId = 'custom-global-styles';
     let style = document.getElementById(styleId);
     if (!style) {
       style = document.createElement('style');
@@ -440,14 +422,15 @@ document.addEventListener('DOMContentLoaded', () => {
       document.head.appendChild(style);
     }
     style.textContent = `
-      body, html, *, [style*="font-family"] {
-        font-family: '${fontName}', 'Cairo', sans-serif !important;
+      body, html, *, button, input, select, textarea, span, p, h1, h2, h3, h4, h5, h6, a {
+        font-family: '${fontName}', sans-serif !important;
       }
     `;
   }
   
-  if (settings.logoWidth) {
-    const logoStyleId = 'custom-logo-width-style';
+  // 2. Logo Width Override
+  if (s.logoWidth) {
+    const logoStyleId = 'custom-logo-styles';
     let logoStyle = document.getElementById(logoStyleId);
     if (!logoStyle) {
       logoStyle = document.createElement('style');
@@ -455,66 +438,97 @@ document.addEventListener('DOMContentLoaded', () => {
       document.head.appendChild(logoStyle);
     }
     logoStyle.textContent = `
-      header img, .logo-img, header .shrink-0 img {
-        width: ${settings.logoWidth}px !important;
-        max-width: ${settings.logoWidth}px !important;
+      header img, .shrink-0.h-12.w-auto img, img[alt*="Logo"], img[alt*="logo"] {
+        width: ${s.logoWidth}px !important;
+        max-width: none !important;
         height: auto !important;
       }
     `;
   }
+}
 
-  // Convert all local links to clean URLs
-  document.querySelectorAll('a[href]').forEach(link => {
-    let href = link.getAttribute('href');
-    if (href && href.endsWith('.html') && !href.startsWith('http') && !href.startsWith('//')) {
-      link.setAttribute('href', href.replace('.html', ''));
-    }
-  });
-
-  // Inject Floating WhatsApp and Call buttons
-  const floatingId = 'floating-contact-buttons';
-  if (!document.getElementById(floatingId)) {
-    const container = document.createElement('div');
-    container.id = floatingId;
-    container.className = 'fixed bottom-6 left-6 z-[999] flex flex-col gap-4';
-    
+function initFloatingContactButtons(s) {
+  if (!s) return;
+  const lang = localStorage.getItem('electric_house_lang') || 'ar';
+  const isEn = lang === 'en';
+  
+  let container = document.getElementById('floating-contact-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'floating-contact-container';
+    container.className = 'fixed bottom-6 left-6 z-[9999] flex flex-col gap-3';
+    document.body.appendChild(container);
+  }
+  
+  const phone = s.phone || (s.phones && s.phones[0]) || '966500000000';
+  const cleanPhone = phone.replace('+', '').replace(/ /g, '');
+  
+  let whatsappUrl = s.whatsapp || `https://wa.me/${cleanPhone}`;
+  if (whatsappUrl && !whatsappUrl.startsWith('http')) {
+    whatsappUrl = 'https://' + whatsappUrl;
+  }
+  
+  if (!document.getElementById('floating-animation-styles')) {
     const style = document.createElement('style');
+    style.id = 'floating-animation-styles';
     style.textContent = `
-      @keyframes floatPulse {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+      @keyframes float-pulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4); }
+        50% { transform: scale(1.08); box-shadow: 0 4px 24px rgba(37, 211, 102, 0.6); }
       }
-      @keyframes phonePulse {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+      @keyframes float-pulse-blue {
+        0%, 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(0, 105, 84, 0.4); }
+        50% { transform: scale(1.08); box-shadow: 0 4px 24px rgba(0, 105, 84, 0.6); }
       }
-      .whatsapp-float {
-        animation: floatPulse 2s infinite;
+      .animate-float-whatsapp {
+        animation: float-pulse 2s infinite ease-in-out;
       }
-      .phone-float {
-        animation: phonePulse 2s infinite;
-        animation-delay: 0.5s;
+      .animate-float-call {
+        animation: float-pulse-blue 2s infinite ease-in-out 1s;
+      }
+      @media (max-width: 768px) {
+        #floating-contact-container {
+          bottom: 5.5rem !important; /* Raise buttons above bottom nav bar */
+        }
       }
     `;
     document.head.appendChild(style);
+  }
+  
+  container.innerHTML = `
+    <!-- WhatsApp Floating Button -->
+    <a href="${whatsappUrl}" target="_blank" class="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 relative group animate-float-whatsapp">
+      <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.59 2.019 14.111.996 11.487.996c-5.43 0-9.852 4.37-9.856 9.8.001 2.03.535 4.022 1.547 5.751l-.995 3.637 3.733-.972-.259-.155zm11.382-7.51c-.329-.164-1.94-.954-2.24-1.064-.3-.11-.518-.165-.736.164-.219.33-.847 1.064-1.037 1.282-.19.219-.38.247-.708.082-.329-.164-1.389-.51-2.645-1.63-1.027-.917-1.72-2.05-1.921-2.378-.201-.329-.022-.507.142-.671.148-.148.33-.384.494-.576.164-.192.219-.33.329-.549.11-.219.055-.411-.027-.576-.082-.164-.736-1.77-.999-2.428-.27-.643-.54-.549-.736-.549h-.627c-.218 0-.573.082-.873.411-.3.33-1.146 1.118-1.146 2.723 0 1.605 1.171 3.155 1.334 3.374.163.219 2.304 3.516 5.58 4.931.78.337 1.389.538 1.862.689.784.249 1.497.214 2.061.13.629-.094 1.94-.794 2.212-1.529.273-.735.273-1.365.191-1.498-.082-.132-.3-.219-.628-.383z"/>
+      </svg>
+      <span class="absolute right-16 bg-black/80 text-white text-xs px-2.5 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-md font-bold">
+        ${isEn ? 'Chat on WhatsApp' : 'تواصل معنا عبر واتساب'}
+      </span>
+    </a>
     
-    const whatsappNumber = settings.whatsapp ? settings.whatsapp.replace(/[^0-9]/g, '') : '963986001965';
-    const whatsappUrl = `https://wa.me/${whatsappNumber}`;
-    const phoneUrl = `tel:${settings.phoneMobile || settings.phone || '+963986001965'}`;
-    
-    container.innerHTML = `
-      <a href="${whatsappUrl}" target="_blank" class="whatsapp-float w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 relative" title="تواصل معنا عبر واتساب">
-        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.45L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.019-5.117-2.875-6.974-1.858-1.857-4.339-2.876-6.979-2.877-5.442 0-9.868 4.42-9.873 9.869-.001 1.699.444 3.359 1.29 4.825L1.879 21.8l4.768-1.251zM17.43 14.33c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-        </svg>
-      </a>
-      <a href="${phoneUrl}" class="phone-float w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 flex items-center justify-center" title="اتصل بنا">
-        <span class="material-symbols-outlined text-[28px]">call</span>
-      </a>
-    `;
-    document.body.appendChild(container);
+    <!-- Direct Call Floating Button -->
+    <a href="tel:${cleanPhone}" class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 relative group animate-float-call">
+      <span class="material-symbols-outlined text-[28px]">call</span>
+      <span class="absolute right-16 bg-black/80 text-white text-xs px-2.5 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-md font-bold">
+        ${isEn ? 'Call Us' : 'اتصل بنا مباشرة'}
+      </span>
+    </a>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof SiteData === 'undefined') return;
+
+  const data = SiteData.getData();
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const lang = localStorage.getItem('electric_house_lang') || 'ar';
+
+  // Apply visual font customization and logo width overrides
+  applyGlobalCustomSettings(data.settings);
+
+  // Initialize WhatsApp & Call floating buttons on all public pages
+  if (page !== 'dashboard.html') {
+    initFloatingContactButtons(data.settings);
   }
 
   // Apply visual transitions & loaders
@@ -527,14 +541,54 @@ document.addEventListener('DOMContentLoaded', () => {
   // Apply layout translation globally
   applyLayoutTranslations(lang);
 
+  // Fix Mobile Bottom Nav: Replace "اتصل بنا" (Contact Us) with "المزيد" (More) and link it to mobile menu toggle
+  const bottomNav = document.querySelector('.md\\:hidden.fixed.bottom-0');
+  if (bottomNav) {
+    const mobileLinks = Array.from(bottomNav.querySelectorAll('a'));
+    const contactLink = mobileLinks.find(link => 
+      link.textContent.includes('اتصل بنا') || 
+      link.textContent.includes('Contact Us') || 
+      link.querySelector('[data-icon="contact_support"]')
+    );
+    if (contactLink) {
+      contactLink.href = 'javascript:void(0);';
+      contactLink.onclick = (e) => {
+        e.preventDefault();
+        if (typeof window.toggleMobileMenu === 'function') {
+          window.toggleMobileMenu();
+        }
+      };
+      
+      const icon = contactLink.querySelector('.material-symbols-outlined');
+      if (icon) {
+        icon.textContent = 'menu';
+        icon.dataset.icon = 'menu';
+      }
+      
+      const label = contactLink.querySelector('span:not(.material-symbols-outlined)');
+      if (label) {
+        label.textContent = lang === 'en' ? 'More' : 'المزيد';
+      }
+    }
+
+    // Bind other links correctly
+    mobileLinks.forEach(link => {
+      const icon = link.querySelector('.material-symbols-outlined');
+      if (icon) {
+        const iconName = icon.textContent.trim();
+        if (iconName === 'home') link.href = 'index.html';
+        else if (iconName === 'category') link.href = 'products.html';
+        else if (iconName === 'verified') link.href = 'brands.html';
+      }
+    });
+  }
+
   // Set active nav link based on current page
   const navLinks = document.querySelectorAll('header nav a');
   navLinks.forEach(link => {
     link.className = "text-on-surface-variant hover:text-primary transition-all text-label-lg font-label-lg pb-1";
     const href = link.getAttribute('href');
-    const cleanHref = href ? href.replace('.html', '') : '';
-    const cleanPage = page ? page.replace('.html', '') : '';
-    if (cleanHref === cleanPage || (cleanPage === 'project-detail' && cleanHref === 'projects')) {
+    if (href === page || (page === 'project-detail.html' && href === 'projects.html')) {
       link.className = "text-primary border-b-2 border-primary font-bold pb-1 text-label-lg font-label-lg";
     }
   });
@@ -545,7 +599,6 @@ document.addEventListener('DOMContentLoaded', () => {
       el.href = data.settings.whatsapp;
     }
   });
-
 
   const renderers = {
     'index.html': () => renderHomePage(data),
@@ -617,12 +670,41 @@ function renderHeader(s, currentPage) {
   const header = document.querySelector('header');
   if (!header) return;
 
+  // Dynamically remove My Account (حسابي) and Favorites (المفضلة) from public website header
+  const accountLink = header.querySelector('a[href="dashboard.html"]');
+  if (accountLink) accountLink.remove();
+  
+  const favBtn = Array.from(header.querySelectorAll('button, a')).find(el => 
+    el.textContent.includes('المفضلة') || 
+    el.textContent.includes('Favorites') || 
+    el.querySelector('.material-symbols-outlined')?.textContent === 'favorite'
+  );
+  if (favBtn) favBtn.remove();
+
+  // Setup Global Header Search Input wiring to support search on products & services
+  const searchInput = header.querySelector('input[placeholder]');
+  if (searchInput && !searchInput.dataset.globalSearchListener) {
+    searchInput.dataset.globalSearchListener = 'true';
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        const page = location.pathname.split('/').pop() || 'index.html';
+        if (page !== 'products.html') {
+          window.location.href = 'products.html?search=' + encodeURIComponent(query);
+        } else {
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+    });
+  }
+
   // 1. Inject Mobile CSS Overrides
   if (!document.getElementById('mobile-header-styles')) {
     const style = document.createElement('style');
     style.id = 'mobile-header-styles';
     style.textContent = `
-      @media (max-w: 768px) {
+      @media (max-width: 768px) {
         /* Hide Top Utility Bar */
         header > div > div:first-of-type {
           display: none !important;
@@ -881,28 +963,24 @@ function renderHeader(s, currentPage) {
         inner.classList.remove('-translate-x-full');
       } else {
         inner.classList.remove('translate-x-full');
+      }
     }
   };
-
-  // Remove my account (dashboard) and favorites buttons from the header dynamically
-  const accountLink = header.querySelector('a[href="dashboard.html"]') || header.querySelector('a[href="dashboard"]');
-  if (accountLink) {
-    accountLink.remove();
-  }
-  const favBtn = Array.from(header.querySelectorAll('button')).find(btn => btn.querySelector('.material-symbols-outlined') && btn.querySelector('.material-symbols-outlined').textContent.trim() === 'favorite');
-  if (favBtn) {
-    favBtn.remove();
-  }
 }
-
 
 /* ========== FOOTER ========== */
 function renderFooter(s) {
   const footer = document.querySelector('footer');
   if (!footer) return;
-  // Company name
+  // Company name replaced with logo image if available
   const nameEl = footer.querySelector('.font-headline-md');
-  if (nameEl) nameEl.textContent = s.siteName;
+  if (nameEl) {
+    if (s.logoUrl) {
+      nameEl.innerHTML = `<img src="${s.logoUrl}" alt="${s.siteNameAr || s.siteName}" class="max-h-16 w-auto object-contain mb-4">`;
+    } else {
+      nameEl.textContent = s.siteName;
+    }
+  }
   // Copyright
   const copy = footer.querySelector('.text-white\\/60, [class*="text-white/60"]');
   if (copy) {
@@ -1075,51 +1153,7 @@ function setupTransitionsAndLoaders() {
     document.head.appendChild(style);
   }
 
-  const loader = document.createElement('div');
-  loader.className = 'page-loader';
-  loader.innerHTML = `
-    <div class="loader-spinner-wrapper">
-      <div class="loader-spinner"></div>
-      <div class="loader-logo">SEC</div>
-    </div>
-    <div class="loader-text">${localStorage.getItem('electric_house_lang') === 'en' ? 'Smart Electricity Company (SEC)' : 'شركة الكهرباء الذكية'}</div>
-  `;
-  document.body.appendChild(loader);
-
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      loader.classList.add('fade-out');
-    }, 200);
-  });
-  
-  // Fallback in case load takes too long
-  setTimeout(() => {
-    loader.classList.add('fade-out');
-  }, 1200);
-
-  // Smooth Page Exit Transition on Link Clicks
-  setTimeout(() => {
-    document.querySelectorAll('a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (
-        href && 
-        !href.startsWith('#') && 
-        !href.startsWith('mailto:') && 
-        !href.startsWith('tel:') && 
-        !href.startsWith('javascript:') && 
-        !href.startsWith('http') && 
-        link.target !== '_blank'
-      ) {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          loader.classList.remove('fade-out');
-          setTimeout(() => {
-            window.location.href = href;
-          }, 350);
-        });
-      }
-    });
-  }, 500);
+  // Loaders and page exit transition removed for instantaneous page loading
 
   // Global Ripple Effect on Buttons
   document.addEventListener('click', function (e) {
@@ -1706,6 +1740,95 @@ function renderProductsPage(data) {
   const isEn = lang === 'en';
   const currency = isEn ? (s.currencyEn || s.currency || 'SAR') : (s.currency || 'ر.س');
 
+  // Read initial search query from URL parameter
+  const params = new URLSearchParams(location.search);
+  const initialSearch = params.get('search');
+  const initialBrand = params.get('brand');
+  const headerSearchInput = document.querySelector('header input[type="text"]');
+  if (initialSearch && headerSearchInput) {
+    headerSearchInput.value = initialSearch;
+  }
+
+  if (initialBrand) {
+    setTimeout(() => {
+      const chk = Array.from(document.querySelectorAll('.brand-checkbox')).find(el => el.value === initialBrand);
+      if (chk) {
+        chk.checked = true;
+        chk.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }, 50);
+  }
+
+  // Mobile Filters Drawer Setup
+  const aside = document.querySelector('aside');
+  if (aside && !document.getElementById('mobile-filter-toggle')) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'mobile-filter-toggle';
+    toggleBtn.className = 'md:hidden w-full bg-primary text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 mb-4';
+    toggleBtn.innerHTML = '<span class="material-symbols-outlined">filter_list</span> <span>' + (isEn ? 'Filter Products' : 'تصفية المنتجات') + '</span>';
+    
+    aside.parentNode.insertBefore(toggleBtn, aside);
+    
+    const filterStyle = document.createElement('style');
+    filterStyle.id = 'mobile-filter-styles';
+    filterStyle.textContent = `
+      @media (max-width: 768px) {
+        aside {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: 10000;
+          padding: 1.5rem;
+          overflow-y: auto;
+          align-items: center;
+          justify-content: center;
+        }
+        aside.show-filter {
+          display: flex !important;
+        }
+        aside > div {
+          width: 100%;
+          max-width: 320px;
+          margin: auto;
+          position: relative;
+          animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+          from { transform: translateY(50px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+      }
+    `;
+    document.head.appendChild(filterStyle);
+    
+    const asideCard = aside.querySelector('.bg-white');
+    if (asideCard && !document.getElementById('mobile-filter-close')) {
+      const closeBtn = document.createElement('button');
+      closeBtn.id = 'mobile-filter-close';
+      closeBtn.className = 'md:hidden absolute top-4 left-4 text-on-surface hover:text-primary';
+      closeBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
+      asideCard.style.position = 'relative';
+      asideCard.appendChild(closeBtn);
+      
+      closeBtn.onclick = (e) => {
+        e.preventDefault();
+        aside.classList.remove('show-filter');
+      };
+    }
+    
+    toggleBtn.onclick = (e) => {
+      e.preventDefault();
+      aside.classList.add('show-filter');
+    };
+    
+    aside.onclick = (e) => {
+      if (e.target === aside) {
+        aside.classList.remove('show-filter');
+      }
+    };
+  }
+
   // 1. Populate Category checkboxes
   const catFilterContainer = document.getElementById('categories-filter');
   if (catFilterContainer) {
@@ -1764,45 +1887,15 @@ function renderProductsPage(data) {
   }
 
   // 5. Header Search Input wiring
-  const headerSearchInput = document.querySelector('header input[type="text"]');
   if (headerSearchInput) {
-    const isProductsPage = page === 'products.html';
-    const searchForm = headerSearchInput.closest('form') || headerSearchInput.parentElement;
-    
-    const handleSearchSubmit = (e) => {
-      if (e) e.preventDefault();
-      const val = headerSearchInput.value.trim();
-      if (val) {
-        window.location.href = `products?search=${encodeURIComponent(val)}`;
-      }
-    };
-    
-    if (searchForm && searchForm.tagName === 'FORM') {
-      searchForm.addEventListener('submit', handleSearchSubmit);
-    } else {
-      headerSearchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          handleSearchSubmit(e);
-        }
-      });
-    }
-    
-    if (isProductsPage) {
-      headerSearchInput.addEventListener('input', () => {
-        applyFilters();
-      });
-      
-      const params = new URLSearchParams(location.search);
-      const searchParam = params.get('search');
-      if (searchParam) {
-        headerSearchInput.value = searchParam;
-        setTimeout(() => {
-          applyFilters();
-        }, 100);
-      }
+    headerSearchInput.addEventListener('input', () => {
+      applyFilters();
+    });
+    const searchForm = headerSearchInput.closest('form');
+    if (searchForm) {
+      searchForm.addEventListener('submit', (e) => e.preventDefault());
     }
   }
-
 
   // 6. Listen to checkboxes changes
   document.querySelectorAll('.cat-checkbox, .brand-checkbox').forEach(chk => {
@@ -1824,6 +1917,64 @@ function renderProductsPage(data) {
     const currentMaxPrice = priceSlider ? parseFloat(priceSlider.value) : Infinity;
     // 4. Search query
     const searchQuery = headerSearchInput ? headerSearchInput.value.toLowerCase().trim() : '';
+
+    // Search and display matching services if there is a query
+    const services = data.homepage?.services || [];
+    const matchedServices = services.filter(srv => {
+      const title = (srv.title || '').toLowerCase();
+      const titleEn = (srv.titleEn || '').toLowerCase();
+      const desc = (srv.description || '').toLowerCase();
+      const descEn = (srv.descriptionEn || '').toLowerCase();
+      return title.includes(searchQuery) ||
+             titleEn.includes(searchQuery) ||
+             desc.includes(searchQuery) ||
+             descEn.includes(searchQuery);
+    });
+
+    let servicesContainer = document.getElementById('search-services-results');
+    if (!servicesContainer && grid) {
+      servicesContainer = document.createElement('div');
+      servicesContainer.id = 'search-services-results';
+      servicesContainer.className = 'col-span-full mb-8';
+      grid.parentNode.insertBefore(servicesContainer, grid);
+    }
+
+    if (servicesContainer) {
+      if (searchQuery !== '' && matchedServices.length > 0) {
+        servicesContainer.innerHTML = `
+          <div class="mb-4">
+            <h2 class="text-xl font-bold text-deep-forest mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined">engineering</span>
+              <span>${isEn ? 'Matching Services' : 'الخدمات المطابقة'} (${matchedServices.length})</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${matchedServices.map((srv, idx) => {
+                const sTitle = isEn ? (srv.titleEn || srv.title) : srv.title;
+                const sDesc = isEn ? (srv.descriptionEn || srv.description) : srv.description;
+                return `
+                  <div class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/30 flex items-start gap-4 hover:shadow-md transition-all">
+                    <span class="material-symbols-outlined text-3xl text-primary bg-primary/10 p-2.5 rounded-lg shrink-0">${srv.icon || 'engineering'}</span>
+                    <div>
+                      <h3 class="font-bold text-on-surface text-lg mb-1">${sTitle}</h3>
+                      <p class="text-sm text-on-surface-variant line-clamp-2">${sDesc}</p>
+                      <a href="services.html" class="inline-flex items-center gap-1 text-primary text-xs font-bold mt-2 hover:underline">
+                        <span>${isEn ? 'View Services' : 'عرض التفاصيل'}</span>
+                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                      </a>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+          <hr class="border-outline-variant/30 my-6">
+        `;
+        servicesContainer.style.display = 'block';
+      } else {
+        servicesContainer.innerHTML = '';
+        servicesContainer.style.display = 'none';
+      }
+    }
 
     let filtered = products.filter(p => {
       // Category match
@@ -1890,59 +2041,6 @@ function renderProductsPage(data) {
       countLabel.textContent = template.replace('{x}', filtered.length).replace('{y}', products.length);
     }
 
-    // 6.5 Search Services and render them above the products grid
-    const servicesContainerId = 'matching-services-search-container';
-    let servicesContainer = document.getElementById(servicesContainerId);
-    if (!servicesContainer && grid) {
-      servicesContainer = document.createElement('div');
-      servicesContainer.id = servicesContainerId;
-      servicesContainer.className = 'col-span-full mb-6 w-full';
-      grid.parentElement.insertBefore(servicesContainer, grid);
-    }
-    
-    if (servicesContainer) {
-      servicesContainer.innerHTML = '';
-      if (searchQuery !== '') {
-        const services = (data.homepage && data.homepage.services) ? data.homepage.services : [];
-        const matchedServices = services.filter(s => {
-          const sTitle = (s.title || '').toLowerCase();
-          const sTitleEn = (s.titleEn || '').toLowerCase();
-          const sDesc = (s.description || '').toLowerCase();
-          const sDescEn = (s.descriptionEn || '').toLowerCase();
-          return sTitle.includes(searchQuery) || sTitleEn.includes(searchQuery) ||
-                 sDesc.includes(searchQuery) || sDescEn.includes(searchQuery);
-        });
-        
-        if (matchedServices.length > 0) {
-          servicesContainer.innerHTML = `
-            <div class="bg-primary/5 rounded-2xl border border-primary/20 p-6 mb-6">
-              <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary text-[24px]">engineering</span>
-                <span>${isEn ? 'Matching Services' : 'الخدمات المطابقة لبحثك'} (${matchedServices.length})</span>
-              </h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                ${matchedServices.map(s => {
-                  const sTitle = isEn ? (s.titleEn || s.title) : s.title;
-                  const sDesc = isEn ? (s.descriptionEn || s.description) : s.description;
-                  return `
-                    <div class="bg-white p-4 rounded-xl border border-outline-variant shadow-sm flex items-start gap-4 hover:border-primary transition-all">
-                      <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
-                        <span class="material-symbols-outlined">${s.icon || 'engineering'}</span>
-                      </div>
-                      <div>
-                        <h4 class="font-bold text-deep-forest text-base mb-1">${sTitle}</h4>
-                        <p class="text-sm text-on-surface-variant line-clamp-2">${sDesc}</p>
-                      </div>
-                    </div>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-          `;
-        }
-      }
-    }
-
     // 7. Render Grid
     if (filtered.length > 0) {
       renderProductCards(grid, filtered, currency);
@@ -1955,7 +2053,6 @@ function renderProductsPage(data) {
       `;
     }
   }
-
 
   applyFilters();
 }
@@ -2100,74 +2197,119 @@ function renderProductDetailPage(data) {
 /* ========== BRANDS ========== */
 function renderBrandsPage(data) {
   const brands = data.brands || [];
-  const grid = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4') || 
-               document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3') ||
-               document.querySelector('.grid.gap-gutter');
+  const grid = document.getElementById('brands-grid') || document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2') || document.querySelector('[class*="grid-cols-1"][class*="md:grid-cols-2"]');
   if (!grid || !brands.length) return;
   
   const lang = localStorage.getItem('electric_house_lang') || 'ar';
   const isEn = lang === 'en';
 
-  const brandSearchInput = document.getElementById('brand-search-input') || document.querySelector('input[placeholder*="علامة"]');
-  
-  function applyBrandFilters() {
-    const query = brandSearchInput ? brandSearchInput.value.toLowerCase().trim() : '';
+  // Find or setup search input
+  const searchInput = document.getElementById('brand-search-input') || document.querySelector('input[placeholder*="علامة"], input[placeholder*="brand"]');
+  if (searchInput && !searchInput.dataset.listenerAdded) {
+    searchInput.id = 'brand-search-input';
+    searchInput.dataset.listenerAdded = 'true';
+    searchInput.addEventListener('input', () => {
+      filterAndRender();
+    });
+  }
+
+  // Find or setup category buttons
+  const catButtons = document.querySelectorAll('.flex.gap-2 button');
+  let selectedCategory = 'all';
+  catButtons.forEach(btn => {
+    if (!btn.dataset.listenerAdded) {
+      btn.dataset.listenerAdded = 'true';
+      btn.addEventListener('click', () => {
+        catButtons.forEach(b => {
+          b.className = "px-6 py-2 hover:bg-surface-container-low text-on-surface-variant rounded-lg font-label-lg text-label-lg transition-colors";
+        });
+        btn.className = "px-6 py-2 bg-primary text-white rounded-lg font-label-lg text-label-lg";
+        
+        const txt = btn.textContent.trim();
+        if (txt === 'الكل' || txt === 'All') {
+          selectedCategory = 'all';
+        } else if (txt === 'كهرباء' || txt === 'Electrical' || txt === 'Electricity') {
+          selectedCategory = 'كهرباء';
+        } else if (txt === 'صناعة' || txt === 'Industrial' || txt === 'Industry') {
+          selectedCategory = 'صناعة';
+        } else if (txt === 'إضاءة' || txt === 'Lighting') {
+          selectedCategory = 'إضاءة';
+        }
+        filterAndRender();
+      });
+    }
+  });
+
+  function filterAndRender() {
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
     
     const filtered = brands.filter(b => {
-      const bName = (isEn ? (b.nameEn || b.name) : b.name).toLowerCase();
-      const bDesc = (isEn ? (b.descriptionEn || b.description) : b.description).toLowerCase();
-      const bCountry = (b.country || '').toLowerCase();
-      
-      return bName.includes(query) || bDesc.includes(query) || bCountry.includes(query);
-    });
-    
-    if (filtered.length > 0) {
-      grid.innerHTML = filtered.map(b => {
-        const bName = isEn ? (b.nameEn || b.name) : b.name;
-        const bDesc = isEn ? (b.descriptionEn || b.description) : b.description;
+      // 1. Search Query Match
+      if (query !== '') {
+        const name = (b.name || '').toLowerCase();
+        const nameEn = (b.nameEn || '').toLowerCase();
+        const desc = (b.description || '').toLowerCase();
+        const descEn = (b.descriptionEn || '').toLowerCase();
+        const country = (b.country || '').toLowerCase();
         
-        return `
-          <div class="group bg-white rounded-xl border border-outline-variant hover:border-primary p-6 transition-all duration-300 hover:shadow-xl flex flex-col items-center text-center">
-            <div class="h-24 w-full flex items-center justify-center mb-4 p-4 grayscale group-hover:grayscale-0 transition-all">
-              ${b.logo ? `<img src="${b.logo}" alt="${bName}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">` :
-              `<div class="text-center"><span class="material-symbols-outlined text-5xl text-outline">verified</span><p class="text-on-surface-variant mt-2 font-bold">${b.nameEn || b.name}</p></div>`}
-            </div>
-            <h3 class="font-headline-md text-headline-md mb-2 text-deep-forest">${bName}</h3>
-            <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">${bDesc}</p>
-            <a class="mt-auto w-full py-2 bg-surface-container-low text-primary group-hover:bg-primary group-hover:text-white rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all" href="products?search=${encodeURIComponent(b.name)}">
-              <span>${isEn ? 'View Products' : 'مشاهدة المنتجات'}</span>
-              <span class="material-symbols-outlined text-[18px]" data-icon="arrow_back">${isEn ? 'arrow_forward' : 'arrow_back'}</span>
-            </a>
-          </div>
-        `;
-      }).join('');
-    } else {
+        const match = name.includes(query) || 
+                      nameEn.includes(query) || 
+                      desc.includes(query) || 
+                      descEn.includes(query) ||
+                      country.includes(query);
+        if (!match) return false;
+      }
+      
+      // 2. Category Match
+      if (selectedCategory !== 'all') {
+        const bCat = (b.category || '').toLowerCase();
+        if (!bCat.includes(selectedCategory.toLowerCase()) && !selectedCategory.toLowerCase().includes(bCat)) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
       grid.innerHTML = `
         <div class="col-span-full py-12 text-center bg-white rounded-xl border border-outline-variant p-6">
           <span class="material-symbols-outlined text-6xl text-outline mb-2">verified</span>
-          <p class="text-on-surface-variant font-bold text-lg">${isEn ? 'No brands found' : 'لم يتم العثور على علامات تجارية مطابقة'}</p>
+          <p class="text-on-surface-variant font-bold text-lg">${isEn ? 'No brands found matching your search.' : 'لا توجد علامات تجارية تطابق خيارات البحث.'}</p>
         </div>
       `;
+      return;
     }
 
-    // Micro-interaction for brand cards
-    grid.querySelectorAll('.group').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-8px)';
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0)';
-      });
-    });
+    grid.innerHTML = filtered.map(b => {
+      const bName = isEn ? (b.nameEn || b.name) : b.name;
+      const bDesc = isEn ? (b.descriptionEn || b.description) : b.description;
+      
+      return `
+        <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:border-primary transition-all hover:shadow-lg flex flex-col justify-between h-full">
+          <div>
+            <div class="h-48 bg-surface-gray flex items-center justify-center p-8 border-b border-outline-variant/30 relative">
+              ${b.logo ? `<img src="${b.logo}" alt="${bName}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">` :
+              `<div class="text-center"><span class="material-symbols-outlined text-6xl text-outline">verified</span><p class="text-on-surface-variant mt-2 font-bold">${b.nameEn}</p></div>`}
+            </div>
+            <div class="p-6">
+              <h3 class="font-headline-md text-headline-md text-deep-forest mb-1">${bName}</h3>
+              <p class="text-sm text-primary font-semibold mb-2">${b.nameEn} · ${b.country || ''}</p>
+              <p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">${bDesc}</p>
+            </div>
+          </div>
+          <div class="p-6 pt-0">
+            <a href="products.html?brand=${encodeURIComponent(b.name)}" class="w-full bg-primary/10 hover:bg-primary text-primary hover:text-white py-2 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-1.5 mt-4">
+              <span>${isEn ? 'View Products' : 'عرض منتجات الماركة'}</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
-  
-  if (brandSearchInput) {
-    brandSearchInput.addEventListener('input', applyBrandFilters);
-  }
-  
-  applyBrandFilters();
-}
 
+  filterAndRender();
+}
 
 /* ========== PROJECTS ========== */
 function renderProjectsPage(data) {

@@ -527,69 +527,23 @@ const SiteData = (() => {
     }
   }
 
-  function isEqual(a, b) {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (typeof a !== typeof b) return false;
-    if (typeof a !== 'object') return a === b;
-    if (Array.isArray(a)) {
-      if (!Array.isArray(b) || a.length !== b.length) return false;
-      for (let i = 0; i < a.length; i++) {
-        if (!isEqual(a[i], b[i])) return false;
-      }
-      return true;
-    }
-    const keysA = Object.keys(a).filter(k => a[k] !== undefined);
-    const keysB = Object.keys(b).filter(k => b[k] !== undefined);
-    if (keysA.length !== keysB.length) return false;
-    for (const key of keysA) {
-      if (!keysB.includes(key)) return false;
-      if (!isEqual(a[key], b[key])) return false;
-    }
-    return true;
-  }
-
   // Auto-sync data from server in browser environment
   if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
     fetch('/api/data')
       .then(r => r.json())
       .then(serverData => {
         const localRaw = localStorage.getItem(STORAGE_KEY);
-        if (localRaw) {
-          try {
-            const localData = JSON.parse(localRaw);
-            
-            // Clone objects to avoid mutation of raw values
-            const cleanLocal = JSON.parse(JSON.stringify(localData));
-            const cleanServer = JSON.parse(JSON.stringify(serverData));
-            
-            // Ignore username and password credentials in comparison
-            if (cleanLocal.settings) {
-              delete cleanLocal.settings.username;
-              delete cleanLocal.settings.password;
-            }
-            if (cleanServer.settings) {
-              delete cleanServer.settings.username;
-              delete cleanServer.settings.password;
-            }
-            
-            if (!isEqual(cleanLocal, cleanServer)) {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
-              console.log('Site data updated from server, reloading page...');
-              location.reload();
-            }
-          } catch (e) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
+        const serverRaw = JSON.stringify(serverData);
+        if (localRaw !== serverRaw) {
+          localStorage.setItem(STORAGE_KEY, serverRaw);
+          if (localRaw) {
+            console.log('Site data updated from server, reloading page...');
             location.reload();
           }
-        } else {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
-          location.reload();
         }
       })
       .catch(err => console.log('Error fetching server data:', err));
   }
-
 
   /** Generate a new unique ID for items */
   function newId(items) {
