@@ -398,34 +398,7 @@ window.openCatalogsModal = function() {
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof SiteData === 'undefined') return;
 
-  // Auto-heal cached broken aida image URLs in localStorage
-  try {
-    const raw = localStorage.getItem('electric_house_cms');
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed.settings && (parsed.settings.siteNameAr === "شركة الكهرباء الذكية" || parsed.settings.siteNameAr !== "شركة الكهرباء الذكية")) {
-        localStorage.removeItem('electric_house_cms');
-        location.reload();
-        return;
-      }
-      if (parsed.banners) {
-        let hasBroken = false;
-        for (const k in parsed.banners) {
-          if (typeof parsed.banners[k] === 'string' && parsed.banners[k].includes('/aida/')) {
-            hasBroken = true;
-            break;
-          }
-        }
-        if (hasBroken) {
-          localStorage.removeItem('electric_house_cms');
-          location.reload();
-          return;
-        }
-      }
-    }
-  } catch (e) {
-    console.error('Self-healing error:', e);
-  }
+
 
   const data = SiteData.getData();
   let page = location.pathname.split('/').pop() || 'index.html';
