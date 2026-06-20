@@ -516,6 +516,58 @@ function initFloatingContactButtons(s) {
   `;
 }
 
+function initMobileBottomNavigation() {
+  const page = location.pathname.split('/').pop() || 'index.html';
+  if (page === 'dashboard.html') return; // Do not render on dashboard
+
+  const lang = localStorage.getItem('electric_house_lang') || 'ar';
+  const isEn = lang === 'en';
+
+  // Check if already exists, if not create it
+  let bottomNav = document.getElementById('mobile-bottom-nav');
+  if (!bottomNav) {
+    bottomNav = document.createElement('div');
+    bottomNav.id = 'mobile-bottom-nav';
+    bottomNav.className = 'md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-outline-variant flex justify-around items-center py-3 z-50';
+    document.body.appendChild(bottomNav);
+  }
+
+  // Determine active states based on current page
+  const isHome = page === 'index.html' || page === '';
+  const isProducts = page === 'products.html';
+  const isBrands = page === 'brands.html';
+
+  bottomNav.innerHTML = `
+    <a class="flex flex-col items-center ${isHome ? 'text-primary font-bold' : 'text-on-surface-variant'}" href="index.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' ${isHome ? 1 : 0};">home</span>
+      <span class="text-[10px] font-label-sm">${isEn ? 'Home' : 'الرئيسية'}</span>
+    </a>
+    <a class="flex flex-col items-center ${isProducts ? 'text-primary font-bold' : 'text-on-surface-variant'}" href="products.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' ${isProducts ? 1 : 0};">category</span>
+      <span class="text-[10px] font-label-sm">${isEn ? 'Products' : 'المنتجات'}</span>
+    </a>
+    <a class="flex flex-col items-center ${isBrands ? 'text-primary font-bold' : 'text-on-surface-variant'}" href="brands.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' ${isBrands ? 1 : 0};">verified</span>
+      <span class="text-[10px] font-label-sm">${isEn ? 'Brands' : 'العلامات التجارية'}</span>
+    </a>
+    <a class="flex flex-col items-center text-on-surface-variant" href="javascript:void(0);" id="mobile-bottom-nav-menu-btn">
+      <span class="material-symbols-outlined">menu</span>
+      <span class="text-[10px] font-label-sm">${isEn ? 'More' : 'المزيد'}</span>
+    </a>
+  `;
+
+  // Bind click listener for "More" button
+  const menuBtn = document.getElementById('mobile-bottom-nav-menu-btn');
+  if (menuBtn) {
+    menuBtn.onclick = (e) => {
+      e.preventDefault();
+      if (typeof window.toggleMobileMenu === 'function') {
+        window.toggleMobileMenu();
+      }
+    };
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof SiteData === 'undefined') return;
 
@@ -541,47 +593,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Apply layout translation globally
   applyLayoutTranslations(lang);
 
-  // Fix Mobile Bottom Nav: Replace "اتصل بنا" (Contact Us) with "المزيد" (More) and link it to mobile menu toggle
-  const bottomNav = document.querySelector('.md\\:hidden.fixed.bottom-0');
-  if (bottomNav) {
-    const mobileLinks = Array.from(bottomNav.querySelectorAll('a'));
-    const contactLink = mobileLinks.find(link => 
-      link.textContent.includes('اتصل بنا') || 
-      link.textContent.includes('Contact Us') || 
-      link.querySelector('[data-icon="contact_support"]')
-    );
-    if (contactLink) {
-      contactLink.href = 'javascript:void(0);';
-      contactLink.onclick = (e) => {
-        e.preventDefault();
-        if (typeof window.toggleMobileMenu === 'function') {
-          window.toggleMobileMenu();
-        }
-      };
-      
-      const icon = contactLink.querySelector('.material-symbols-outlined');
-      if (icon) {
-        icon.textContent = 'menu';
-        icon.dataset.icon = 'menu';
-      }
-      
-      const label = contactLink.querySelector('span:not(.material-symbols-outlined)');
-      if (label) {
-        label.textContent = lang === 'en' ? 'More' : 'المزيد';
-      }
-    }
-
-    // Bind other links correctly
-    mobileLinks.forEach(link => {
-      const icon = link.querySelector('.material-symbols-outlined');
-      if (icon) {
-        const iconName = icon.textContent.trim();
-        if (iconName === 'home') link.href = 'index.html';
-        else if (iconName === 'category') link.href = 'products.html';
-        else if (iconName === 'verified') link.href = 'brands.html';
-      }
-    });
-  }
+  // Initialize Dynamic Mobile Bottom Navigation on all public pages
+  initMobileBottomNavigation();
 
   // Set active nav link based on current page
   const navLinks = document.querySelectorAll('header nav a');
