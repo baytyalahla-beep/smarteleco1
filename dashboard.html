@@ -104,15 +104,20 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 <div class="flex h-screen overflow-hidden">
 
 <!-- Sidebar -->
-<aside class="hidden md:flex flex-col h-screen border-l border-outline-variant bg-white w-72 fixed right-0 top-0 shadow-lg z-50 overflow-y-auto">
-<div class="p-6 flex items-center gap-3 border-b border-outline-variant/30">
-<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
-<span class="material-symbols-outlined">admin_panel_settings</span>
-</div>
-<div>
-<h1 class="font-bold text-lg text-deep-forest">لوحة التحكم</h1>
-<span class="text-xs text-on-surface-variant">إدارة الموقع</span>
-</div>
+<aside id="sidebar" class="hidden md:flex flex-col h-screen border-l border-outline-variant bg-white w-72 fixed right-0 top-0 shadow-lg z-50 overflow-y-auto">
+<div class="p-6 flex items-center justify-between border-b border-outline-variant/30">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+      <span class="material-symbols-outlined">admin_panel_settings</span>
+    </div>
+    <div>
+      <h1 class="font-bold text-lg text-deep-forest">لوحة التحكم</h1>
+      <span class="text-xs text-on-surface-variant">إدارة الموقع</span>
+    </div>
+  </div>
+  <button onclick="toggleMobileSidebar()" class="md:hidden p-1.5 hover:bg-surface-gray rounded-lg text-outline flex items-center justify-center">
+    <span class="material-symbols-outlined text-[20px]">close</span>
+  </button>
 </div>
 
 <nav class="flex-1 px-3 py-4 space-y-1">
@@ -178,12 +183,17 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 <!-- Main Content -->
 <main class="flex-1 md:mr-72 overflow-y-auto">
 <!-- Top Bar -->
-<header class="sticky top-0 z-40 bg-white shadow-sm border-b border-outline-variant flex items-center justify-between px-8 h-16">
-<h2 id="panelTitle" class="font-bold text-xl text-deep-forest">إعدادات الموقع</h2>
-<div class="flex items-center gap-3">
-<span class="text-sm text-on-surface-variant">آخر حفظ: </span>
-<span id="lastSaved" class="text-sm text-primary font-bold">-</span>
-</div>
+<header class="sticky top-0 z-40 bg-white shadow-sm border-b border-outline-variant flex items-center justify-between px-4 md:px-8 h-16">
+  <div class="flex items-center gap-2">
+    <button onclick="toggleMobileSidebar()" class="md:hidden p-1.5 hover:bg-surface-gray rounded-lg text-deep-forest flex items-center justify-center">
+      <span class="material-symbols-outlined text-[24px]">menu</span>
+    </button>
+    <h2 id="panelTitle" class="font-bold text-lg md:text-xl text-deep-forest">إعدادات الموقع</h2>
+  </div>
+  <div class="flex items-center gap-3">
+    <span class="text-xs md:text-sm text-on-surface-variant">آخر حفظ: </span>
+    <span id="lastSaved" class="text-xs md:text-sm text-primary font-bold">-</span>
+  </div>
 </header>
 
 <div class="p-8 max-w-5xl mx-auto space-y-6">
@@ -207,6 +217,32 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 <div><label class="block text-sm font-semibold text-on-surface-variant mb-1">العملة (إنجليزي)</label><input id="s-currencyEn" class="form-input" placeholder="SYP"></div>
 </div>
 </div>
+
+
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">palette</span> مظهر الموقع والتنسيق</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+  <label class="block text-sm font-semibold text-on-surface-variant mb-1">نوع خط الموقع (Font Family)</label>
+  <select id="s-siteFont" class="form-input">
+    <option value="Cairo">Cairo (الافتراضي)</option>
+    <option value="Tajawal">Tajawal</option>
+    <option value="Almarai">Almarai</option>
+    <option value="Inter">Inter</option>
+    <option value="Roboto">Roboto</option>
+    <option value="Outfit">Outfit</option>
+  </select>
+</div>
+<div>
+  <label class="block text-sm font-semibold text-on-surface-variant mb-1">حجم الشعار (عرض الشعار بالبكسل - px)</label>
+  <div class="flex items-center gap-4">
+    <input type="range" id="slider-logoWidth" min="80" max="300" step="5" class="w-full" oninput="document.getElementById('s-logoWidth').value = this.value">
+    <input id="s-logoWidth" class="form-input w-24 text-center" placeholder="180" type="number" oninput="document.getElementById('slider-logoWidth').value = this.value">
+  </div>
+</div>
+</div>
+</div>
+
 
 <div class="card">
 <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">contact_mail</span> معلومات التواصل</h3>
@@ -566,7 +602,47 @@ function showPanel(name) {
   document.getElementById('panelTitle').textContent = panelTitles[name] || name;
   // Load data for the panel
   if (loaders[name]) loaders[name]();
+  
+  // Auto-close sidebar on mobile
+  if (window.innerWidth < 768) {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+      sidebar.classList.add('hidden');
+      sidebar.classList.remove('flex');
+    }
+    const overlay = document.getElementById('sidebar-overlay');
+    if (overlay) {
+      overlay.classList.add('hidden');
+    }
+  }
 }
+
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  let overlay = document.getElementById('sidebar-overlay');
+  
+  if (sidebar.classList.contains('hidden')) {
+    sidebar.classList.remove('hidden');
+    sidebar.classList.add('flex');
+    
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'sidebar-overlay';
+      overlay.className = 'fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden';
+      overlay.onclick = toggleMobileSidebar;
+      document.body.appendChild(overlay);
+    } else {
+      overlay.classList.remove('hidden');
+    }
+  } else {
+    sidebar.classList.add('hidden');
+    sidebar.classList.remove('flex');
+    if (overlay) {
+      overlay.classList.add('hidden');
+    }
+  }
+}
+window.toggleMobileSidebar = toggleMobileSidebar;
 
 function showToast(msg) {
   const t = document.createElement('div');
@@ -650,10 +726,20 @@ function loadSettings() {
     const el = document.getElementById('s-' + k);
     if (el) el.value = s[k] || '';
   });
+  if (s.logoWidth) {
+    const slider = document.getElementById('slider-logoWidth');
+    if (slider) slider.value = s.logoWidth;
+  } else {
+    const slider = document.getElementById('slider-logoWidth');
+    const input = document.getElementById('s-logoWidth');
+    if (slider) slider.value = 180;
+    if (input) input.value = 180;
+  }
   renderSettingsList('phones', s.phones || []);
   renderSettingsList('emails', s.emails || []);
   renderSettingsList('addresses', s.addresses || []);
 }
+
 function saveSettings() {
   const s = SiteData.getData('settings');
   Object.keys(s).forEach(k => {
@@ -679,11 +765,14 @@ function renderHeroImagesList(images) {
   if (!container) return;
   container.innerHTML = images.map((val, idx) => `
     <div class="flex gap-2 items-center">
-      <input class="form-input text-sm flex-1 h-hero-image-item" value="${val}" placeholder="رابط صورة الخلفية">
+      <input class="form-input text-sm flex-1 h-hero-image-item" value="${val}" placeholder="رابط صورة الخلفية" id="hero-img-input-${idx}">
+      <input type="file" id="file-hero-${idx}" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'hero-img-input-${idx}')">
+      <button type="button" onclick="document.getElementById('file-hero-${idx}').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-xs hover:bg-outline-variant/30 whitespace-nowrap h-10">رفع ملف</button>
       <button type="button" onclick="removeHeroImage(${idx})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
     </div>
   `).join('');
 }
+
 function addHeroImage() {
   const items = Array.from(document.querySelectorAll('.h-hero-image-item')).map(el => el.value);
   items.push('');
@@ -1432,19 +1521,30 @@ const loaders = { settings: loadSettings, homepage: loadHomepage, products: load
 
 // ========== AUTHENTICATION ==========
 function attemptLogin() {
-  const s = SiteData.getData('settings');
   const u = document.getElementById('login-username').value;
   const p = document.getElementById('login-password').value;
   const errorEl = document.getElementById('login-error');
   
-  if (u === (s.username || 'admin') && p === (s.password || 'admin123')) {
-    sessionStorage.setItem('cms_authenticated', 'true');
-    document.getElementById('login-overlay').style.display = 'none';
-    errorEl.classList.add('hidden');
-    loadSettings();
-  } else {
+  fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: u, password: p })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.success) {
+      sessionStorage.setItem('cms_authenticated', 'true');
+      document.getElementById('login-overlay').style.display = 'none';
+      errorEl.classList.add('hidden');
+      loadSettings();
+    } else {
+      errorEl.classList.remove('hidden');
+    }
+  })
+  .catch(err => {
+    console.error('Login error:', err);
     errorEl.classList.remove('hidden');
-  }
+  });
 }
 
 // ========== INIT ==========

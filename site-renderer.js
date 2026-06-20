@@ -428,8 +428,109 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const data = SiteData.getData();
-  const page = location.pathname.split('/').pop() || 'index.html';
+  let page = location.pathname.split('/').pop() || 'index.html';
+  if (page && !page.includes('.')) {
+    page = page + '.html';
+  }
   const lang = localStorage.getItem('electric_house_lang') || 'ar';
+
+  // Apply Custom Fonts & Logo Size dynamically from settings
+  const settings = data.settings || {};
+  if (settings.siteFont) {
+    let fontName = settings.siteFont;
+    const linkId = 'custom-site-font-link';
+    if (!document.getElementById(linkId)) {
+      const link = document.createElement('link');
+      link.id = linkId;
+      link.rel = 'stylesheet';
+      link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@300;400;500;600;700;800&display=swap`;
+      document.head.appendChild(link);
+    }
+    
+    const styleId = 'custom-site-font-style';
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement('style');
+      style.id = styleId;
+      document.head.appendChild(style);
+    }
+    style.textContent = `
+      body, html, *, [style*="font-family"] {
+        font-family: '${fontName}', 'Cairo', sans-serif !important;
+      }
+    `;
+  }
+  
+  if (settings.logoWidth) {
+    const logoStyleId = 'custom-logo-width-style';
+    let logoStyle = document.getElementById(logoStyleId);
+    if (!logoStyle) {
+      logoStyle = document.createElement('style');
+      logoStyle.id = logoStyleId;
+      document.head.appendChild(logoStyle);
+    }
+    logoStyle.textContent = `
+      header img, .logo-img, header .shrink-0 img {
+        width: ${settings.logoWidth}px !important;
+        max-width: ${settings.logoWidth}px !important;
+        height: auto !important;
+      }
+    `;
+  }
+
+  // Convert all local links to clean URLs
+  document.querySelectorAll('a[href]').forEach(link => {
+    let href = link.getAttribute('href');
+    if (href && href.endsWith('.html') && !href.startsWith('http') && !href.startsWith('//')) {
+      link.setAttribute('href', href.replace('.html', ''));
+    }
+  });
+
+  // Inject Floating WhatsApp and Call buttons
+  const floatingId = 'floating-contact-buttons';
+  if (!document.getElementById(floatingId)) {
+    const container = document.createElement('div');
+    container.id = floatingId;
+    container.className = 'fixed bottom-6 left-6 z-[999] flex flex-col gap-4';
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes floatPulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+      }
+      @keyframes phonePulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+      }
+      .whatsapp-float {
+        animation: floatPulse 2s infinite;
+      }
+      .phone-float {
+        animation: phonePulse 2s infinite;
+        animation-delay: 0.5s;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    const whatsappNumber = settings.whatsapp ? settings.whatsapp.replace(/[^0-9]/g, '') : '963986001965';
+    const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+    const phoneUrl = `tel:${settings.phoneMobile || settings.phone || '+963986001965'}`;
+    
+    container.innerHTML = `
+      <a href="${whatsappUrl}" target="_blank" class="whatsapp-float w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 relative" title="تواصل معنا عبر واتساب">
+        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.45L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.019-5.117-2.875-6.974-1.858-1.857-4.339-2.876-6.979-2.877-5.442 0-9.868 4.42-9.873 9.869-.001 1.699.444 3.359 1.29 4.825L1.879 21.8l4.768-1.251zM17.43 14.33c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        </svg>
+      </a>
+      <a href="${phoneUrl}" class="phone-float w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 flex items-center justify-center" title="اتصل بنا">
+        <span class="material-symbols-outlined text-[28px]">call</span>
+      </a>
+    `;
+    document.body.appendChild(container);
+  }
 
   // Apply visual transitions & loaders
   setupTransitionsAndLoaders();
@@ -446,7 +547,9 @@ document.addEventListener('DOMContentLoaded', () => {
   navLinks.forEach(link => {
     link.className = "text-on-surface-variant hover:text-primary transition-all text-label-lg font-label-lg pb-1";
     const href = link.getAttribute('href');
-    if (href === page || (page === 'project-detail.html' && href === 'projects.html')) {
+    const cleanHref = href ? href.replace('.html', '') : '';
+    const cleanPage = page ? page.replace('.html', '') : '';
+    if (cleanHref === cleanPage || (cleanPage === 'project-detail' && cleanHref === 'projects')) {
       link.className = "text-primary border-b-2 border-primary font-bold pb-1 text-label-lg font-label-lg";
     }
   });
@@ -457,6 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
       el.href = data.settings.whatsapp;
     }
   });
+
 
   const renderers = {
     'index.html': () => renderHomePage(data),
@@ -527,6 +631,80 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderHeader(s, currentPage) {
   const header = document.querySelector('header');
   if (!header) return;
+
+  // 1. Inject Mobile CSS Overrides
+  if (!document.getElementById('mobile-header-styles')) {
+    const style = document.createElement('style');
+    style.id = 'mobile-header-styles';
+    style.textContent = `
+      @media (max-w: 768px) {
+        /* Hide Top Utility Bar */
+        header > div > div:first-of-type {
+          display: none !important;
+        }
+        /* Compact Main Header Bar */
+        header > div > div:nth-of-type(2) {
+          flex-wrap: wrap !important;
+          padding: 0.5rem 1.0rem !important;
+          gap: 0.5rem !important;
+        }
+        /* Search bar full width */
+        header > div > div:nth-of-type(2) > div:nth-of-type(2) {
+          order: 3 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          margin-top: 0.25rem !important;
+        }
+        /* Logo sizing */
+        header > div > div:nth-of-type(2) > div:first-of-type {
+          height: 2.2rem !important;
+        }
+        /* Hide action labels */
+        header > div > div:nth-of-type(2) > div:nth-of-type(3) span.text-label-sm {
+          display: none !important;
+        }
+        header > div > div:nth-of-type(2) > div:nth-of-type(3) {
+          gap: 0.75rem !important;
+        }
+        /* Hide desktop nav */
+        header nav {
+          display: none !important;
+        }
+        /* Make hero carousel responsive */
+        section.relative {
+          height: 380px !important;
+        }
+        section.relative h1 {
+          font-size: 24px !important;
+          line-height: 32px !important;
+        }
+        section.relative p {
+          font-size: 14px !important;
+          line-height: 20px !important;
+          margin-bottom: 1.5rem !important;
+        }
+        section.relative a {
+          padding: 0.75rem 1.5rem !important;
+          font-size: 14px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // 2. Add Mobile Toggle Hamburger Button
+  const mainHeaderBar = header.querySelector('div > div:nth-of-type(2)');
+  if (mainHeaderBar && !document.getElementById('mobile-menu-toggle')) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'mobile-menu-toggle';
+    toggleBtn.className = 'md:hidden p-1.5 text-deep-forest hover:bg-surface-gray rounded-lg order-first flex items-center justify-center';
+    toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[28px]">menu</span>';
+    mainHeaderBar.insertBefore(toggleBtn, mainHeaderBar.firstChild);
+    
+    toggleBtn.onclick = () => {
+      window.toggleMobileMenu();
+    };
+  }
   
   // Dynamic navigation injection for Services page
   const nav = header.querySelector('nav');
@@ -608,7 +786,130 @@ function renderHeader(s, currentPage) {
       `;
     }
   }
+
+  // Mobile Menu Drawer Function
+  window.toggleMobileMenu = function() {
+    let drawer = document.getElementById('mobile-menu-drawer');
+    const currentLang = localStorage.getItem('electric_house_lang') || 'ar';
+    const isEn = currentLang === 'en';
+    
+    if (!drawer) {
+      drawer = document.createElement('div');
+      drawer.id = 'mobile-menu-drawer';
+      drawer.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] transition-opacity duration-300 opacity-0 pointer-events-none';
+      
+      drawer.innerHTML = `
+        <div class="bg-white w-72 h-full shadow-2xl p-6 flex flex-col justify-between transition-transform duration-300 transform translate-x-full absolute right-0" style="font-family: Cairo, sans-serif;">
+          <div>
+            <div class="flex justify-between items-center mb-8">
+              <h3 class="font-bold text-lg text-deep-forest">${isEn ? 'Navigation' : 'القائمة الرئيسية'}</h3>
+              <button onclick="window.toggleMobileMenu()" class="w-8 h-8 rounded-full bg-surface-gray flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+            
+            <nav class="flex flex-col gap-4 text-right">
+              <a href="index.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">home</span>
+                <span>${isEn ? 'Home' : 'الرئيسية'}</span>
+              </a>
+              <a href="about.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">info</span>
+                <span>${isEn ? 'About Us' : 'من نحن'}</span>
+              </a>
+              <a href="services.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">engineering</span>
+                <span>${isEn ? 'Services' : 'الخدمات'}</span>
+              </a>
+              <a href="products.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">inventory_2</span>
+                <span>${isEn ? 'Products' : 'المنتجات'}</span>
+              </a>
+              <a href="brands.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+                <span>${isEn ? 'Brands' : 'العلامات التجارية'}</span>
+              </a>
+              <a href="projects.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">business_center</span>
+                <span>${isEn ? 'Projects' : 'المشاريع'}</span>
+              </a>
+              <a href="offers.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">local_offer</span>
+                <span>${isEn ? 'Offers' : 'العروض'}</span>
+              </a>
+              <a href="blog.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">article</span>
+                <span>${isEn ? 'Blog' : 'المدونة'}</span>
+              </a>
+              <a href="contact.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">call</span>
+                <span>${isEn ? 'Contact Us' : 'اتصل بنا'}</span>
+              </a>
+            </nav>
+          </div>
+          
+          <div class="border-t border-outline-variant/30 pt-6 space-y-4">
+            <div class="flex justify-between items-center">
+              <button onclick="toggleLanguage()" class="bg-primary/10 text-primary py-1.5 px-4 rounded-full font-bold text-xs">
+                ${isEn ? 'العربية' : 'English'}
+              </button>
+              <span class="text-sm font-bold text-deep-forest">${s.currency || 'ر.س'}</span>
+            </div>
+            <div class="text-[11px] text-on-surface-variant text-center">
+              ${isEn ? 'Smart Electricity Company' : 'شركة الكهرباء الذكية'}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      if (document.documentElement.dir === 'ltr' || document.body.classList.contains('LTR')) {
+        const innerDiv = drawer.querySelector('.w-72');
+        innerDiv.classList.remove('right-0', 'translate-x-full');
+        innerDiv.classList.add('left-0', '-translate-x-full');
+      }
+      
+      drawer.onclick = (e) => {
+        if (e.target === drawer) {
+          window.toggleMobileMenu();
+        }
+      };
+      
+      document.body.appendChild(drawer);
+    }
+    
+    const isOpen = drawer.classList.contains('opacity-100');
+    const inner = drawer.querySelector('.w-72');
+    const isLtr = document.documentElement.dir === 'ltr' || document.body.classList.contains('LTR');
+    
+    if (isOpen) {
+      drawer.classList.remove('opacity-100');
+      drawer.classList.add('opacity-0', 'pointer-events-none');
+      if (isLtr) {
+        inner.classList.add('-translate-x-full');
+      } else {
+        inner.classList.add('translate-x-full');
+      }
+    } else {
+      drawer.classList.remove('opacity-0', 'pointer-events-none');
+      drawer.classList.add('opacity-100');
+      if (isLtr) {
+        inner.classList.remove('-translate-x-full');
+      } else {
+        inner.classList.remove('translate-x-full');
+    }
+  };
+
+  // Remove my account (dashboard) and favorites buttons from the header dynamically
+  const accountLink = header.querySelector('a[href="dashboard.html"]') || header.querySelector('a[href="dashboard"]');
+  if (accountLink) {
+    accountLink.remove();
+  }
+  const favBtn = Array.from(header.querySelectorAll('button')).find(btn => btn.querySelector('.material-symbols-outlined') && btn.querySelector('.material-symbols-outlined').textContent.trim() === 'favorite');
+  if (favBtn) {
+    favBtn.remove();
+  }
 }
+
 
 /* ========== FOOTER ========== */
 function renderFooter(s) {
@@ -1480,14 +1781,43 @@ function renderProductsPage(data) {
   // 5. Header Search Input wiring
   const headerSearchInput = document.querySelector('header input[type="text"]');
   if (headerSearchInput) {
-    headerSearchInput.addEventListener('input', () => {
-      applyFilters();
-    });
-    const searchForm = headerSearchInput.closest('form');
-    if (searchForm) {
-      searchForm.addEventListener('submit', (e) => e.preventDefault());
+    const isProductsPage = page === 'products.html';
+    const searchForm = headerSearchInput.closest('form') || headerSearchInput.parentElement;
+    
+    const handleSearchSubmit = (e) => {
+      if (e) e.preventDefault();
+      const val = headerSearchInput.value.trim();
+      if (val) {
+        window.location.href = `products?search=${encodeURIComponent(val)}`;
+      }
+    };
+    
+    if (searchForm && searchForm.tagName === 'FORM') {
+      searchForm.addEventListener('submit', handleSearchSubmit);
+    } else {
+      headerSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          handleSearchSubmit(e);
+        }
+      });
+    }
+    
+    if (isProductsPage) {
+      headerSearchInput.addEventListener('input', () => {
+        applyFilters();
+      });
+      
+      const params = new URLSearchParams(location.search);
+      const searchParam = params.get('search');
+      if (searchParam) {
+        headerSearchInput.value = searchParam;
+        setTimeout(() => {
+          applyFilters();
+        }, 100);
+      }
     }
   }
+
 
   // 6. Listen to checkboxes changes
   document.querySelectorAll('.cat-checkbox, .brand-checkbox').forEach(chk => {
@@ -1575,6 +1905,59 @@ function renderProductsPage(data) {
       countLabel.textContent = template.replace('{x}', filtered.length).replace('{y}', products.length);
     }
 
+    // 6.5 Search Services and render them above the products grid
+    const servicesContainerId = 'matching-services-search-container';
+    let servicesContainer = document.getElementById(servicesContainerId);
+    if (!servicesContainer && grid) {
+      servicesContainer = document.createElement('div');
+      servicesContainer.id = servicesContainerId;
+      servicesContainer.className = 'col-span-full mb-6 w-full';
+      grid.parentElement.insertBefore(servicesContainer, grid);
+    }
+    
+    if (servicesContainer) {
+      servicesContainer.innerHTML = '';
+      if (searchQuery !== '') {
+        const services = (data.homepage && data.homepage.services) ? data.homepage.services : [];
+        const matchedServices = services.filter(s => {
+          const sTitle = (s.title || '').toLowerCase();
+          const sTitleEn = (s.titleEn || '').toLowerCase();
+          const sDesc = (s.description || '').toLowerCase();
+          const sDescEn = (s.descriptionEn || '').toLowerCase();
+          return sTitle.includes(searchQuery) || sTitleEn.includes(searchQuery) ||
+                 sDesc.includes(searchQuery) || sDescEn.includes(searchQuery);
+        });
+        
+        if (matchedServices.length > 0) {
+          servicesContainer.innerHTML = `
+            <div class="bg-primary/5 rounded-2xl border border-primary/20 p-6 mb-6">
+              <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[24px]">engineering</span>
+                <span>${isEn ? 'Matching Services' : 'الخدمات المطابقة لبحثك'} (${matchedServices.length})</span>
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${matchedServices.map(s => {
+                  const sTitle = isEn ? (s.titleEn || s.title) : s.title;
+                  const sDesc = isEn ? (s.descriptionEn || s.description) : s.description;
+                  return `
+                    <div class="bg-white p-4 rounded-xl border border-outline-variant shadow-sm flex items-start gap-4 hover:border-primary transition-all">
+                      <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                        <span class="material-symbols-outlined">${s.icon || 'engineering'}</span>
+                      </div>
+                      <div>
+                        <h4 class="font-bold text-deep-forest text-base mb-1">${sTitle}</h4>
+                        <p class="text-sm text-on-surface-variant line-clamp-2">${sDesc}</p>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
+
     // 7. Render Grid
     if (filtered.length > 0) {
       renderProductCards(grid, filtered, currency);
@@ -1587,6 +1970,7 @@ function renderProductsPage(data) {
       `;
     }
   }
+
 
   applyFilters();
 }
@@ -1730,32 +2114,75 @@ function renderProductDetailPage(data) {
 
 /* ========== BRANDS ========== */
 function renderBrandsPage(data) {
-  const brands = data.brands;
-  const grid = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3');
+  const brands = data.brands || [];
+  const grid = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4') || 
+               document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3') ||
+               document.querySelector('.grid.gap-gutter');
   if (!grid || !brands.length) return;
   
   const lang = localStorage.getItem('electric_house_lang') || 'ar';
   const isEn = lang === 'en';
 
-  grid.innerHTML = brands.map(b => {
-    const bName = isEn ? (b.nameEn || b.name) : b.name;
-    const bDesc = isEn ? (b.descriptionEn || b.description) : b.description;
+  const brandSearchInput = document.getElementById('brand-search-input') || document.querySelector('input[placeholder*="علامة"]');
+  
+  function applyBrandFilters() {
+    const query = brandSearchInput ? brandSearchInput.value.toLowerCase().trim() : '';
     
-    return `
-      <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:border-primary transition-all hover:shadow-lg">
-        <div class="h-48 bg-surface-gray flex items-center justify-center p-8 border-b border-outline-variant/30">
-          ${b.logo ? `<img src="${b.logo}" alt="${bName}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">` :
-          `<div class="text-center"><span class="material-symbols-outlined text-6xl text-outline">verified</span><p class="text-on-surface-variant mt-2 font-bold">${b.nameEn}</p></div>`}
+    const filtered = brands.filter(b => {
+      const bName = (isEn ? (b.nameEn || b.name) : b.name).toLowerCase();
+      const bDesc = (isEn ? (b.descriptionEn || b.description) : b.description).toLowerCase();
+      const bCountry = (b.country || '').toLowerCase();
+      
+      return bName.includes(query) || bDesc.includes(query) || bCountry.includes(query);
+    });
+    
+    if (filtered.length > 0) {
+      grid.innerHTML = filtered.map(b => {
+        const bName = isEn ? (b.nameEn || b.name) : b.name;
+        const bDesc = isEn ? (b.descriptionEn || b.description) : b.description;
+        
+        return `
+          <div class="group bg-white rounded-xl border border-outline-variant hover:border-primary p-6 transition-all duration-300 hover:shadow-xl flex flex-col items-center text-center">
+            <div class="h-24 w-full flex items-center justify-center mb-4 p-4 grayscale group-hover:grayscale-0 transition-all">
+              ${b.logo ? `<img src="${b.logo}" alt="${bName}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">` :
+              `<div class="text-center"><span class="material-symbols-outlined text-5xl text-outline">verified</span><p class="text-on-surface-variant mt-2 font-bold">${b.nameEn || b.name}</p></div>`}
+            </div>
+            <h3 class="font-headline-md text-headline-md mb-2 text-deep-forest">${bName}</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-2">${bDesc}</p>
+            <a class="mt-auto w-full py-2 bg-surface-container-low text-primary group-hover:bg-primary group-hover:text-white rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all" href="products?search=${encodeURIComponent(b.name)}">
+              <span>${isEn ? 'View Products' : 'مشاهدة المنتجات'}</span>
+              <span class="material-symbols-outlined text-[18px]" data-icon="arrow_back">${isEn ? 'arrow_forward' : 'arrow_back'}</span>
+            </a>
+          </div>
+        `;
+      }).join('');
+    } else {
+      grid.innerHTML = `
+        <div class="col-span-full py-12 text-center bg-white rounded-xl border border-outline-variant p-6">
+          <span class="material-symbols-outlined text-6xl text-outline mb-2">verified</span>
+          <p class="text-on-surface-variant font-bold text-lg">${isEn ? 'No brands found' : 'لم يتم العثور على علامات تجارية مطابقة'}</p>
         </div>
-        <div class="p-6">
-          <h3 class="font-headline-md text-headline-md text-deep-forest mb-1">${bName}</h3>
-          <p class="text-sm text-primary font-semibold mb-2">${b.nameEn} · ${b.country}</p>
-          <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">${bDesc}</p>
-        </div>
-      </div>
-    `;
-  }).join('');
+      `;
+    }
+
+    // Micro-interaction for brand cards
+    grid.querySelectorAll('.group').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-8px)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+      });
+    });
+  }
+  
+  if (brandSearchInput) {
+    brandSearchInput.addEventListener('input', applyBrandFilters);
+  }
+  
+  applyBrandFilters();
 }
+
 
 /* ========== PROJECTS ========== */
 function renderProjectsPage(data) {

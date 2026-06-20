@@ -3,7 +3,7 @@ const multer = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
+const { pool, initializeDatabase, isDbConnected, getDefaultData } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -24,55 +24,6 @@ app.use(express.static(__dirname));
 // Serve uploaded images
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// Extract default data from site-data.js dynamically
-function getDefaultData() {
-  try {
-    const code = fs.readFileSync(path.join(__dirname, 'site-data.js'), 'utf8');
-    const sandbox = {
-      localStorage: {
-        getItem: () => null,
-        setItem: () => {}
-      },
-      console: console
-    };
-    vm.createContext(sandbox);
-    vm.runInContext(code, sandbox);
-    if (sandbox.SiteData && sandbox.SiteData.DEFAULT_DATA) {
-      return sandbox.SiteData.DEFAULT_DATA;
-    }
-  } catch (err) {
-    console.error('Failed to parse site-data.js for default data:', err);
-  }
-  return {};
-}
-
-// Read site data
-function readData() {
-  if (!fs.existsSync(DATA_FILE)) {
-    const defaultData = getDefaultData();
-    fs.writeFileSync(DATA_FILE, JSON.stringify(defaultData, null, 2), 'utf8');
-    return defaultData;
-  }
-  try {
-    const raw = fs.readFileSync(DATA_FILE, 'utf8');
-    return JSON.parse(raw);
-  } catch (err) {
-    console.error('Failed to parse data.json, falling back to defaults:', err);
-    return getDefaultData();
-  }
-}
-
-// Write site data
-function writeData(data) {
-  try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
-    return true;
-  } catch (err) {
-    console.error('Failed to write data.json:', err);
-    return false;
-  }
-}
-
 // Multer storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -87,19 +38,356 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // API Endpoints
-app.get('/api/data', (req, res) => {
-  res.json(readData());
-});
 
-app.post('/api/data', (req, res) => {
-  const success = writeData(req.body);
-  if (success) {
-    res.json({ success: true, message: 'Data saved successfully' });
-  } else {
-    res.status(500).json({ success: false, message: 'Failed to write data' });
+// Get all site data from database (or fallback to JSON)
+app.get('/api/data', async (req, res) => {
+  if (!isDbConnected()) {
+    console.log('Database not connected. Serving from local fallback data.json...');
+    if (fs.existsSync(DATA_FILE)) {
+      try {
+        const raw = fs.readFileSync(DATA_FILE, 'utf8');
+        return res.json(JSON.parse(raw));
+      } catch (err) {
+        console.error('Failed to parse fallback data.json:', err);
+      }
+    }
+    return res.json(getDefaultData());
+  }
+
+  try {
+    const [settingsRows] = await pool.query('SELECT key_name, value_data FROM settings');
+    const [productRows] = await pool.query('SELECT * FROM products');
+    const [brandRows] = await pool.query('SELECT * FROM brands');
+    const [projectRows] = await pool.query('SELECT * FROM projects');
+    const [blogRows] = await pool.query('SELECT * FROM blog_posts');
+    const [orderRows] = await pool.query('SELECT * FROM orders');
+
+    const data = {};
+
+    // Settings & general sections
+    for (const row of settingsRows) {
+      try {
+        data[row.key_name] = JSON.parse(row.value_data);
+      } catch (err) {
+        console.error(`Error parsing setting key ${row.key_name}:`, err);
+      }
+    }
+
+    // Map database fields to site-data structure
+    data.products = productRows.map(p => ({
+      id: p.id,
+      name: p.name,
+      nameEn: p.nameEn,
+      brand: p.brand,
+      brandEn: p.brandEn,
+      price: Number(p.price),
+      originalPrice: Number(p.originalPrice),
+      isOffer: Boolean(p.isOffer),
+      stockTotal: p.stockTotal,
+      stockSold: p.stockSold,
+      category: p.category,
+      image: p.image,
+      images: typeof p.images === 'string' ? JSON.parse(p.images) : p.images,
+      description: p.description,
+      descriptionEn: p.descriptionEn,
+      featured: Boolean(p.featured),
+      showPrice: Boolean(p.showPrice)
+    }));
+
+    data.brands = brandRows.map(b => ({
+      id: b.id,
+      name: b.name,
+      nameEn: b.nameEn,
+      logo: b.logo,
+      description: b.description,
+      country: b.country
+    }));
+
+    data.projects = projectRows.map(p => ({
+      id: p.id,
+      name: p.name,
+      nameEn: p.nameEn,
+      description: p.description,
+      descriptionEn: p.descriptionEn,
+      image: p.image,
+      images: typeof p.images === 'string' ? JSON.parse(p.images) : p.images,
+      status: p.status,
+      statusEn: p.statusEn,
+      category: p.category,
+      categoryEn: p.categoryEn,
+      owner: p.owner,
+      ownerEn: p.ownerEn,
+      location: p.location,
+      locationEn: p.locationEn,
+      duration: p.duration,
+      durationEn: p.durationEn,
+      value: p.value,
+      valueEn: p.valueEn,
+      techFiles: typeof p.techFiles === 'string' ? JSON.parse(p.techFiles) : p.techFiles
+    }));
+
+    data.blogPosts = blogRows.map(p => ({
+      id: p.id,
+      title: p.title,
+      excerpt: p.excerpt,
+      image: p.image,
+      date: p.date,
+      category: p.category,
+      content: p.content
+    }));
+
+    data.orders = orderRows.map(o => ({
+      id: o.id,
+      date: o.date,
+      product: o.product,
+      total: Number(o.total),
+      status: o.status,
+      customer: o.customer
+    }));
+
+    // Inject username and password from users table into settings.username/password for UI compatibility
+    const [userRows] = await pool.query('SELECT username, password FROM users LIMIT 1');
+    if (userRows.length > 0) {
+      if (!data.settings) data.settings = {};
+      data.settings.username = userRows[0].username;
+      data.settings.password = userRows[0].password;
+    }
+
+    res.json(data);
+  } catch (err) {
+    console.error('Failed to read data from database:', err);
+    res.status(500).json({ success: false, message: 'Database read error' });
   }
 });
 
+// Update site data in database (or fallback to JSON)
+app.post('/api/data', async (req, res) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ success: false, message: 'Empty request body' });
+  }
+
+  if (!isDbConnected()) {
+    console.log('Database not connected. Saving to local fallback data.json...');
+    try {
+      fs.writeFileSync(DATA_FILE, JSON.stringify(req.body, null, 2), 'utf8');
+      return res.json({ success: true, message: 'Data saved successfully in fallback JSON' });
+    } catch (err) {
+      console.error('Failed to save to local fallback data.json:', err);
+      return res.status(500).json({ success: false, message: 'Failed to write fallback data' });
+    }
+  }
+
+  const { settings, banners, homepage, about, categories, products, brands, projects, blogPosts, orders } = req.body;
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // 1. Settings & general sections updates
+    const sections = { settings, banners, homepage, about, categories };
+    
+    // Extract credentials from settings if they exist
+    let dbUsername = '';
+    let dbPassword = '';
+    if (settings) {
+      const settingsToSave = { ...settings };
+      dbUsername = settingsToSave.username;
+      dbPassword = settingsToSave.password;
+      delete settingsToSave.username;
+      delete settingsToSave.password;
+      sections.settings = settingsToSave;
+    }
+
+    for (const key of Object.keys(sections)) {
+      if (sections[key] !== undefined) {
+        await connection.query(
+          'INSERT INTO settings (key_name, value_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE value_data = ?',
+          [key, JSON.stringify(sections[key]), JSON.stringify(sections[key])]
+        );
+      }
+    }
+
+    // Update users table admin credentials if provided
+    if (dbUsername && dbPassword) {
+      const [allUsers] = await connection.query('SELECT id FROM users LIMIT 1');
+      if (allUsers.length > 0) {
+        await connection.query('UPDATE users SET username = ?, password = ? WHERE id = ?', [
+          dbUsername,
+          dbPassword,
+          allUsers[0].id
+        ]);
+      } else {
+        await connection.query('INSERT INTO users (username, password) VALUES (?, ?)', [
+          dbUsername,
+          dbPassword
+        ]);
+      }
+    }
+
+    // 2. Sync Products
+    if (products && Array.isArray(products)) {
+      for (const p of products) {
+        await connection.query(
+          `INSERT INTO products (id, name, nameEn, brand, brandEn, price, originalPrice, isOffer, stockTotal, stockSold, category, image, images, description, descriptionEn, featured, showPrice) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON DUPLICATE KEY UPDATE
+           name = VALUES(name), nameEn = VALUES(nameEn), brand = VALUES(brand), brandEn = VALUES(brandEn),
+           price = VALUES(price), originalPrice = VALUES(originalPrice), isOffer = VALUES(isOffer),
+           stockTotal = VALUES(stockTotal), stockSold = VALUES(stockSold), category = VALUES(category),
+           image = VALUES(image), images = VALUES(images), description = VALUES(description),
+           descriptionEn = VALUES(descriptionEn), featured = VALUES(featured), showPrice = VALUES(showPrice)`,
+          [
+            p.id, p.name, p.nameEn || '', p.brand || '', p.brandEn || '', p.price, p.originalPrice || p.price,
+            p.isOffer ? 1 : 0, p.stockTotal || 100, p.stockSold || 0, p.category || '', p.image || '',
+            JSON.stringify(p.images || [p.image || '', '', '', '']), p.description || '', p.descriptionEn || '',
+            p.featured ? 1 : 0, p.showPrice !== false ? 1 : 0
+          ]
+        );
+      }
+      const productIds = products.map(p => p.id);
+      if (productIds.length > 0) {
+        await connection.query('DELETE FROM products WHERE id NOT IN (?)', [productIds]);
+      } else {
+        await connection.query('DELETE FROM products');
+      }
+    }
+
+    // 3. Sync Brands
+    if (brands && Array.isArray(brands)) {
+      for (const b of brands) {
+        await connection.query(
+          `INSERT INTO brands (id, name, nameEn, logo, description, country) 
+           VALUES (?, ?, ?, ?, ?, ?)
+           ON DUPLICATE KEY UPDATE
+           name = VALUES(name), nameEn = VALUES(nameEn), logo = VALUES(logo),
+           description = VALUES(description), country = VALUES(country)`,
+          [b.id, b.name, b.nameEn || '', b.logo || '', b.description || '', b.country || '']
+        );
+      }
+      const brandIds = brands.map(b => b.id);
+      if (brandIds.length > 0) {
+        await connection.query('DELETE FROM brands WHERE id NOT IN (?)', [brandIds]);
+      } else {
+        await connection.query('DELETE FROM brands');
+      }
+    }
+
+    // 4. Sync Projects
+    if (projects && Array.isArray(projects)) {
+      for (const p of projects) {
+        await connection.query(
+          `INSERT INTO projects (id, name, nameEn, description, descriptionEn, image, images, status, statusEn, category, categoryEn, owner, ownerEn, location, locationEn, duration, durationEn, value, valueEn, techFiles) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON DUPLICATE KEY UPDATE
+           name = VALUES(name), nameEn = VALUES(nameEn), description = VALUES(description), descriptionEn = VALUES(descriptionEn),
+           image = VALUES(image), images = VALUES(images), status = VALUES(status), statusEn = VALUES(statusEn),
+           category = VALUES(category), categoryEn = VALUES(categoryEn), owner = VALUES(owner), ownerEn = VALUES(ownerEn),
+           location = VALUES(location), locationEn = VALUES(locationEn), duration = VALUES(duration), durationEn = VALUES(durationEn),
+           value = VALUES(value), valueEn = VALUES(valueEn), techFiles = VALUES(techFiles)`,
+          [
+            p.id, p.name, p.nameEn || '', p.description || '', p.descriptionEn || '', p.image || '',
+            JSON.stringify(p.images || [p.image || '']), p.status || '', p.statusEn || '', p.category || '',
+            p.categoryEn || '', p.owner || '', p.ownerEn || '', p.location || '', p.locationEn || '',
+            p.duration || '', p.durationEn || '', p.value || '', p.valueEn || '', JSON.stringify(p.techFiles || [])
+          ]
+        );
+      }
+      const projectIds = projects.map(p => p.id);
+      if (projectIds.length > 0) {
+        await connection.query('DELETE FROM projects WHERE id NOT IN (?)', [projectIds]);
+      } else {
+        await connection.query('DELETE FROM projects');
+      }
+    }
+
+    // 5. Sync Blog Posts
+    if (blogPosts && Array.isArray(blogPosts)) {
+      for (const p of blogPosts) {
+        await connection.query(
+          `INSERT INTO blog_posts (id, title, excerpt, image, date, category, content) 
+           VALUES (?, ?, ?, ?, ?, ?, ?)
+           ON DUPLICATE KEY UPDATE
+           title = VALUES(title), excerpt = VALUES(excerpt), image = VALUES(image),
+           date = VALUES(date), category = VALUES(category), content = VALUES(content)`,
+          [p.id, p.title, p.excerpt || '', p.image || '', p.date || '', p.category || '', p.content || '']
+        );
+      }
+      const postIds = blogPosts.map(p => p.id);
+      if (postIds.length > 0) {
+        await connection.query('DELETE FROM blog_posts WHERE id NOT IN (?)', [postIds]);
+      } else {
+        await connection.query('DELETE FROM blog_posts');
+      }
+    }
+
+    // 6. Sync Orders
+    if (orders && Array.isArray(orders)) {
+      for (const o of orders) {
+        await connection.query(
+          `INSERT INTO orders (id, date, product, total, status, customer) 
+           VALUES (?, ?, ?, ?, ?, ?)
+           ON DUPLICATE KEY UPDATE
+           date = VALUES(date), product = VALUES(product), total = VALUES(total),
+           status = VALUES(status), customer = VALUES(customer)`,
+          [o.id, o.date, o.product || '', o.total || 0, o.status || '', o.customer || '']
+        );
+      }
+      const orderIds = orders.map(o => o.id);
+      if (orderIds.length > 0) {
+        await connection.query('DELETE FROM orders WHERE id NOT IN (?)', [orderIds]);
+      } else {
+        await connection.query('DELETE FROM orders');
+      }
+    }
+
+    await connection.commit();
+    res.json({ success: true, message: 'Data saved successfully in MySQL' });
+  } catch (err) {
+    await connection.rollback();
+    console.error('Failed to write data to database:', err);
+    res.status(500).json({ success: false, message: 'Database write error' });
+  } finally {
+    connection.release();
+  }
+});
+
+// Admin Authentication endpoint
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!isDbConnected()) {
+    console.log('Database not connected. Performing fallback authentication...');
+    let currentData = getDefaultData();
+    if (fs.existsSync(DATA_FILE)) {
+      try {
+        currentData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      } catch (e) {}
+    }
+    const s = currentData.settings || {};
+    if (username === (s.username || 'admin') && password === (s.password || 'admin123')) {
+      return res.json({ success: true });
+    } else {
+      return res.json({ success: false, message: 'Invalid credentials (fallback)' });
+    }
+  }
+
+  try {
+    const [rows] = await pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [
+      username,
+      password
+    ]);
+    if (rows.length > 0) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, message: 'Invalid credentials' });
+    }
+  } catch (err) {
+    console.error('Database authentication error:', err);
+    res.status(500).json({ success: false, message: 'Authentication error' });
+  }
+});
+
+// Image Upload Endpoint
 app.post('/api/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded' });
@@ -108,17 +396,31 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   res.json({ success: true, url: fileUrl });
 });
 
-// Fallback for SPA routing if needed (optional since we serve static .html directly)
+// Fallback for SPA routing if needed (with clean URL support)
 app.get('*', (req, res, next) => {
   const ext = path.extname(req.path);
   if (!ext) {
-    // If route doesn't have extension, redirect or serve index.html
+    const cleanPath = req.path.replace(/\/$/, ''); // Remove trailing slash
+    const filename = cleanPath ? cleanPath.substring(1) : 'index'; // Remove leading slash
+    const htmlFilePath = path.join(__dirname, `${filename}.html`);
+    if (fs.existsSync(htmlFilePath)) {
+      return res.sendFile(htmlFilePath);
+    }
     res.sendFile(path.join(__dirname, 'index.html'));
   } else {
     next();
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Smart Electricity Company (SEC) server running on port ${PORT}`);
-});
+
+// Initialize DB first, then start server
+initializeDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Smart Electricity Company (SEC) server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Critical database initialization failure:', err);
+    process.exit(1);
+  });
