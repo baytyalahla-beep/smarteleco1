@@ -398,6 +398,18 @@ window.openCatalogsModal = function() {
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof SiteData === 'undefined') return;
 
+  // Clear old cached data for version upgrade once to ensure clean update
+  const CURRENT_VERSION = 'v1.0.3';
+  if (localStorage.getItem('site_version') !== CURRENT_VERSION) {
+    localStorage.removeItem('electric_house_cms');
+    localStorage.setItem('site_version', CURRENT_VERSION);
+    console.log('Cache cleared for version upgrade');
+    location.reload();
+    return;
+  }
+
+
+
 
 
   const data = SiteData.getData();
