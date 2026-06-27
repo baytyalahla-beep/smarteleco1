@@ -82,9 +82,23 @@ async function initializeDatabase() {
         description TEXT,
         descriptionEn TEXT,
         featured TINYINT(1) DEFAULT 0,
-        showPrice TINYINT(1) DEFAULT 1
+        showPrice TINYINT(1) DEFAULT 1,
+        specifications JSON,
+        techFiles JSON,
+        salesMode VARCHAR(50) DEFAULT 'both'
       )
     `);
+
+    // Safely add columns if the table already exists
+    try {
+      await pool.query("ALTER TABLE products ADD COLUMN specifications JSON NULL");
+    } catch (e) {}
+    try {
+      await pool.query("ALTER TABLE products ADD COLUMN techFiles JSON NULL");
+    } catch (e) {}
+    try {
+      await pool.query("ALTER TABLE products ADD COLUMN salesMode VARCHAR(50) DEFAULT 'both'");
+    } catch (e) {}
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS brands (
@@ -179,13 +193,14 @@ async function initializeDatabase() {
       console.log('Seeding products data...');
       for (const p of defaultData.products) {
         await pool.query(
-          `INSERT INTO products (id, name, nameEn, brand, brandEn, price, originalPrice, isOffer, stockTotal, stockSold, category, image, images, description, descriptionEn, featured, showPrice) 
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO products (id, name, nameEn, brand, brandEn, price, originalPrice, isOffer, stockTotal, stockSold, category, image, images, description, descriptionEn, featured, showPrice, specifications, techFiles, salesMode) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             p.id, p.name, p.nameEn || '', p.brand || '', p.brandEn || '', p.price, p.originalPrice || p.price,
             p.isOffer ? 1 : 0, p.stockTotal || 100, p.stockSold || 0, p.category || '', p.image || '',
             JSON.stringify(p.images || [p.image || '', '', '', '']), p.description || '', p.descriptionEn || '',
-            p.featured ? 1 : 0, p.showPrice !== false ? 1 : 0
+            p.featured ? 1 : 0, p.showPrice !== false ? 1 : 0,
+            JSON.stringify(p.specifications || []), JSON.stringify(p.techFiles || []), p.salesMode || 'both'
           ]
         );
       }

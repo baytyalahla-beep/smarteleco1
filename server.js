@@ -91,7 +91,10 @@ app.get('/api/data', async (req, res) => {
       description: p.description,
       descriptionEn: p.descriptionEn,
       featured: Boolean(p.featured),
-      showPrice: Boolean(p.showPrice)
+      showPrice: Boolean(p.showPrice),
+      specifications: typeof p.specifications === 'string' ? JSON.parse(p.specifications) : (p.specifications || []),
+      techFiles: typeof p.techFiles === 'string' ? JSON.parse(p.techFiles) : (p.techFiles || []),
+      salesMode: p.salesMode || 'both'
     }));
 
     data.brands = brandRows.map(b => ({
@@ -228,19 +231,21 @@ app.post('/api/data', async (req, res) => {
     if (products && Array.isArray(products)) {
       for (const p of products) {
         await connection.query(
-          `INSERT INTO products (id, name, nameEn, brand, brandEn, price, originalPrice, isOffer, stockTotal, stockSold, category, image, images, description, descriptionEn, featured, showPrice) 
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `INSERT INTO products (id, name, nameEn, brand, brandEn, price, originalPrice, isOffer, stockTotal, stockSold, category, image, images, description, descriptionEn, featured, showPrice, specifications, techFiles, salesMode) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON DUPLICATE KEY UPDATE
            name = VALUES(name), nameEn = VALUES(nameEn), brand = VALUES(brand), brandEn = VALUES(brandEn),
            price = VALUES(price), originalPrice = VALUES(originalPrice), isOffer = VALUES(isOffer),
            stockTotal = VALUES(stockTotal), stockSold = VALUES(stockSold), category = VALUES(category),
            image = VALUES(image), images = VALUES(images), description = VALUES(description),
-           descriptionEn = VALUES(descriptionEn), featured = VALUES(featured), showPrice = VALUES(showPrice)`,
+           descriptionEn = VALUES(descriptionEn), featured = VALUES(featured), showPrice = VALUES(showPrice),
+           specifications = VALUES(specifications), techFiles = VALUES(techFiles), salesMode = VALUES(salesMode)`,
           [
             p.id, p.name, p.nameEn || '', p.brand || '', p.brandEn || '', p.price, p.originalPrice || p.price,
             p.isOffer ? 1 : 0, p.stockTotal || 100, p.stockSold || 0, p.category || '', p.image || '',
             JSON.stringify(p.images || [p.image || '', '', '', '']), p.description || '', p.descriptionEn || '',
-            p.featured ? 1 : 0, p.showPrice !== false ? 1 : 0
+            p.featured ? 1 : 0, p.showPrice !== false ? 1 : 0,
+            JSON.stringify(p.specifications || []), JSON.stringify(p.techFiles || []), p.salesMode || 'both'
           ]
         );
       }

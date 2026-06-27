@@ -277,6 +277,74 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 </div>
 
 <div class="card">
+  <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2">
+    <span class="material-symbols-outlined">visibility</span>
+    أقسام الصفحة الرئيسية النشطة
+  </h3>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-hero" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">البانر الرئيسي (Hero)</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-banners" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">البانرات الترويجية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-categories" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">التصنيفات الرئيسية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-featured" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">المنتجات الأكثر مبيعاً</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-legrand" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">عالم ليجراند</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-philips" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">شاشة فيليبس</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-bahra" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">كابلات بحرة</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-tools" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">العدد والأدوات اليدوية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-cctv" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">أنظمة المراقبة CCTV</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-blog" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">المدونة والمقالات</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-brands" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">شريط العلامات التجارية</span>
+    </label>
+  </div>
+</div>
+
+<div class="card">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="font-bold text-lg text-deep-forest flex items-center gap-2">
+      <span class="material-symbols-outlined">filter_alt</span>
+      مدير فلاتر المنتجات (Product Filters)
+    </h3>
+    <button type="button" onclick="openAddFilterModal()" class="px-2 py-1 bg-surface-gray border border-outline-variant hover:bg-outline-variant/30 text-primary rounded text-xs font-bold flex items-center gap-1">
+      <span class="material-symbols-outlined text-[14px]">add</span> إضافة فلتر جديد
+    </button>
+  </div>
+  <div id="filters-list" class="space-y-3">
+    <!-- Will be populated dynamically by JS -->
+  </div>
+</div>
+
+<div class="card">
 <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">share</span> روابط التواصل الاجتماعي</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط فيسبوك (Facebook)</label><input id="s-facebook" class="form-input" placeholder="https://facebook.com/..."></div>
@@ -720,6 +788,17 @@ function loadSettings() {
   renderSettingsList('phones', s.phones || []);
   renderSettingsList('emails', s.emails || []);
   renderSettingsList('addresses', s.addresses || []);
+
+  const visibilityKeys = ['hero', 'banners', 'categories', 'featured', 'legrand', 'philips', 'bahra', 'tools', 'cctv', 'blog', 'brands'];
+  const vis = s.sectionVisibility || {};
+  visibilityKeys.forEach(k => {
+    const chk = document.getElementById('v-' + k);
+    if (chk) {
+      chk.checked = vis[k] !== false;
+    }
+  });
+
+  loadFilters();
 }
 function saveSettings() {
   const s = SiteData.getData('settings');
@@ -734,10 +813,181 @@ function saveSettings() {
   if (s.phones.length > 0) s.phone = s.phones[0];
   if (s.emails.length > 0) s.email = s.emails[0];
   if (s.addresses.length > 0) s.address = s.addresses[0];
+
+  const visibilityKeys = ['hero', 'banners', 'categories', 'featured', 'legrand', 'philips', 'bahra', 'tools', 'cctv', 'blog', 'brands'];
+  const vis = {};
+  visibilityKeys.forEach(k => {
+    const chk = document.getElementById('v-' + k);
+    if (chk) {
+      vis[k] = chk.checked;
+    }
+  });
+  s.sectionVisibility = vis;
   
   SiteData.saveData('settings', s);
   showToast('تم حفظ الإعدادات بنجاح ✓');
   loadSettings();
+}
+
+// ========== FILTERS MANAGER ==========
+function loadFilters() {
+  const s = SiteData.getData('settings');
+  const filters = s.filters || [
+    { id: "category", nameAr: "الفئة الرئيسية", nameEn: "Main Category", type: "category", enabled: true },
+    { id: "brand", nameAr: "الشركة المصنعة", nameEn: "Manufacturer / Brand", type: "brand", enabled: true },
+    { id: "industrial_app", nameAr: "التطبيق الصناعي", nameEn: "Industrial Application", type: "specification", specName: "التطبيق الصناعي", enabled: true, values: ["التوزيع والحماية", "تحكم المحركات", "الطاقة الشمسية", "الأتمتة الصناعية", "الحلول الزراعية", "القياس والمراقبة"] }
+  ];
+  
+  const container = document.getElementById('filters-list');
+  if (!container) return;
+  
+  container.innerHTML = filters.map((f, idx) => `
+    <div class="item-card justify-between flex items-center p-3 bg-surface-gray/10 rounded-xl border border-outline-variant/30">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-xl">filter_list</span>
+        <div class="text-right">
+          <h4 class="font-bold text-sm text-on-surface">${f.nameAr} <span class="text-xs text-on-surface-variant font-normal">(${f.nameEn})</span></h4>
+          <p class="text-[11px] text-on-surface-variant">النوع: ${f.type === 'specification' ? `خصائص فنية (${f.specName})` : 'فئة/علامة تجارية'}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="toggleFilterEnabled(${idx})" class="px-2 py-1 text-xs rounded font-bold ${f.enabled ? 'bg-secondary-container text-on-secondary-container' : 'bg-surface-gray text-outline'}">
+          ${f.enabled ? 'نشط' : 'معطل'}
+        </button>
+        <button type="button" onclick="moveFilter(${idx}, -1)" class="p-1 hover:bg-surface-gray rounded" title="أعلى"><span class="material-symbols-outlined text-[16px]">arrow_upward</span></button>
+        <button type="button" onclick="moveFilter(${idx}, 1)" class="p-1 hover:bg-surface-gray rounded" title="أسفل"><span class="material-symbols-outlined text-[16px]">arrow_downward</span></button>
+        <button type="button" onclick="openEditFilterModal(${idx})" class="p-1 hover:bg-surface-gray rounded text-primary" title="تعديل"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+        <button type="button" onclick="deleteFilter(${idx})" class="p-1 hover:bg-error-container rounded text-error" title="حذف"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleFilterEnabled(idx) {
+  const s = SiteData.getData('settings');
+  if (!s.filters) {
+    s.filters = [
+      { id: "category", nameAr: "الفئة الرئيسية", nameEn: "Main Category", type: "category", enabled: true },
+      { id: "brand", nameAr: "الشركة المصنعة", nameEn: "Manufacturer / Brand", type: "brand", enabled: true },
+      { id: "industrial_app", nameAr: "التطبيق الصناعي", nameEn: "Industrial Application", type: "specification", specName: "التطبيق الصناعي", enabled: true, values: ["التوزيع والحماية", "تحكم المحركات", "الطاقة الشمسية", "الأتمتة الصناعية", "الحلول الزراعية", "القياس والمراقبة"] }
+    ];
+  }
+  s.filters[idx].enabled = !s.filters[idx].enabled;
+  SiteData.saveData('settings', s);
+  loadFilters();
+  showToast('تم تحديث حالة الفلتر ✓');
+}
+
+function moveFilter(idx, dir) {
+  const s = SiteData.getData('settings');
+  if (!s.filters) return;
+  const target = idx + dir;
+  if (target < 0 || target >= s.filters.length) return;
+  const temp = s.filters[idx];
+  s.filters[idx] = s.filters[target];
+  s.filters[target] = temp;
+  SiteData.saveData('settings', s);
+  loadFilters();
+}
+
+function deleteFilter(idx) {
+  if (!confirm('هل تريد حذف هذا الفلتر؟')) return;
+  const s = SiteData.getData('settings');
+  if (!s.filters) return;
+  s.filters.splice(idx, 1);
+  SiteData.saveData('settings', s);
+  loadFilters();
+  showToast('تم حذف الفلتر ✓');
+}
+
+function openAddFilterModal() {
+  openFilterModal();
+}
+
+function openEditFilterModal(idx) {
+  const s = SiteData.getData('settings');
+  if (!s.filters) return;
+  openFilterModal(idx, s.filters[idx]);
+}
+
+function openFilterModal(idx, f) {
+  const isNew = (idx === undefined || idx === null);
+  const filter = f || { id: '', nameAr: '', nameEn: '', type: 'specification', specName: '', enabled: true, values: [] };
+  const valuesText = (filter.values || []).join('\n');
+  
+  openModal(isNew ? 'إضافة فلتر جديد' : 'تعديل الفلتر', `
+    <div class="space-y-4 text-right" dir="rtl">
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">معرف الفلتر (ID فريد بالانجليزية)</label><input id="mf-id" class="form-input" value="${filter.id}" placeholder="مثال: voltage"></div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">نوع الفلتر</label>
+          <select id="mf-type" class="form-input">
+            <option value="specification" ${filter.type === 'specification' ? 'selected' : ''}>مواصفة فنية (Specification)</option>
+            <option value="category" ${filter.type === 'category' ? 'selected' : ''}>الفئة (Category)</option>
+            <option value="brand" ${filter.type === 'brand' ? 'selected' : ''}>العلامة التجارية (Brand)</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">الاسم بالعربي</label><input id="mf-nameAr" class="form-input" value="${filter.nameAr}"></div>
+        <div><label class="block text-sm font-semibold mb-1">الاسم بالانجليزي</label><input id="mf-nameEn" class="form-input" value="${filter.nameEn}"></div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">اسم الحقل/المواصفة في قاعدة البيانات (في حال كان نوع الفلتر مواصفة فنية)</label>
+        <input id="mf-specName" class="form-input" value="${filter.specName || ''}" placeholder="مثال: الجهد, التيار, القدرة">
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">القيم الخيارية للفلتر (قيمة في كل سطر)</label>
+        <textarea id="mf-values" class="form-input text-xs" rows="4" placeholder="مثال:\n220V\n380V">${valuesText}</textarea>
+      </div>
+      <button onclick="saveFilterModal(${isNew ? 'null' : idx})" class="btn-primary w-full mt-4">حفظ الفلتر</button>
+    </div>
+  `);
+}
+
+function saveFilterModal(idx) {
+  const s = SiteData.getData('settings');
+  if (!s.filters) {
+    s.filters = [
+      { id: "category", nameAr: "الفئة الرئيسية", nameEn: "Main Category", type: "category", enabled: true },
+      { id: "brand", nameAr: "الشركة المصنعة", nameEn: "Manufacturer / Brand", type: "brand", enabled: true },
+      { id: "industrial_app", nameAr: "التطبيق الصناعي", nameEn: "Industrial Application", type: "specification", specName: "التطبيق الصناعي", enabled: true, values: ["التوزيع والحماية", "تحكم المحركات", "الطاقة الشمسية", "الأتمتة الصناعية", "الحلول الزراعية", "القياس والمراقبة"] }
+    ];
+  }
+  
+  const idVal = document.getElementById('mf-id').value.trim();
+  const nameArVal = document.getElementById('mf-nameAr').value.trim();
+  const nameEnVal = document.getElementById('mf-nameEn').value.trim();
+  const typeVal = document.getElementById('mf-type').value;
+  const specNameVal = document.getElementById('mf-specName').value.trim();
+  const valuesArray = document.getElementById('mf-values').value.split('\n').map(x => x.trim()).filter(x => x);
+  
+  if (!idVal || !nameArVal) {
+    alert('يرجى تعبئة معرف الفلتر والاسم بالعربي');
+    return;
+  }
+  
+  const filterObj = {
+    id: idVal,
+    nameAr: nameArVal,
+    nameEn: nameEnVal || nameArVal,
+    type: typeVal,
+    specName: specNameVal,
+    enabled: true,
+    values: valuesArray
+  };
+  
+  if (idx === null || idx === undefined) {
+    s.filters.push(filterObj);
+  } else {
+    filterObj.enabled = s.filters[idx].enabled;
+    s.filters[idx] = filterObj;
+  }
+  
+  SiteData.saveData('settings', s);
+  closeModal();
+  loadFilters();
+  showToast('تم حفظ الفلتر بنجاح ✓');
 }
 
 // ========== HOMEPAGE ==========
@@ -991,7 +1241,7 @@ function loadProducts() {
 function openProductModal(id) {
   const products = SiteData.getData('products');
   const categories = SiteData.getData('categories');
-  const p = id ? products.find(x => x.id === id) : { id: 0, name: '', nameEn: '', brand: '', price: 0, originalPrice: 0, isOffer: false, stockTotal: 100, stockSold: 0, category: '', image: '', description: '', descriptionEn: '', featured: false, showPrice: true, images: ['', '', '', ''] };
+  const p = id ? products.find(x => x.id === id) : { id: 0, name: '', nameEn: '', brand: '', price: 0, originalPrice: 0, isOffer: false, stockTotal: 100, stockSold: 0, category: '', image: '', description: '', descriptionEn: '', featured: false, showPrice: true, images: ['', '', '', ''], specifications: [], techFiles: [], salesMode: 'both' };
   
   if (!p.images || !Array.isArray(p.images)) {
     p.images = [p.image || '', '', '', ''];
@@ -1004,6 +1254,13 @@ function openProductModal(id) {
   if (p.stockSold === undefined) p.stockSold = 0;
   if (p.nameEn === undefined) p.nameEn = p.name;
   if (p.descriptionEn === undefined) p.descriptionEn = p.description || '';
+  if (p.specifications === undefined) p.specifications = [];
+  if (p.techFiles === undefined) p.techFiles = [];
+  if (p.salesMode === undefined) p.salesMode = 'both';
+
+  const specText = (p.specifications || []).map(s => `${s.nameAr || ''}|${s.valueAr || ''}|${s.nameEn || ''}|${s.valueEn || ''}`).join('\n');
+  const filesText = (p.techFiles || []).map(f => `${f.nameAr || ''}|${f.nameEn || ''}|${f.size || '1.5 MB'}|${f.url || '#'}`).join('\n');
+  const salesMode = p.salesMode || 'both';
   
   const catOptions = categories.map(c => `<option ${c === p.category ? 'selected' : ''}>${c}</option>`).join('');
   openModal(id ? 'تعديل المنتج' : 'إضافة منتج جديد', `
@@ -1033,6 +1290,17 @@ function openProductModal(id) {
         </div>
       </div>
 
+      <div class="grid grid-cols-1 gap-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">وضعية البيع والطلب (Sales Mode)</label>
+          <select id="mp-salesMode" class="form-input">
+            <option value="both" ${salesMode === 'both' ? 'selected' : ''}>عرض السعر وإمكانية الطلب والشراء (Order & RFQ)</option>
+            <option value="rfq_only" ${salesMode === 'rfq_only' ? 'selected' : ''}>طلب تسعير فقط (RFQ Only)</option>
+            <option value="order_only" ${salesMode === 'order_only' ? 'selected' : ''}>شراء وطلب مباشر فقط (Order Only)</option>
+          </select>
+        </div>
+      </div>
+
       <div class="space-y-2">
         <label class="block text-sm font-semibold">صور المنتج (حتى 4 صور)</label>
         <div class="grid grid-cols-1 gap-2">
@@ -1051,6 +1319,15 @@ function openProductModal(id) {
             `;
           }).join('')}
         </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold mb-1">المواصفات الفنية (الاسم عربي|القيمة عربي|الاسم انجليزي|القيمة انجليزي)</label>
+        <textarea id="mp-specifications" class="form-input text-xs" rows="3" placeholder="مثال: الجهد الكهربائي|380 فولت|Voltage|380V">${specText}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">ملفات التحميل الفنية والكتالوجات (الاسم عربي|الاسم انجليزي|الحجم|رابط الملف)</label>
+        <textarea id="mp-techFiles" class="form-input text-xs" rows="3" placeholder="مثال: بروفايل القاطع|Circuit Breaker Profile|2.4 MB|/docs/breaker.pdf">${filesText}</textarea>
       </div>
 
       <div><label class="block text-sm font-semibold mb-1">الوصف (عربي)</label><textarea id="mp-description" class="form-input" rows="2">${p.description}</textarea></div>
@@ -1079,6 +1356,35 @@ function saveProduct(id) {
     document.getElementById('mp-image-2').value,
     document.getElementById('mp-image-3').value
   ];
+  
+  const specsLines = document.getElementById('mp-specifications').value.split('\n');
+  const specifications = specsLines.map(line => {
+    const parts = line.split('|').map(x => x.trim());
+    if (parts.length >= 2 && parts[0] && parts[1]) {
+      return {
+        nameAr: parts[0],
+        valueAr: parts[1],
+        nameEn: parts[2] || parts[0],
+        valueEn: parts[3] || parts[1]
+      };
+    }
+    return null;
+  }).filter(x => x !== null);
+
+  const filesLines = document.getElementById('mp-techFiles').value.split('\n');
+  const techFiles = filesLines.map(line => {
+    const parts = line.split('|').map(x => x.trim());
+    if (parts.length >= 2 && parts[0]) {
+      return {
+        nameAr: parts[0],
+        nameEn: parts[1] || parts[0],
+        size: parts[2] || '1.5 MB',
+        url: parts[3] || '#'
+      };
+    }
+    return null;
+  }).filter(x => x !== null);
+
   const p = {
     name: document.getElementById('mp-name').value,
     nameEn: document.getElementById('mp-nameEn').value,
@@ -1094,7 +1400,10 @@ function saveProduct(id) {
     description: document.getElementById('mp-description').value,
     descriptionEn: document.getElementById('mp-descriptionEn').value,
     featured: document.getElementById('mp-featured').checked,
-    showPrice: document.getElementById('mp-showPrice').checked
+    showPrice: document.getElementById('mp-showPrice').checked,
+    salesMode: document.getElementById('mp-salesMode').value,
+    specifications: specifications,
+    techFiles: techFiles
   };
   if (id) { const idx = products.findIndex(x => x.id === id); if (idx > -1) { p.id = id; products[idx] = p; } }
   else { p.id = SiteData.newId(products); products.push(p); }
@@ -1435,7 +1744,15 @@ function loadContact() {
 function loadOrders() {
   const orders = SiteData.getData('orders');
   const c = document.getElementById('orders-list');
-  const statusColors = { 'تم الشحن': 'bg-secondary-container text-on-secondary-container', 'قيد المعالجة': 'bg-primary-fixed text-deep-forest', 'مكتمل': 'bg-surface-variant text-on-surface-variant', 'جديد': 'bg-tertiary-container text-white' };
+  const statusColors = { 
+    'تم الشحن': 'bg-secondary-container text-on-secondary-container', 
+    'قيد المعالجة': 'bg-primary-fixed text-deep-forest', 
+    'مكتمل': 'bg-surface-variant text-on-surface-variant', 
+    'جديد': 'bg-tertiary-container text-white',
+    'قيد المراجعة': 'bg-amber-100 text-amber-800',
+    'تم الرد': 'bg-green-100 text-green-800',
+    'مغلق': 'bg-gray-100 text-gray-500'
+  };
   c.innerHTML = orders.map(o => `
     <div class="item-card">
       <div class="flex-shrink-0 font-bold text-primary text-sm">#${o.id}</div>
@@ -1446,9 +1763,12 @@ function loadOrders() {
       <div class="text-sm font-bold whitespace-nowrap">${o.total} ${SiteData.getData('settings').currency}</div>
       <select class="form-input text-xs w-28 py-1" onchange="updateOrderStatus('${o.id}', this.value)" style="font-size:12px">
         <option ${o.status==='جديد'?'selected':''}>جديد</option>
+        <option ${o.status==='قيد المراجعة'?'selected':''}>قيد المراجعة</option>
+        <option ${o.status==='تم الرد'?'selected':''}>تم الرد</option>
         <option ${o.status==='قيد المعالجة'?'selected':''}>قيد المعالجة</option>
         <option ${o.status==='تم الشحن'?'selected':''}>تم الشحن</option>
         <option ${o.status==='مكتمل'?'selected':''}>مكتمل</option>
+        <option ${o.status==='مغلق'?'selected':''}>مغلق</option>
       </select>
       <button onclick="deleteOrder('${o.id}')" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
     </div>

@@ -940,7 +940,14 @@ function renderHeader(s, currentPage) {
 
   // Logo
   const logo = header.querySelector('img');
-  if (logo && s.logoUrl) logo.src = s.logoUrl;
+  if (logo) {
+    if (s.logoUrl) logo.src = s.logoUrl;
+    const parent = logo.parentElement;
+    if (parent) {
+      parent.classList.remove('h-12');
+      parent.classList.add('h-16', 'md:h-20');
+    }
+  }
   
   // Update phone numbers
   const spans = header.querySelectorAll('span');
@@ -962,10 +969,10 @@ function renderHeader(s, currentPage) {
     const langContainer = utilsBar.querySelector('.flex.gap-4:last-of-type');
     if (langContainer) {
       langContainer.innerHTML = `
-        <button onclick="toggleLanguage()" class="hover:text-primary font-bold transition-colors text-sm py-1 px-3 bg-primary/10 rounded-full text-primary" id="lang-switcher">
-          ${lang === 'ar' ? 'English' : 'العربية'}
-        </button>
-        <span class="text-sm font-semibold">${s.currency}</span>
+        <span class="text-sm font-semibold flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">payments</span>
+          <span>${lang === 'ar' ? 'دولار أمريكي ($)' : 'USD ($)'}</span>
+        </span>
       `;
     }
   }
@@ -1032,11 +1039,8 @@ function renderHeader(s, currentPage) {
           </div>
           
           <div class="border-t border-outline-variant/30 pt-6 space-y-4">
-            <div class="flex justify-between items-center">
-               <button onclick="toggleLanguage()" class="bg-primary/10 text-primary py-1.5 px-4 rounded-full font-bold text-xs">
-                 ${isEn ? 'العربية' : 'English'}
-               </button>
-               <span class="text-sm font-bold text-deep-forest">${s.currency || 'ل.س'}</span>
+            <div class="flex justify-center items-center">
+               <span class="text-sm font-bold text-deep-forest">${isEn ? 'USD ($)' : 'دولار أمريكي ($)'}</span>
             </div>
             <div class="text-[11px] text-on-surface-variant text-center">
               ${isEn ? 'Smart Electricity Company' : 'شركة الكهرباء الذكية'}
@@ -1101,9 +1105,18 @@ function renderFooter(s) {
   const copy = footer.querySelector('.text-white\\/60, [class*="text-white/60"]');
   if (copy) {
     const lang = localStorage.getItem('electric_house_lang') || 'ar';
-    copy.textContent = lang === 'ar' 
-      ? `جميع الحقوق محفوظة لشركة ${s.siteNameAr} © ${new Date().getFullYear()}`
-      : `All rights reserved to ${s.siteNameEn || s.siteName} © ${new Date().getFullYear()}`;
+    const copyText = lang === 'ar' 
+      ? `جميع الحقوق محفوظة لشركة ${s.siteNameAr || 'الكهرباء الذكية'} © ${new Date().getFullYear()}`
+      : `All rights reserved to ${s.siteNameEn || s.siteName || 'Smart Electricity Company'} © ${new Date().getFullYear()}`;
+    
+    copy.className = "flex flex-col sm:flex-row items-center justify-between gap-4 text-white/60 w-full mt-4 border-t border-white/10 pt-4";
+    copy.innerHTML = `
+      <span>${copyText}</span>
+      <button onclick="toggleLanguage()" class="inline-flex items-center gap-1.5 bg-white/10 hover:bg-primary hover:text-white text-white/90 py-1.5 px-4 rounded-full font-bold text-xs transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md">
+        <span class="material-symbols-outlined text-sm">language</span>
+        <span>${lang === 'ar' ? 'English' : 'العربية'}</span>
+      </button>
+    `;
   }
 
   // Update social media links dynamically
@@ -1873,7 +1886,7 @@ function renderProductsPage(data) {
   const brands = data.brands || [];
   const lang = localStorage.getItem('electric_house_lang') || 'ar';
   const isEn = lang === 'en';
-  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'USD') : (s.currency || '$');
 
   // Read initial search query from URL parameter
   const params = new URLSearchParams(location.search);
@@ -1975,80 +1988,105 @@ function renderProductsPage(data) {
     };
   }
 
-  // 1. Populate Category checkboxes
-  const catFilterContainer = document.getElementById('categories-filter');
-  if (catFilterContainer) {
-    catFilterContainer.innerHTML = categories.map((c, i) => {
-      const cName = isEn ? (CATEGORY_TRANSLATIONS[c] || c) : c;
-      return `
-        <label class="flex items-center gap-2 cursor-pointer group">
-          <input type="checkbox" value="${c}" class="cat-checkbox rounded border-outline-variant text-primary focus:ring-primary">
-          <span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">${cName}</span>
-        </label>
+  // Dynamic Filters Sidebar Setup
+  const sidebarContainer = document.querySelector('aside > div.bg-white');
+  const activeFilters = s.filters || [
+    { id: "category", nameAr: "الفئة الرئيسية", nameEn: "Main Category", type: "category", enabled: true },
+    { id: "brand", nameAr: "الشركة المصنعة", nameEn: "Manufacturer / Brand", type: "brand", enabled: true },
+    { id: "industrial_app", nameAr: "التطبيق الصناعي", nameEn: "Industrial Application", type: "specification", specName: "التطبيق الصناعي", enabled: true, values: ["التوزيع والحماية", "تحكم المحركات", "الطاقة الشمسية", "الأتمتة الصناعية", "الحلول الزراعية", "القياس والمراقبة"] },
+    { id: "voltage", nameAr: "الجهد الكهربائي", nameEn: "Voltage", type: "specification", specName: "الجهد", enabled: true, values: ["220V AC", "380V - 415V AC", "24V DC"] }
+  ];
+
+  if (sidebarContainer) {
+    let filtersHtml = '';
+    activeFilters.forEach(f => {
+      if (!f.enabled) return;
+      
+      const filterTitle = isEn ? (f.nameEn || f.nameAr) : f.nameAr;
+      let optionsHtml = '';
+      
+      if (f.id === 'category') {
+        optionsHtml = categories.map(c => {
+          const cName = isEn ? (CATEGORY_TRANSLATIONS[c] || c) : c;
+          return `
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="checkbox" value="${c}" class="cat-checkbox rounded border-outline-variant text-primary focus:ring-primary w-4 h-4">
+              <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">${cName}</span>
+            </label>
+          `;
+        }).join('');
+      } else if (f.id === 'brand') {
+        optionsHtml = brands.map(b => {
+          const bName = isEn ? (b.nameEn || b.name) : b.name;
+          return `
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="checkbox" value="${b.name}" class="brand-checkbox rounded border-outline-variant text-primary focus:ring-primary w-4 h-4">
+              <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">${bName}</span>
+            </label>
+          `;
+        }).join('');
+      } else if (f.values && f.values.length > 0) {
+        optionsHtml = f.values.map(val => {
+          return `
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="checkbox" data-filter-id="${f.id}" value="${val}" class="custom-filter-checkbox rounded border-outline-variant text-primary focus:ring-primary w-4 h-4">
+              <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">${val}</span>
+            </label>
+          `;
+        }).join('');
+      }
+      
+      filtersHtml += `
+        <div class="mb-6 border-b border-outline-variant/30 pb-4">
+          <h3 class="font-label-lg text-label-lg text-on-surface mb-3 border-r-4 border-primary pr-2">${filterTitle}</h3>
+          <div class="flex flex-col gap-2 mt-3">
+            ${optionsHtml}
+          </div>
+        </div>
       `;
-    }).join('');
-  }
-
-  // 2. Populate Brand checkboxes
-  const brandFilterContainer = document.getElementById('brands-filter');
-  if (brandFilterContainer) {
-    brandFilterContainer.innerHTML = brands.map((b, i) => {
-      const bName = isEn ? (b.nameEn || b.name) : b.name;
-      const bValue = b.name; 
-      return `
-        <label class="flex items-center gap-2 cursor-pointer group">
-          <input type="checkbox" value="${bValue}" class="brand-checkbox rounded border-outline-variant text-primary focus:ring-primary">
-          <span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">${bName}</span>
-        </label>
-      `;
-    }).join('');
-  }
-
-  // 3. Setup Price Range Slider
-  const priceSlider = document.getElementById('price-range-slider');
-  const priceMinLabel = document.getElementById('price-min');
-  const priceMaxLabel = document.getElementById('price-max');
-  
-  if (priceSlider && products.length > 0) {
-    const prices = products.map(p => p.price).filter(p => typeof p === 'number');
-    const maxPrice = Math.max(...prices, 5000);
-    priceSlider.max = maxPrice;
-    priceSlider.value = maxPrice;
+    });
     
-    if (priceMinLabel) priceMinLabel.textContent = `0 ${currency}`;
-    if (priceMaxLabel) priceMaxLabel.textContent = `${maxPrice} ${currency}`;
+    filtersHtml += `
+      <button id="clear-filters-btn" class="w-full mt-2 py-2.5 text-sm text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-1.5 font-bold">
+        <span class="material-symbols-outlined text-sm">filter_list_off</span>
+        <span>${isEn ? 'Clear All Filters' : 'إعادة تعيين جميع الفلاتر'}</span>
+      </button>
+    `;
     
-    priceSlider.addEventListener('input', () => {
-      if (priceMaxLabel) priceMaxLabel.textContent = `${priceSlider.value} ${currency}`;
-      applyFilters();
-    });
-  }
-
-  // 4. Sort Dropdown
-  const sortSelect = document.getElementById('sort-select');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', () => {
-      applyFilters();
-    });
-  }
-
-  // 5. Header Search Input wiring
-  if (headerSearchInput) {
-    headerSearchInput.addEventListener('input', () => {
-      applyFilters();
-    });
-    const searchForm = headerSearchInput.closest('form');
-    if (searchForm) {
-      searchForm.addEventListener('submit', (e) => e.preventDefault());
+    sidebarContainer.innerHTML = filtersHtml;
+    
+    const clearBtn = sidebarContainer.querySelector('#clear-filters-btn');
+    if (clearBtn) {
+      clearBtn.onclick = () => {
+        sidebarContainer.querySelectorAll('input[type="checkbox"]').forEach(chk => chk.checked = false);
+        applyFilters();
+      };
     }
   }
 
-  // 6. Listen to checkboxes changes
-  document.querySelectorAll('.cat-checkbox, .brand-checkbox').forEach(chk => {
-    chk.addEventListener('change', () => {
-      applyFilters();
+  // Sort Dropdown
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.onchange = () => applyFilters();
+  }
+
+  // Header Search Input wiring
+  if (headerSearchInput) {
+    headerSearchInput.oninput = () => applyFilters();
+    const searchForm = headerSearchInput.closest('form');
+    if (searchForm) {
+      searchForm.onsubmit = (e) => e.preventDefault();
+    }
+  }
+
+  // Listen to checkboxes changes
+  if (sidebarContainer) {
+    sidebarContainer.addEventListener('change', (e) => {
+      if (e.target.type === 'checkbox') {
+        applyFilters();
+      }
     });
-  });
+  }
 
   const grid = document.getElementById('products-grid') || document.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-3');
 
@@ -2059,9 +2097,7 @@ function renderProductsPage(data) {
     const checkedCats = Array.from(document.querySelectorAll('.cat-checkbox:checked')).map(chk => chk.value);
     // 2. Brand filter
     const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked')).map(chk => chk.value);
-    // 3. Price slider
-    const currentMaxPrice = priceSlider ? parseFloat(priceSlider.value) : Infinity;
-    // 4. Search query
+    // 3. Search query
     const searchQuery = headerSearchInput ? headerSearchInput.value.toLowerCase().trim() : '';
 
     // Search and display matching services if there is a query
@@ -2122,6 +2158,16 @@ function renderProductsPage(data) {
       }
     }
 
+    // Custom specification filters check
+    const customChecked = {};
+    if (sidebarContainer) {
+      sidebarContainer.querySelectorAll('.custom-filter-checkbox:checked').forEach(chk => {
+        const fid = chk.getAttribute('data-filter-id');
+        if (!customChecked[fid]) customChecked[fid] = [];
+        customChecked[fid].push(chk.value);
+      });
+    }
+
     let filtered = products.filter(p => {
       // Category match
       if (checkedCats.length > 0 && !checkedCats.includes(p.category)) {
@@ -2141,11 +2187,45 @@ function renderProductsPage(data) {
         if (!brandMatch) return false;
       }
 
-      // Price match
-      if (p.price > currentMaxPrice) {
-        return false;
+      // Custom dynamic specifications filters match
+      for (const fid of Object.keys(customChecked)) {
+        const allowedValues = customChecked[fid];
+        if (allowedValues.length === 0) continue;
+        
+        const filterObj = activeFilters.find(f => f.id === fid);
+        const specName = filterObj ? filterObj.specName : null;
+        
+        let matched = false;
+        if (specName) {
+          const productSpec = (p.specifications || []).find(spec => 
+            (spec.nameAr && spec.nameAr.includes(specName)) || 
+            (spec.nameEn && spec.nameEn.toLowerCase().includes(specName.toLowerCase()))
+          );
+          if (productSpec) {
+            const specVal = (productSpec.valueAr || productSpec.valueEn || '').toLowerCase();
+            if (allowedValues.some(val => specVal.includes(val.toLowerCase()))) {
+              matched = true;
+            }
+          }
+        }
+        
+        if (!matched) {
+          const pDesc = (p.description || '').toLowerCase();
+          const pDescEn = (p.descriptionEn || '').toLowerCase();
+          const pName = (p.name || '').toLowerCase();
+          const pNameEn = (p.nameEn || '').toLowerCase();
+          if (allowedValues.some(val => 
+            pDesc.includes(val.toLowerCase()) || 
+            pDescEn.includes(val.toLowerCase()) || 
+            pName.includes(val.toLowerCase()) || 
+            pNameEn.includes(val.toLowerCase())
+          )) {
+            matched = true;
+          }
+        }
+        
+        if (!matched) return false;
       }
-
       // Search match
       if (searchQuery !== '') {
         const pName = (p.name || '').toLowerCase();
@@ -2272,11 +2352,13 @@ function renderProductDetailPage(data) {
       }
     }
 
-    // Price Visibility
+    // Price Visibility & Sales Mode
     const priceContainer = document.querySelector('.flex.items-center.gap-4 .text-primary.font-headline-md')?.parentElement;
     if (priceContainer) {
-      const currency = isEn ? (s.currencyEn || s.currency || 'SAR') : (s.currency || 'ر.س');
-      if (product.showPrice !== false) {
+      const currency = isEn ? (s.currencyEn || s.currency || 'USD') : (s.currency || '$');
+      const isRfqOnly = product.salesMode === 'rfq_only' || product.showPrice === false;
+      
+      if (!isRfqOnly) {
         if (product.isOffer && product.originalPrice > product.price) {
           const discountPercent = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
           priceContainer.innerHTML = `
@@ -2303,9 +2385,16 @@ function renderProductDetailPage(data) {
     const addBtn = document.querySelector('button.flex-1.bg-primary');
     
     if (addBtn) {
-      if (product.showPrice === false) {
-        const btnText = addBtn.querySelector('span:last-child');
-        if (btnText) btnText.textContent = isEn ? 'Add to Quote Request' : 'إضافة إلى طلب التسعير';
+      const isRfqOnly = product.salesMode === 'rfq_only' || product.showPrice === false;
+      const btnText = addBtn.querySelector('span:last-child');
+      if (btnText) {
+        if (isRfqOnly) {
+          btnText.textContent = isEn ? 'Add to Quote Request' : 'إضافة إلى طلب التسعير';
+        } else if (product.salesMode === 'order_only') {
+          btnText.textContent = isEn ? 'Buy Directly' : 'شراء مباشر';
+        } else {
+          btnText.textContent = isEn ? 'Add to Cart' : 'إضافة إلى السلة';
+        }
       }
     }
 
@@ -2355,7 +2444,7 @@ function renderProductDetailPage(data) {
       } else {
         related = related.slice(0, 4);
       }
-      const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
+      const currency = isEn ? (s.currencyEn || s.currency || 'USD') : (s.currency || '$');
       renderProductCards(relatedContainer, related, currency);
     }
 
@@ -2363,23 +2452,41 @@ function renderProductDetailPage(data) {
     // Specs Tab Content
     const specsTab = document.getElementById('tab-specs');
     if (specsTab) {
-      const pBrand = product.brand || (isEn ? 'SEC' : 'شركة الكهرباء الذكية');
-      let pOrigin = isEn ? 'Germany / France' : 'ألمانيا / فرنسا';
-      if (pBrand.includes('شنايدر') || pBrand.toLowerCase().includes('schneider')) pOrigin = isEn ? 'France' : 'فرنسا';
-      else if (pBrand.includes('سيمنز') || pBrand.toLowerCase().includes('siemens')) pOrigin = isEn ? 'Germany' : 'ألمانيا';
-      else if (pBrand.includes('لوغراند') || pBrand.toLowerCase().includes('legrand')) pOrigin = isEn ? 'France' : 'فرنسا';
-      else if (pBrand.includes('بحرة') || pBrand.toLowerCase().includes('bahra')) pOrigin = isEn ? 'Saudi Arabia' : 'المملكة العربية السعودية';
+      let specRowsHtml = '';
+      if (product.specifications && Array.isArray(product.specifications) && product.specifications.length > 0) {
+        specRowsHtml = product.specifications.map(spec => {
+          const name = isEn ? (spec.nameEn || spec.nameAr) : spec.nameAr;
+          const val = isEn ? (spec.valueEn || spec.valueAr) : spec.valueAr;
+          return `
+            <tr class="border-b border-outline-variant/30">
+              <td class="py-3 font-bold text-deep-forest w-1/3">${name}</td>
+              <td class="py-3 text-on-surface">${val}</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        const pBrand = product.brand || (isEn ? 'SEC' : 'شركة الكهرباء الذكية');
+        let pOrigin = isEn ? 'Germany / France' : 'ألمانيا / فرنسا';
+        if (pBrand.includes('شنايدر') || pBrand.toLowerCase().includes('schneider')) pOrigin = isEn ? 'France' : 'فرنسا';
+        else if (pBrand.includes('سيمنز') || pBrand.toLowerCase().includes('siemens')) pOrigin = isEn ? 'Germany' : 'ألمانيا';
+        else if (pBrand.includes('لوغراند') || pBrand.toLowerCase().includes('legrand')) pOrigin = isEn ? 'France' : 'فرنسا';
+        else if (pBrand.includes('بحرة') || pBrand.toLowerCase().includes('bahra')) pOrigin = isEn ? 'Saudi Arabia' : 'المملكة العربية السعودية';
+        
+        specRowsHtml = `
+          <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest w-1/3">${isEn ? 'Brand' : 'العلامة التجارية'}</td><td class="py-3 text-on-surface">${pBrand}</td></tr>
+          <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Category' : 'الفئة'}</td><td class="py-3 text-on-surface">${isEn ? (CATEGORY_TRANSLATIONS[product.category] || product.category) : product.category}</td></tr>
+          <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Voltage' : 'الجهد الكهربائي'}</td><td class="py-3 text-on-surface">${isEn ? '380V - 415V AC' : '380 - 415 فولت AC'}</td></tr>
+          <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Poles' : 'عدد الأقطاب'}</td><td class="py-3 text-on-surface">${isEn ? '3-Pole (3P) / 4-Pole (4P)' : '3 أقطاب (3P) / 4 أقطاب (4P)'}</td></tr>
+          <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Protection Class' : 'درجة الحماية'}</td><td class="py-3 text-on-surface">IP40 / IK08</td></tr>
+          <tr><td class="py-3 font-bold text-deep-forest">${isEn ? 'Country of Origin' : 'بلد المنشأ'}</td><td class="py-3 text-on-surface">${pOrigin}</td></tr>
+        `;
+      }
       
       specsTab.innerHTML = `
         <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm max-w-3xl mx-auto overflow-hidden">
           <table class="w-full text-right ${isEn ? 'text-left' : 'text-right'} border-collapse">
             <tbody>
-              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest w-1/3">${isEn ? 'Brand' : 'العلامة التجارية'}</td><td class="py-3 text-on-surface">${pBrand}</td></tr>
-              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Category' : 'الفئة'}</td><td class="py-3 text-on-surface">${isEn ? (CATEGORY_TRANSLATIONS[product.category] || product.category) : product.category}</td></tr>
-              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Voltage' : 'الجهد الكهربائي'}</td><td class="py-3 text-on-surface">${isEn ? '380V - 415V AC' : '380 - 415 فولت AC'}</td></tr>
-              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Poles' : 'عدد الأقطاب'}</td><td class="py-3 text-on-surface">${isEn ? '3-Pole (3P) / 4-Pole (4P)' : '3 أقطاب (3P) / 4 أقطاب (4P)'}</td></tr>
-              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Protection Class' : 'درجة الحماية'}</td><td class="py-3 text-on-surface">IP40 / IK08</td></tr>
-              <tr><td class="py-3 font-bold text-deep-forest">${isEn ? 'Country of Origin' : 'بلد المنشأ'}</td><td class="py-3 text-on-surface">${pOrigin}</td></tr>
+              ${specRowsHtml}
             </tbody>
           </table>
         </div>
@@ -2389,36 +2496,64 @@ function renderProductDetailPage(data) {
     // Techfiles Tab Content
     const techTab = document.getElementById('tab-techfiles');
     if (techTab) {
+      let filesHtml = '';
+      if (product.techFiles && Array.isArray(product.techFiles) && product.techFiles.length > 0) {
+        filesHtml = product.techFiles.map(file => {
+          const name = isEn ? (file.nameEn || file.nameAr) : file.nameAr;
+          const url = file.url || '#';
+          const size = file.size || '1.5 MB';
+          return `
+            <div class="py-3 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
+                <div>
+                  <p class="font-bold text-on-surface">${name}</p>
+                  <p class="text-xs text-on-surface-variant">PDF (${size})</p>
+                </div>
+              </div>
+              <a href="${url}" target="_blank" class="text-primary font-bold hover:underline flex items-center gap-1">
+                <span>${isEn ? 'Download' : 'تحميل'}</span>
+                <span class="material-symbols-outlined text-sm">download</span>
+              </a>
+            </div>
+          `;
+        }).join('');
+      } else {
+        filesHtml = `
+          <div class="py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
+              <div>
+                <p class="font-bold text-on-surface">${isEn ? 'Technical Datasheet' : 'كتالوج المنتج الفني الفصيلي'}</p>
+                <p class="text-xs text-on-surface-variant">PDF (2.4 MB)</p>
+              </div>
+            </div>
+            <a href="#" onclick="event.preventDefault(); alert('${isEn ? 'Downloading Technical Datasheet...' : 'جاري تحميل الكتالوج الفني...' || 'Downloading...'}')" class="text-primary font-bold hover:underline flex items-center gap-1">
+              <span>${isEn ? 'Download' : 'تحميل'}</span>
+              <span class="material-symbols-outlined text-sm">download</span>
+            </a>
+          </div>
+          <div class="py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
+              <div>
+                <p class="font-bold text-on-surface">${isEn ? 'Installation & Safety Guide' : 'دليل التركيب والصيانة والتشغيل'}</p>
+                <p class="text-xs text-on-surface-variant">PDF (1.8 MB)</p>
+              </div>
+            </div>
+            <a href="#" onclick="event.preventDefault(); alert('${isEn ? 'Downloading Installation Guide...' : 'جاري تحميل دليل التركيب...' || 'Downloading...'}')" class="text-primary font-bold hover:underline flex items-center gap-1">
+              <span>${isEn ? 'Download' : 'تحميل'}</span>
+              <span class="material-symbols-outlined text-sm">download</span>
+            </a>
+          </div>
+        `;
+      }
+      
       techTab.innerHTML = `
         <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm max-w-3xl mx-auto space-y-4">
           <h4 class="font-bold text-deep-forest mb-4">${isEn ? 'Technical Datasheets & User Manuals' : 'الكتيبات الفنية وشهادات المطابقة'}</h4>
           <div class="divide-y divide-outline-variant/30">
-            <div class="py-3 flex justify-between items-center">
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
-                <div>
-                  <p class="font-bold text-on-surface">${isEn ? 'Technical Datasheet' : 'كتالوج المنتج الفني الفصيلي'}</p>
-                  <p class="text-xs text-on-surface-variant">PDF (2.4 MB)</p>
-                </div>
-              </div>
-              <a href="#" onclick="event.preventDefault(); alert('${isEn ? 'Downloading Technical Datasheet...' : 'جاري تحميل الكتالوج الفني...' || 'Downloading...'}')" class="text-primary font-bold hover:underline flex items-center gap-1">
-                <span>${isEn ? 'Download' : 'تحميل'}</span>
-                <span class="material-symbols-outlined text-sm">download</span>
-              </a>
-            </div>
-            <div class="py-3 flex justify-between items-center">
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
-                <div>
-                  <p class="font-bold text-on-surface">${isEn ? 'Installation & Safety Guide' : 'دليل التركيب والصيانة والتشغيل'}</p>
-                  <p class="text-xs text-on-surface-variant">PDF (1.8 MB)</p>
-                </div>
-              </div>
-              <a href="#" onclick="event.preventDefault(); alert('${isEn ? 'Downloading Installation Guide...' : 'جاري تحميل دليل التركيب...' || 'Downloading...'}')" class="text-primary font-bold hover:underline flex items-center gap-1">
-                <span>${isEn ? 'Download' : 'تحميل'}</span>
-                <span class="material-symbols-outlined text-sm">download</span>
-              </a>
-            </div>
+            ${filesHtml}
           </div>
         </div>
       `;
@@ -2948,7 +3083,7 @@ function renderOffersPage(data) {
 
   // Render Offer Products Grid
   const grid = document.getElementById('offers-products-grid');
-  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'USD') : (s.currency || '$');
   if (grid) {
     renderOfferProductCards(grid, offerProducts, currency);
   }
@@ -3193,9 +3328,10 @@ function renderContactPage(data) {
   if (s.mapEmbedUrl) {
     const mapContainer = document.querySelector('.h-\\[450px\\], [class*="h-[450px]"]');
     if (mapContainer) {
-      mapContainer.innerHTML = `
-        <iframe src="${s.mapEmbedUrl}" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      `;
+      const iframe = mapContainer.querySelector('iframe');
+      if (iframe) {
+        iframe.src = s.mapEmbedUrl;
+      }
     }
   }
 }
@@ -3241,7 +3377,7 @@ function renderCartPage(data) {
   let subtotal = 0;
   let hasHiddenPrice = false;
   let itemsCount = 0;
-  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'USD') : (s.currency || '$');
   
   let cartItemsHtml = '';
   cart.forEach((item, index) => {
@@ -3663,7 +3799,7 @@ window.sendOrderWhatsApp = function() {
     
   let total = 0;
   let hasHiddenPrice = false;
-  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'USD') : (s.currency || '$');
   
   cart.forEach((item, idx) => {
     let p;
