@@ -646,6 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'project-detail.html': () => renderProjectDetailPage(data),
     'offers.html': () => renderOffersPage(data),
     'blog.html': () => renderBlogPage(data),
+    'faq.html': () => renderFaqPage(data),
     'contact.html': () => renderContactPage(data),
     'cart.html': () => renderCartPage(data),
     'thank-you.html': () => renderThankYouPage(data)
@@ -1665,6 +1666,92 @@ function renderHomePage(data) {
       if (banner && b.cctvBanner) banner.src = b.cctvBanner;
     }
   }
+
+  const isEn = lang === 'en';
+
+  // 7. Sectors Section Rendering
+  const sectorsGrid = document.getElementById('home-sectors-grid');
+  if (sectorsGrid && data.sectors) {
+    sectorsGrid.innerHTML = data.sectors.map(sec => {
+      const sTitle = isEn ? (sec.titleEn || sec.title) : sec.title;
+      const sDesc = isEn ? (sec.descriptionEn || sec.description) : sec.description;
+      return `
+        <div class="bg-white rounded-2xl border border-outline-variant shadow-sm p-6 space-y-4 hover:shadow-lg transition-all hover:border-primary group text-right" dir="rtl">
+          <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
+            <img src="${sec.image}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-3xl text-primary bg-primary/10 p-2 rounded-lg">${sec.icon || 'engineering'}</span>
+            <h3 class="font-bold text-lg text-deep-forest">${sTitle}</h3>
+          </div>
+          <p class="text-sm text-on-surface-variant leading-relaxed">${sDesc}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 8. Projects Section Rendering
+  const projectsGrid = document.getElementById('home-projects-grid');
+  if (projectsGrid && data.projects) {
+    const featuredProjects = data.projects.slice(0, 3);
+    projectsGrid.innerHTML = featuredProjects.map(proj => {
+      const pName = isEn ? (proj.nameEn || proj.name) : proj.name;
+      const pDesc = isEn ? (proj.descriptionEn || proj.description) : proj.description;
+      const pStatus = isEn ? (proj.statusEn || proj.status) : proj.status;
+      return `
+        <div class="bg-white rounded-2xl border border-outline-variant shadow-sm overflow-hidden flex flex-col group hover:shadow-lg hover:border-primary transition-all text-right" dir="rtl">
+          <div class="h-48 overflow-hidden relative">
+            <img src="${proj.image}" alt="${pName}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-4 right-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">${pStatus}</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-bold text-primary uppercase">${isEn ? (proj.categoryEn || proj.category) : proj.category}</span>
+              <h3 class="font-bold text-lg text-deep-forest mt-1 mb-2">${pName}</h3>
+              <p class="text-sm text-on-surface-variant line-clamp-2">${pDesc}</p>
+            </div>
+            <a href="project-detail.html?id=${proj.id}" class="text-primary font-bold text-sm hover:underline mt-4 inline-flex items-center gap-1">
+              <span>${isEn ? 'View Project Details' : 'عرض تفاصيل المشروع'}</span>
+              <span class="material-symbols-outlined text-[16px] dir-arrow">chevron_left</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 9. Section Visibility Manager
+  if (s && s.sectionVisibility) {
+    const vis = s.sectionVisibility;
+    
+    // Map section elements to their keys
+    const sectionsMap = {
+      hero: document.querySelector('section.relative'), // Hero section
+      banners: document.querySelector('section.grid-cols-1.md\\:grid-cols-2'), // Secondary banners
+      categories: document.querySelector('section.py-stack-lg.overflow-hidden'), // Main categories ticker
+      featured: document.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4')?.closest('section'), // Featured products
+      legrand: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('عالم ليجراند') || sec.textContent.includes('Legrand World')),
+      philips: document.querySelector('img[src*="AP1WRLsnpy"]')?.closest('section'),
+      bahra: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('كابلات بحرة') || sec.textContent.includes('Bahra Specialized Cables')),
+      tools: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('العدد والأدوات') || sec.textContent.includes('Hand Tools')),
+      cctv: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('أنظمة مراقبة') || sec.textContent.includes('Smart Surveillance')),
+      blog: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('مدونة') || sec.textContent.includes('Blog') || sec.textContent.includes('مركز المعرفة')),
+      brands: document.querySelector('section.py-stack-lg.border-t'),
+      sectors: document.getElementById('sectors-section-wrapper'),
+      projects: document.getElementById('projects-section-wrapper')
+    };
+
+    Object.keys(sectionsMap).forEach(key => {
+      const el = sectionsMap[key];
+      if (el) {
+        if (vis[key] === false) {
+          el.style.display = 'none';
+        } else {
+          el.style.display = '';
+        }
+      }
+    });
+  }
 }
 
 /* ========== ABOUT ========== */
@@ -1876,6 +1963,107 @@ function renderServicesPage(data) {
       `;
     }
   }).join('');
+}
+
+/* ========== FAQ PAGE ========== */
+window.toggleFAQ = function(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+};
+
+window.submitContactForm = function(event, form) {
+  event.preventDefault();
+  const name = form.querySelector('input[type="text"]').value;
+  const email = form.querySelector('input[type="email"]').value;
+  const phone = form.querySelector('input[type="tel"]').value;
+  const subject = form.querySelector('select').value;
+  const message = form.querySelector('textarea').value;
+
+  const messages = SiteData.getData('messages') || [];
+  const newMessage = {
+    id: 'MSG-' + Date.now().toString().slice(-6),
+    name: name,
+    email: email,
+    phone: phone,
+    subject: subject,
+    message: message,
+    date: new Date().toLocaleDateString('ar-SA'),
+    status: 'جديد'
+  };
+  messages.push(newMessage);
+  SiteData.saveData('messages', messages);
+
+  alert(localStorage.getItem('electric_house_lang') === 'en' 
+    ? 'Your message has been successfully received. We will respond shortly.' 
+    : 'تم استلام رسالتك بنجاح. سنقوم بالرد عليك في أقرب وقت.');
+  form.reset();
+};
+
+function renderFaqPage(data) {
+  const faqs = data.faqs || [];
+  const container = document.getElementById('faq-list');
+  if (!container) return;
+
+  const lang = localStorage.getItem('electric_house_lang') || 'ar';
+  const isEn = lang === 'en';
+
+  if (faqs.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-10 bg-white rounded-xl border border-outline-variant">
+        <span class="material-symbols-outlined text-4xl text-outline mb-2">help_outline</span>
+        <p class="text-on-surface-variant">${isEn ? 'No questions available' : 'لا توجد أسئلة شائعة متاحة حالياً'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  const renderFaqs = (filteredFaqs) => {
+    container.innerHTML = filteredFaqs.map(f => {
+      const question = isEn ? (f.questionEn || f.question) : f.question;
+      const answer = isEn ? (f.answerEn || f.answer) : f.answer;
+      return `
+        <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="${f.category || 'all'}">
+          <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+            <span>${question}</span>
+            <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+          </button>
+          <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+            <div class="pb-5 leading-relaxed whitespace-pre-line">${answer}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  renderFaqs(faqs);
+
+  // Set up click handlers on buttons to filter faqs
+  document.querySelectorAll('.category-btn').forEach(btn => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.category-btn').forEach(b => {
+        b.classList.remove('active');
+        b.classList.remove('bg-primary');
+        b.classList.remove('text-white');
+        b.classList.add('border-outline-variant');
+        b.classList.add('text-on-surface-variant');
+      });
+      btn.classList.add('active');
+      btn.classList.add('bg-primary');
+      btn.classList.add('text-white');
+      btn.classList.remove('border-outline-variant');
+      btn.classList.remove('text-on-surface-variant');
+
+      const cat = btn.dataset.cat;
+      if (cat === 'all') {
+        renderFaqs(faqs);
+      } else {
+        renderFaqs(faqs.filter(f => f.category === cat));
+      }
+    };
+  });
 }
 
 /* ========== PRODUCTS ========== */
@@ -4088,8 +4276,31 @@ function initDynamicTranslator() {
     "المشاريع - شركة الكهرباء الذكية": "Projects - Smart Electricity Company (SEC)",
     "الخدمات - شركة الكهرباء الذكية": "Services - Smart Electricity Company (SEC)",
     "شكراً لطلبك - شركة الكهرباء الذكية": "Thank You for Your Order - Smart Electricity Company (SEC)",
-    "تواصل مع مستشار فني": "Contact a technical consultant",
     "تصفح كتالوج المنتجات": "Browse products catalog",
+    "نبذة عن شركة الكهرباء الذكية (SEC)": "About Smart Electricity Company (SEC)",
+    "سنوات من التميز": "Years of Excellence",
+    "مشروع صناعي منجز": "Completed Industrial Projects",
+    "اقرأ المزيد عن الشركة": "Read More About the Company",
+    "القطاعات التي نخدمها": "Sectors We Serve",
+    "القطاعات الصناعية التي نخدمها": "Industrial Sectors We Serve",
+    "مشاريعنا الهندسية الكبرى": "Our Major Engineering Projects",
+    "عرض جميع المشاريع": "View All Projects",
+    "لماذا تختار شركة الكهرباء الذكية (SEC)؟": "Why Choose Smart Electricity Company (SEC)?",
+    "ماركات عالمية معتمدة": "Verified Global Brands",
+    "نحن موزعون معتمدون لكبرى العلامات التجارية العالمية.": "We are authorized distributors for major global brands.",
+    "مهندسون استشاريون خبراء": "Expert Consulting Engineers",
+    "نقدم استشارات هندسية ودراسات متكاملة للمشاريع والمنشآت.": "We provide engineering consultations and complete studies for projects.",
+    "أسعار خاصة بالجملة": "Special Wholesale Prices",
+    "خصومات وعروض مميزة للمقاولين وأصحاب المنشآت الصناعية.": "Special discounts and offers for contractors and industrial owners.",
+    "خدمات دعم ما بعد البيع": "After-Sales Support Services",
+    "ضمان حقيقي للصيانة وقطع الغيار والزيارات الفنية الميدانية.": "Real warranty for maintenance, spare parts, and field technical visits.",
+    "طلب عرض سعر مباشر": "Direct Quote Request",
+    "يرجى ملء النموذج وسيتصل بك أحد مهندسينا الاستشاريين لمناقشة التفاصيل.": "Please fill the form and one of our consulting engineers will contact you.",
+    "الاسم الكامل": "Full Name",
+    "اسم الجهة أو الشركة": "Company Name",
+    "رقم الهاتف / الجوال": "Phone / Mobile Number",
+    "ملاحظات أو متمتطلبات خاصة": "Notes or Special Requirements",
+    "إرسال الطلب": "Send Request",
 
 "قاطع كهربائي شنايدر 40 أمبير ثلاثي الأطوار":"Schneider Circuit Breaker 40A 3-Phase","لوحة إضاءة ليد 60x60 سم بقوة 40 واط":"LED Panel Light 60x60cm 40W","مقبس ثنائي معدني ليجراند - ستانلس ستيل":"Legrand Metal Double Socket - Stainless Steel","كابل نحاس بحرة 4 مم - لفة 100 متر":"Bahra Copper Cable 4mm - 100m Roll","أجهزة القياس":"Measuring Devices","تفاصيل المنتج | شركة الكهرباء الذكية":"Product Details | Smart Electricity Company (SEC)","قاطع تيار كهربائي ذكي 3 أقطاب":"Smart 3-Pole Circuit Breaker","سلسلة الصناعات الثقيلة":"Heavy Industry Series","قاطع تيار كهربائي ذكي 3 أقطاب - 400 أمبير":"Smart 3-Pole Circuit Breaker - 400A","نظام حماية متطور مع تقنية المراقبة عن بُعد عبر بروتوكول Modbus، مصمم للمنشآت الصناعية الكبرى.":"Advanced protection system with remote monitoring via Modbus protocol, designed for major industrial facilities.","الجهد الكهربائي":"Voltage","عدد الأقطاب":"Number of Poles","الشهادات":"Certificates","درجة الحماية":"Protection Degree","الكمية:":"Quantity:","إضافة إلى السلة":"Add to Cart","شحن سريع":"Fast Shipping","ضمان سنتين":"2 Years Warranty","تبديل سهل":"Easy Return","الوصف الفني":"Technical Description","المواصفات الكاملة":"Full Specifications","كتيبات الاستخدام":"User Manuals","المراجعات (12)":"Reviews (12)","مميزات المنتج":"Product Features","قدرة قطع عالية تصل إلى 50 كيلو أمبير لحماية قصوى.":"High breaking capacity up to 50kA for maximum protection.","وحدة تحكم رقمية مدمجة لمراقبة الأحمال اللحظية.":"Built-in digital controller for real-time load monitoring.","سهولة التركيب على القضبان المعدنية المعيارية (DIN Rail).":"Easy installation on standard metal rails (DIN Rail).","توافق تام مع أنظمة إدارة المباني الذكية (BMS).":"Full compatibility with Building Management Systems (BMS).","الدعم الفني والخدمات":"Technical Support and Services","هل تحتاج إلى مساعدة في اختيار القاطع المناسب لمشروعك؟ مهندسونا جاهزون لتقديم الاستشارة الفنية المجانية.":"Need help choosing the right breaker for your project? Our engineers are ready to provide free technical consultation.","تحدث مع خبير":"Talk to an Expert","منتجات ذات صلة":"Related Products","اكتشف حلولاً متكاملة لنظام التوزيع الكهربائي لديك":"Discover integrated solutions for your electrical distribution system","قواطع فرعية":"Sub-Breakers","قاطع تيار مصغر 16 أمبير":"Miniature Circuit Breaker 16A","لوحات التوزيع":"Distribution Boards","لوحة توزيع كهربائية 36 خط":"Distribution Board 36 Way","جهاز قياس الطاقة الرقمي":"Digital Energy Meter","المحولات والمرحلات":"Transformers and Relays","مرحل حماية الجهد المتعدد":"Multi-Voltage Protection Relay","قائمة المنتجات | شركة الكهرباء الذكية":"Products List | Smart Electricity Company (SEC)","خصم 15%":"15% Discount","وصل حديثاً":"New Arrival","مفتاح كهربائي ثلاثي - موديل بلاتينيوم":"Triple Switch - Platinum Model","كابل طاقة نحاسي 16 ملم - عالي التحمل":"Copper Power Cable 16mm - Heavy Duty","كشاف ليد صناعي 200 واط - مقاوم للمياه":"Industrial LED Floodlight 200W - Waterproof","جهاز فحص وقياس رقمي احترافي":"Professional Digital Multimeter","لوحة توزيع كهربائية 12 خط - كاملة":"Distribution Board 12 Way - Complete","مفتاح ذكي - مجموعة آرتيور الذهبية":"Smart Switch - Arteor Gold Collection","تفاصيل المشروع - شركة الكهرباء الذكية":"Project Details - Smart Electricity Company (SEC)","تحميل...":"Loading...","تحميل تفاصيل المشروع...":"Loading project details...","نظرة عامة على المشروع":"Project Overview","معرض صور المشروع":"Project Gallery","بطاقة تفاصيل المشروع":"Project Detail Card","المالك":"Owner","الموقع":"Location","الفترة الزمنية":"Duration","قيمة المشروع":"Project Value","طلب عرض سعر للمشروع":"Request Project Quote","المشاريع - شركة الكهرباء الذكية":"Projects - Smart Electricity Company (SEC)","قصص نجاحنا":"Our Success Stories","نحن نفخر بكوننا الشريك الموثوق لأكبر المشاريع القومية والصناعية، حيث نقدم حلولاً كهربائية متكاملة تدفع عجلة التنمية.":"We are proud to be the trusted partner for major national and industrial projects, providing integrated electrical solutions that drive development.","هل لديك مشروع كبير قادم؟":"Have an upcoming large project?","نحن هنا لنزودك بأفضل المعدات والحلول الكهربائية المبتكرة. تواصل مع فريقنا الاستشاري اليوم.":"We are here to provide you with the best innovative electrical equipment and solutions. Contact our consulting team today.","اطلب عرض سعر":"Request a Quote","تحميل بروفايل الشركة":"Download Company Profile","الخدمات - شركة الكهرباء الذكية":"Services - Smart Electricity Company (SEC)","خدماتنا":"Our Services","حلول هندسية متكاملة":"Integrated Engineering Solutions","نوفر لعملائنا في قطاعات الإنشاءات، الطاقة، والصناعة خدمات متخصصة تفوق التوقعات بدعم من خبرائنا ومهندسينا.":"We provide our clients in the construction, energy, and industry sectors with specialized services that exceed expectations, backed by our experts and engineers.","شكراً لطلبك - شركة الكهرباء الذكية":"Thank You for Your Order - Smart Electricity Company (SEC)","المبيعات المباشرة: 966xxxxxxxxx+":"Direct Sales: +966xxxxxxxxx","تراث من التميز الكهربائي":"A Legacy of Electrical Excellence","منذ تأسيسها، التزمت شركة الكهرباء الذكية بتقديم أفضل وأحدث الحلول الكهربائية والصناعية لقطاعي الإنشاءات والصناعة في سوريا.":"Since its establishment, Smart Electricity Company has been committed to providing the best and latest electrical and industrial solutions to the construction and industrial sectors in Syria.","رسالتنا":"Our Mission","تمكين البنية التحتية من خلال منتجات موثوقة ومبتكرة، والمساهمة في تحقيق معايير الاستدامة وكفاءة الطاقة بما يتماشى مع رؤية المملكة.":"Empowering infrastructure through reliable and innovative products, and contributing to sustainability and energy efficiency standards in line with the Kingdom's vision.","الريادة في قطاع المعدات الكهربائية محلياً وإقليمياً، وأن نكون الخيار الأول للمهندسين والمقاولين والمستهلكين الباحثين عن الجودة والأمان.":"Leadership in the electrical equipment sector locally and regionally, and being the first choice for engineers, contractors, and consumers seeking quality and safety.","رحلة النجاح":"Journey of Success","رحلتنا نحو الريادة":"Our Journey to Leadership","تأسيس أول معرض":"Establishing the First Showroom","افتتاح الفرع الأول في مدينة الرياض لتوفير احتياجات السوق المحلي من المواد الكهربائية الأساسية.":"Opening the first branch in Riyadh to provide the local market with basic electrical materials.","عقد شراكات عالمية":"Global Partnerships","توقيع اتفاقيات توزيع حصرية مع كبرى الشركات العالمية مثل شنايدر إلكتريك وليجراند.":"Signing exclusive distribution agreements with major global companies like Schneider Electric and Legrand.","التوسع الإقليمي":"Regional Expansion","افتتاح مركز التوزيع الرئيسي وأكثر من 20 فرعاً حول المملكة لتغطية احتياجات المشاريع الكبرى.":"Opening the main distribution center and over 20 branches around the Kingdom to cover the needs of major projects.","التحول الرقمي":"Digital Transformation","إطلاق منصة التجارة الإلكترونية لتسهيل عمليات البيع المباشر لقطاع الأعمال والأفراد (B2B & B2C).":"Launching the e-commerce platform to facilitate direct sales for business and retail sectors (B2B & B2C).","نلتزم بأعلى معايير الجودة لضمان رضا عملائنا وتحقيق تطلعاتهم":"We commit to the highest quality standards to ensure customer satisfaction and achieve their aspirations","تأسست شركة الكهرباء الذكية بهدف أساسي وهو الارتقاء بقطاع التوريدات والحلول الكهربائية والصناعية. نحن نؤمن بأن كل سلك وقاطع ومفتاح يساهم في بناء مستقبل مشرق وآمن.":"Smart Electricity Company was established with the primary goal of elevating the electrical and industrial supplies and solutions sector. We believe that every wire, breaker, and switch contributes to building a bright and safe future.","فريق القيادة":"Leadership Team","شركاؤنا في النجاح":"Our Partners in Success","نعمل مع نخبة من أفضل العلامات التجارية العالمية لتوفير منتجات موثوقة وآمنة لعملائنا.":"We work with top global brands to provide reliable and safe products for our customers.","تصفح منتجات Schneider":"Browse Schneider Products","تصفح منتجات Philips":"Browse Philips Products","تصفح منتجات Legrand":"Browse Legrand Products","تصفح منتجات Bahra":"Browse Bahra Products","تصفح منتجات ABB":"Browse ABB Products","تصفح منتجات Panasonic":"Browse Panasonic Products","العلامات التجارية - Smart Electricity Company (SEC)":"Brands - Smart Electricity Company (SEC)","المعرفة والابتكار في مكان واحد":"Knowledge and Innovation in One Place","مقالات، نصائح فنية، وآخر الأخبار في عالم التقنيات والأنظمة الكهربائية.":"Articles, technical tips, and the latest news in the world of electrical technologies and systems.","جميع المقالات":"All Articles","نصائح المستهلك":"Consumer Tips","دليل المهندسين":"Engineers Guide","أخبار الشركة":"Company News","كيف تختار الإضاءة المناسبة لمنزلك؟":"How to choose the right lighting for your home?","الإضاءة تلعب دوراً حاسماً في إبراز جمالية المكان. تعرف على أهم المعايير لاختيار شدة ولون الإضاءة المناسبة لكل غرفة.":"Lighting plays a crucial role in highlighting the aesthetics of a place. Learn the most important criteria for choosing the right intensity and color of lighting for each room.","اقرأ المقال":"Read Article","الفرق بين قواطع MCB و MCCB واستخداماتها":"The difference between MCB and MCCB breakers and their uses","شرح مبسط ومقارنة فنية بين القواطع المصغرة والمقولبة وأين يجب استخدام كل منهما في المشاريع السكنية والصناعية.":"A simplified explanation and technical comparison between miniature and molded breakers and where to use each in residential and industrial projects.","أهمية التأريض الكهربائي في المنشآت الصناعية":"The importance of electrical earthing in industrial facilities","يعتبر نظام التأريض من أهم عوامل الأمان. نناقش في هذا المقال كيفية تصميمه ومعايير اختباره لضمان سلامة المعدات والأرواح.":"The earthing system is one of the most important safety factors. In this article, we discuss how to design and test it to ensure the safety of equipment and lives.","شركة الكهرباء الذكية تفتتح فرعها الجديد في مدينة حماة":"Smart Electricity Company opens its new branch in Hama","في إطار خطط التوسع الاستراتيجية، تم افتتاح أحدث فروع الشركة المجهز بأفضل صالات العرض التفاعلية.":"As part of strategic expansion plans, the company's newest branch, equipped with the best interactive showrooms, has been opened.","انضم إلى قائمتنا البريدية":"Join Our Mailing List","مدونة شركة الكهرباء الذكية":"Smart Electricity Company Blog","150.00 ريال":"150.00 SAR","180.00 ريال":"180.00 SAR","85.00 ريال":"85.00 SAR","45.00 ريال":"45.00 SAR","320.00 ريال":"320.00 SAR","العروض الحصرية - شركة الكهرباء الذكية":"Exclusive Offers - Smart Electricity Company (SEC)","العروض الحالية":"Current Offers","عرض لفترة محدودة":"Limited Time Offer","وفر حتى 25% على كافة المعدات الصناعية":"Save up to 25% on all industrial equipment","احصل على خصومات حصرية للمؤسسات والشركات على لوحات التوزيع، القواطع الكهربائية، وأنظمة الطاقة الذكية.":"Get exclusive discounts for institutions and companies on distribution boards, circuit breakers, and smart energy systems.","تسوق العروض الآن":"Shop Offers Now","المفاتيح الكهربائية الذكية":"Smart Electrical Switches","وفر حتى 15% على مفاتيح لوغراند ولوحات التحكم":"Save up to 15% on Legrand switches and control panels","أدوات ومعدات احترافية":"Professional Tools and Equipment","وفر حتى 20% على المفكات وأجهزة القياس المتقدمة":"Save up to 20% on screwdrivers and advanced measuring devices","العروض الحالية النشطة":"Active Current Offers","الأسعار المخفضة سارية حتى انتهاء الوقت الموضح أو نفاد الكمية المخصصة للعرض.":"Discounted prices are valid until the specified time ends or the quantity allocated for the offer runs out.","ينتهي العرض في:":"Offer ends in:","فلترة العروض":"Filter Offers","حسب الفئة":"By Category","شركاء النجاح والعلامات العالمية المعروضة":"Success Partners and Global Brands Displayed","اشترك لتصلك العروض الحصرية أولاً بأول":"Subscribe to get exclusive offers firsthand","عربة التسوق":"Shopping Cart","عربة التسوق فارغة":"Shopping Cart is Empty","لم تقم بإضافة أي منتجات إلى السلة بعد.":"You have not added any products to the cart yet.","تصفح المنتجات":"Browse Products","ملخص الطلب":"Order Summary","المجموع الفرعي":"Subtotal","الضريبة (15%)":"VAT (15%)","الإجمالي النهائي":"Final Total","تواصل آمن ومباشر مع مبيعاتنا":"Secure and direct communication with our sales","إكمال الطلب عبر واتساب":"Complete Order via WhatsApp","سيتم توجيهك إلى تطبيق واتساب لإرسال تفاصيل طلبك مباشرة إلى فريق المبيعات.":"You will be directed to WhatsApp to send your order details directly to the sales team.","عربة التسوق - Smart Electricity Company (SEC)":"Shopping Cart - Smart Electricity Company (SEC)","تواصل معنا":"Contact Us","نحن هنا لمساعدتك والإجابة على جميع استفساراتك":"We are here to help you and answer all your inquiries","تواصل عبر واتساب":"Contact via WhatsApp","طلب عرض سعر":"Request a Quote","الاسم الكامل":"Full Name","رقم الجوال":"Mobile Number","البريد الإلكتروني":"Email Address","نص الرسالة":"Message Text","إرسال الرسالة":"Send Message","جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2026":"All rights reserved to Smart Electricity Company © 2026","جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2024":"All rights reserved to Smart Electricity Company © 2024","عن الشركة":"About Us","لوحة التحكم | شركة الكهرباء الذكية":"Dashboard | Smart Electricity Company (SEC)","منتجات مميزة":"Featured Products",
     'روابط سريعة': 'Quick Links',

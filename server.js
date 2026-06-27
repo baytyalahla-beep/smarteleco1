@@ -180,14 +180,14 @@ app.post('/api/data', async (req, res) => {
     }
   }
 
-  const { settings, banners, homepage, about, categories, products, brands, projects, blogPosts, orders } = req.body;
+  const { settings, banners, homepage, about, categories, sectors, faqs, messages, products, brands, projects, blogPosts, orders } = req.body;
   const connection = await pool.getConnection();
 
   try {
     await connection.beginTransaction();
 
     // 1. Settings & general sections updates
-    const sections = { settings, banners, homepage, about, categories };
+    const sections = { settings, banners, homepage, about, categories, sectors, faqs, messages };
     
     // Extract credentials from settings if they exist
     let dbUsername = '';

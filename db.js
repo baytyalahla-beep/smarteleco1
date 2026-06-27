@@ -176,7 +176,7 @@ async function initializeDatabase() {
     const [settingsRows] = await pool.query('SELECT COUNT(*) as count FROM settings');
     if (settingsRows[0].count === 0) {
       console.log('Seeding settings data...');
-      const keys = ['settings', 'banners', 'homepage', 'about', 'categories'];
+      const keys = ['settings', 'banners', 'homepage', 'about', 'categories', 'sectors', 'faqs', 'messages'];
       for (const key of keys) {
         if (defaultData[key]) {
           await pool.query('INSERT INTO settings (key_name, value_data) VALUES (?, ?)', [

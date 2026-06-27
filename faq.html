@@ -386,23 +386,6 @@ function toggleFAQ(btn) {
   document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
-
-// Category filter
-document.querySelectorAll('.category-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const cat = btn.dataset.cat;
-    document.querySelectorAll('.faq-item').forEach(item => {
-      if (cat === 'all' || item.dataset.cat === cat) {
-        item.style.display = '';
-      } else {
-        item.style.display = 'none';
-        item.classList.remove('open');
-      }
-    });
-  });
-});
 </script>
 </body>
 </html>

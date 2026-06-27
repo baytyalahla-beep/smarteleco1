@@ -45,6 +45,102 @@
       "Al-Assi Square, Opposite Syria International Islamic Bank, Hama, Syria"
     ]
   },
+  "sectors": [
+    {
+      "id": 1,
+      "title": "قطاع الطاقة المتجددة",
+      "titleEn": "Renewable Energy Sector",
+      "icon": "solar_power",
+      "image": "images/solar_energy_station.png",
+      "description": "حلول متكاملة لتوليد الطاقة الشمسية، تشمل الألواح والأنظمة والتحكم للمنشآت والمزارع.",
+      "descriptionEn": "Integrated solutions for solar power generation, including panels, systems, and controls for facilities and farms."
+    },
+    {
+      "id": 2,
+      "title": "قطاع الصناعة والأتمتة",
+      "titleEn": "Industry & Automation Sector",
+      "icon": "precision_manufacturing",
+      "image": "images/industrial_substation_aramco.png",
+      "description": "أنظمة التحكم والأتمتة الصناعية، لوحات التحكم بالمحركات، وحماية خطوط الإنتاج والآليات.",
+      "descriptionEn: "Industrial control and automation systems, motor control centers, and production line protection."
+    },
+    {
+      "id": 3,
+      "title": "قطاع المقاولات والإنشاءات",
+      "titleEn": "Construction & Buildings Sector",
+      "icon": "apartment",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8",
+      "description": "توريد التجهيزات والشبكات الكهربائية والمفاتيح وأنظمة التوزيع والأمان للمباني السكنية والتجارية.",
+      "descriptionEn": "Supply of electrical equipment, network installations, switches, and distribution systems for buildings."
+    }
+  ],
+  "faqs": [
+    {
+      "id": 1,
+      "question": "ما هي العلامات التجارية التي تتعامل معها الشركة؟",
+      "questionEn": "What brands does the company deal with?",
+      "answer": "نتعامل مع أبرز الماركات العالمية في قطاع الكهرباء والصناعة، من بينها: Schneider Electric، Siemens، ABB، Legrand، Bahra Cables، Philips، وغيرها. جميع منتجاتنا أصلية ومعتمدة.",
+      "answerEn": "We deal with leading global brands in the electrical and industrial sector, including: Schneider Electric, Siemens, ABB, Legrand, Bahra Cables, Philips, and others. All our products are original and certified.",
+      "category": "products"
+    },
+    {
+      "id": 2,
+      "question": "هل المنتجات تأتي مع شهادات الاعتماد؟",
+      "questionEn": "Do the products come with certificates of approval?",
+      "answer": "نعم، جميع منتجاتنا مرفقة بشهادات الاعتماد الدولية مثل IEC، CE، ISO. يمكنك طلب نسخ من الشهادات والكتيبات الفنية (Datasheets) مع كل طلب.",
+      "answerEn": "Yes, all our products are accompanied by international approval certificates such as IEC, CE, ISO. You can request copies of certificates and technical datasheets with every order.",
+      "category": "products"
+    },
+    {
+      "id": 3,
+      "question": "كيف أعرف أن المنتج متوفر في المخزون؟",
+      "questionEn": "How do I know if a product is in stock?",
+      "answer": "تجد في صفحة كل منتج مؤشر توفر يُظهر الكمية المتاحة. يمكنك أيضاً الاتصال بنا مباشرة للتحقق من التوفر الفوري وإمكانية التوريد السريع للمنتجات غير المخزنة.",
+      "answerEn": "You will find on each product page an availability indicator showing the available quantity. You can also contact us directly to check immediate availability and the possibility of rapid supply for non-stocked products.",
+      "category": "products"
+    },
+    {
+      "id": 4,
+      "question": "ما مناطق التوصيل التي تغطونها؟",
+      "questionEn": "What delivery areas do you cover?",
+      "answer": "نوفر التوصيل إلى جميع محافظات سوريا. نتمركز في حماة ونستطيع التوصيل خلال 1-3 أيام عمل داخل المحافظة، و3-7 أيام للمحافظات الأخرى. للمشاريع الكبيرة نُنسق الشحن مباشرة مع الموقع.",
+      "answerEn": "We provide delivery to all provinces of Syria. We are based in Hama and can deliver within 1-3 working days within the province, and 3-7 days to other provinces. For large projects, we coordinate shipping directly to the site.",
+      "category": "delivery"
+    },
+    {
+      "id": 5,
+      "question": "هل تقدمون خدمة التركيب مع التوصيل؟",
+      "questionEn": "Do you provide installation service with delivery?",
+      "answer": "نعم، نوفر خدمة التوريد والتركيب للمشاريع. يتضمن ذلك فريقاً هندسياً متخصصاً لتركيب لوحات التوزيع، أنظمة الأتمتة، وأنظمة الطاقة الشمسية. تواصل معنا لطلب هذه الخدمة ضمن عرض السعر.",
+      "answerEn": "Yes, we provide supply and installation service for projects. This includes a specialized engineering team to install distribution boards, automation systems, and solar energy systems. Contact us to request this service within the price quote.",
+      "category": "delivery"
+    },
+    {
+      "id": 6,
+      "question": "هل تقدمون استشارات هندسية قبل الشراء؟",
+      "questionEn: "Do you provide engineering consultations before purchase?",
+      "answer": "نعم، لدينا فريق من المهندسين المتخصصين يمكنهم مساعدتك في اختيار المواصفات الصحيحة، مراجعة المخططات الكهربائية، وتقديم التوصيات التقنية المناسبة لمشروعك قبل الشراء — دون تكلفة إضافية.",
+      "answerEn": "Yes, we have a team of specialized engineers who can help you choose the right specifications, review electrical drawings, and provide appropriate technical recommendations for your project before purchasing — at no additional cost.",
+      "category": "technical"
+    },
+    {
+      "id": 7,
+      "question": "ما سياسة الضمان والإرجاع؟",
+      "questionEn": "What is the warranty and return policy?",
+      "answer": "جميع منتجاتنا تتمتع بضمان المصنّع الأصلي. فترة الضمان تتراوح بين سنة وخمس سنوات حسب المنتج. في حال وجود عيب مصنعي، نلتزم بالاستبدال أو الإصلاح خلال 7 أيام عمل من تاريخ الإبلاغ.",
+      "answerEn": "All our products have the original manufacturer's warranty. The warranty period ranges between one and five years depending on the product. In the event of a manufacturing defect, we commit to replacement or repair within 7 working days from the date of reporting.",
+      "category": "technical"
+    },
+    {
+      "id": 8,
+      "question": "ما طرق الدفع المتاحة؟",
+      "questionEn": "What payment methods are available?",
+      "answer": "نوفر خيارات دفع مرنة تشمل الدفع نقداً عند الاستلام، التحويل المصرفي عبر البنوك السورية المعتمدة، والدفع عبر شركات التحويل المحلية. للمشاريع والمؤسسات، نوفر تسهيلات دفع وتسهيلات ائتمانية خاضعة للاتفاق وشروط العقد.",
+      "answerEn": "We provide flexible payment options including cash on delivery, bank transfer through approved Syrian banks, and payment through local transfer companies. For projects and institutions, we provide payment and credit facilities subject to agreement and contract terms.",
+      "category": "payment"
+    }
+  ],
+  "messages": [],
   "banners": {
     "secondaryBanner1": "images/secondary_banner_1.png",
     "secondaryBanner2": "https://lh3.googleusercontent.com/aida-public/AB6AXuC0tthI4fhDyhtpklMUl8DUCabujBzux8rgeM701hxnqM77IvxhU1lVYRrNlQvGaBdgFlDi6hXBDDwiNOmsuRQtu6_APzEEwozVvlxAqvASyj3vkm67kmp3SJQcQvm5l2R4z2UcSJhploj_Jop5EqzeRO6agHuiPyRAb6-CtLB_jlh-2FSFI5GCviw4vYt-Fl3uA06o3K9SNmLZOfHLdD37yc25SZh8RVXlf7lkwTmAMpENhB7InBiXxy68-BSvEaDfWQl8k5jhZVraiw",

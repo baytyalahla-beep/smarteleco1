@@ -135,6 +135,14 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 <span class="material-symbols-outlined text-[20px]">home_app_logo</span>
 <span>الصفحة الرئيسية</span>
 </button>
+<button onclick="showPanel('services')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="services">
+<span class="material-symbols-outlined text-[20px]">home_repair_service</span>
+<span>الخدمات الهندسية</span>
+</button>
+<button onclick="showPanel('sectors')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="sectors">
+<span class="material-symbols-outlined text-[20px]">pie_chart</span>
+<span>القطاعات الصناعية</span>
+</button>
 <button onclick="showPanel('products')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="products">
 <span class="material-symbols-outlined text-[20px]">inventory_2</span>
 <span>المنتجات</span>
@@ -152,8 +160,12 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 <span>المشاريع</span>
 </button>
 <button onclick="showPanel('blog')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="blog">
-<span class="material-symbols-outlined text-[20px]">article</span>
-<span>المدونة</span>
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span>مركز المعرفة (المدونة)</span>
+</button>
+<button onclick="showPanel('faqs')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="faqs">
+<span class="material-symbols-outlined text-[20px]">question_answer</span>
+<span>الأسئلة الشائعة</span>
 </button>
 <button onclick="showPanel('about')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm w-full text-right" data-panel="about">
 <span class="material-symbols-outlined text-[20px]">info</span>
@@ -326,6 +338,14 @@ textarea.form-input { min-height: 100px; resize: vertical; }
       <input type="checkbox" id="v-brands" class="accent-primary w-4 h-4">
       <span class="text-sm font-semibold text-on-surface">شريط العلامات التجارية</span>
     </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-sectors" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">القطاعات الصناعية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" id="v-projects" class="accent-primary w-4 h-4">
+      <span class="text-sm font-semibold text-on-surface">المشاريع الهندسية</span>
+    </label>
   </div>
 </div>
 
@@ -394,14 +414,19 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 </div>
 <div id="stats-list" class="space-y-3"></div>
 </div>
-<div class="card">
-<div class="flex items-center justify-between mb-4">
-<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">design_services</span> الخدمات</h3>
-<button type="button" onclick="openServiceModal()" class="px-2 py-1 bg-surface-container hover:bg-outline-variant/30 text-primary rounded text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">add</span> إضافة خدمة</button>
-</div>
-<div id="services-list" class="space-y-3"></div>
-</div>
 <button onclick="saveHomepage()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ الصفحة الرئيسية</button>
+</div>
+
+<!-- ============ SERVICES PANEL ============ -->
+<div id="panel-services" class="panel space-y-6">
+  <div class="card">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">home_repair_service</span> إدارة الخدمات الهندسية</h3>
+      <button type="button" onclick="openServiceModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة خدمة جديدة</button>
+    </div>
+    <div id="services-list" class="space-y-3"></div>
+  </div>
+  <button onclick="saveHomepage()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ الخدمات</button>
 </div>
 
 <!-- ============ PRODUCTS PANEL ============ -->
@@ -627,6 +652,30 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 
   <button onclick="saveBanners()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ صور الموقع</button>
 </div>
+
+<!-- ============ SECTORS PANEL ============ -->
+<div id="panel-sectors" class="panel space-y-6">
+  <div class="card">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">pie_chart</span> إدارة القطاعات الصناعية</h3>
+      <button type="button" onclick="openSectorModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة قطاع جديد</button>
+    </div>
+    <div id="sectors-list" class="space-y-3"></div>
+  </div>
+  <button onclick="saveSectors()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ القطاعات</button>
+</div>
+
+<!-- ============ FAQS PANEL ============ -->
+<div id="panel-faqs" class="panel space-y-6">
+  <div class="card">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">question_answer</span> إدارة الأسئلة الشائعة</h3>
+      <button type="button" onclick="openFaqModal()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة سؤال جديد</button>
+    </div>
+    <div id="faqs-list" class="space-y-3"></div>
+  </div>
+  <button onclick="saveFaqs()" class="btn-primary flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">save</span> حفظ الأسئلة الشائعة</button>
+</div>
 </div>
 </main>
 </div>
@@ -647,8 +696,8 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 const panelTitles = {
   settings: 'إعدادات الموقع', homepage: 'الصفحة الرئيسية', products: 'المنتجات',
   categories: 'التصنيفات', brands: 'العلامات التجارية', projects: 'المشاريع',
-  blog: 'المدونة', about: 'من نحن', contact: 'معلومات التواصل', orders: 'الطلبات',
-  banners: 'صور وبانرات الموقع'
+  blog: 'مركز المعرفة (المدونة)', about: 'من نحن', contact: 'معلومات التواصل', orders: 'الطلبات',
+  banners: 'صور وبانرات الموقع', services: 'الخدمات الهندسية', sectors: 'القطاعات الصناعية', faqs: 'الأسئلة الشائعة'
 };
 
 function showPanel(name) {
@@ -789,7 +838,7 @@ function loadSettings() {
   renderSettingsList('emails', s.emails || []);
   renderSettingsList('addresses', s.addresses || []);
 
-  const visibilityKeys = ['hero', 'banners', 'categories', 'featured', 'legrand', 'philips', 'bahra', 'tools', 'cctv', 'blog', 'brands'];
+  const visibilityKeys = ['hero', 'banners', 'categories', 'featured', 'legrand', 'philips', 'bahra', 'tools', 'cctv', 'blog', 'brands', 'sectors', 'projects'];
   const vis = s.sectionVisibility || {};
   visibilityKeys.forEach(k => {
     const chk = document.getElementById('v-' + k);
@@ -814,7 +863,7 @@ function saveSettings() {
   if (s.emails.length > 0) s.email = s.emails[0];
   if (s.addresses.length > 0) s.address = s.addresses[0];
 
-  const visibilityKeys = ['hero', 'banners', 'categories', 'featured', 'legrand', 'philips', 'bahra', 'tools', 'cctv', 'blog', 'brands'];
+  const visibilityKeys = ['hero', 'banners', 'categories', 'featured', 'legrand', 'philips', 'bahra', 'tools', 'cctv', 'blog', 'brands', 'sectors', 'projects'];
   const vis = {};
   visibilityKeys.forEach(k => {
     const chk = document.getElementById('v-' + k);
@@ -1731,13 +1780,80 @@ function saveAbout() {
 function loadContact() {
   const s = SiteData.getData('settings');
   document.getElementById('contact-preview').innerHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">call</span> <strong>الهاتف:</strong> ${s.phone}</div>
       <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">mail</span> <strong>البريد:</strong> ${s.email}</div>
       <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">location_on</span> <strong>العنوان:</strong> ${s.address}</div>
       <div class="p-4 bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-primary align-middle">schedule</span> <strong>ساعات العمل:</strong> ${s.workingHoursWeekday}</div>
     </div>
+    
+    <div class="card mt-6">
+      <h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined">mail</span>
+        رسائل التواصل الواردة
+      </h3>
+      <div id="contact-messages-list" class="space-y-3">
+        <!-- Messages will load here -->
+      </div>
+    </div>
   `;
+
+  loadContactMessages();
+}
+
+function loadContactMessages() {
+  const messages = SiteData.getData('messages') || [];
+  const container = document.getElementById('contact-messages-list');
+  if (!container) return;
+
+  if (messages.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-6 text-on-surface-variant text-sm">
+        لا توجد رسائل واردة حالياً.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = messages.map((m, idx) => `
+    <div class="item-card justify-between flex items-start p-4 bg-surface-gray/10 rounded-xl border border-outline-variant/30 text-right" dir="rtl">
+      <div class="space-y-1 flex-1">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded text-[11px] font-bold ${m.status === 'جديد' ? 'bg-tertiary-container text-white' : 'bg-surface-gray text-outline'}">${m.status || 'جديد'}</span>
+          <span class="font-bold text-sm text-on-surface">${m.name}</span>
+          <span class="text-xs text-on-surface-variant">(${m.email} · ${m.phone})</span>
+        </div>
+        <p class="text-xs font-semibold text-primary">الموضوع: ${m.subject}</p>
+        <p class="text-xs text-on-surface leading-relaxed mt-2 whitespace-pre-line bg-surface-gray/40 p-2.5 rounded-lg border border-outline-variant/20">${m.message}</p>
+        <span class="block text-[10px] text-outline mt-1">${m.date}</span>
+      </div>
+      <div class="flex gap-1 mr-4">
+        ${m.status === 'جديد' ? `
+          <button onclick="markMessageRead(${idx})" class="p-1.5 hover:bg-surface-gray rounded text-success-teal" title="تحديد كمقروء"><span class="material-symbols-outlined text-[18px]">done</span></button>
+        ` : ''}
+        <button onclick="deleteMessage(${idx})" class="p-1.5 hover:bg-error-container rounded text-error" title="حذف"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).reverse().join('');
+}
+
+function markMessageRead(idx) {
+  const messages = SiteData.getData('messages') || [];
+  if (messages[idx]) {
+    messages[idx].status = 'تمت القراءة';
+    SiteData.saveData('messages', messages);
+    loadContactMessages();
+    showToast('تم التحديث ✓');
+  }
+}
+
+function deleteMessage(idx) {
+  if (!confirm('حذف الرسالة؟')) return;
+  const messages = SiteData.getData('messages') || [];
+  messages.splice(idx, 1);
+  SiteData.saveData('messages', messages);
+  loadContactMessages();
+  showToast('تم الحذف');
 }
 
 // ========== ORDERS ==========
@@ -1816,8 +1932,189 @@ function saveBanners() {
   showToast('تم حفظ صور الموقع بنجاح ✓');
 }
 
+// ========== SECTORS ==========
+function loadSectors() {
+  const sectors = SiteData.getData('sectors') || [];
+  const c = document.getElementById('sectors-list');
+  if (!c) return;
+  c.innerHTML = sectors.map(sec => `
+    <div class="item-card justify-between flex items-center p-3 bg-surface-gray/10 rounded-xl border border-outline-variant/30">
+      <div class="flex items-center gap-3">
+        <div class="w-14 h-14 rounded-lg bg-surface-gray flex-shrink-0 overflow-hidden flex items-center justify-center">
+          ${sec.image ? `<img src="${sec.image}" class="w-full h-full object-cover">` : `<span class="material-symbols-outlined text-3xl text-outline">${sec.icon || 'pie_chart'}</span>`}
+        </div>
+        <div class="text-right">
+          <h4 class="font-bold text-sm text-on-surface">${sec.title}</h4>
+          <p class="text-xs text-on-surface-variant">${sec.titleEn || ''}</p>
+        </div>
+      </div>
+      <div class="flex gap-1">
+        <button onclick="openSectorModal(${sec.id})" class="p-1.5 hover:bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button onclick="deleteSector(${sec.id})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openSectorModal(id) {
+  const sectors = SiteData.getData('sectors') || [];
+  const sec = id ? sectors.find(x => x.id === id) : { id: 0, title: '', titleEn: '', icon: 'pie_chart', image: '', description: '', descriptionEn: '' };
+  
+  openModal(id ? 'تعديل قطاع' : 'إضافة قطاع جديد', `
+    <div class="space-y-4 text-right" dir="rtl">
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">اسم القطاع بالعربي</label><input id="sec-title" class="form-input" value="${sec.title}"></div>
+        <div><label class="block text-sm font-semibold mb-1">اسم القطاع بالإنجليزي</label><input id="sec-titleEn" class="form-input" value="${sec.titleEn}"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-semibold mb-1">أيقونة القطاع (Material Symbol)</label><input id="sec-icon" class="form-input" value="${sec.icon}" placeholder="مثال: solar_power"></div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">صورة القطاع</label>
+          <div class="flex gap-2">
+            <input id="sec-image" class="form-input flex-1" value="${sec.image}">
+            <input type="file" id="file-sec-img" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'sec-image')">
+            <button type="button" onclick="document.getElementById('file-sec-img').click()" class="px-3 bg-surface-gray border border-outline-variant rounded-lg font-bold text-xs hover:bg-outline-variant/30 whitespace-nowrap">رفع صورة</button>
+          </div>
+        </div>
+      </div>
+      <div><label class="block text-sm font-semibold mb-1">الوصف بالعربي</label><textarea id="sec-description" class="form-input" rows="3">${sec.description}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">الوصف بالإنجليزي</label><textarea id="sec-descriptionEn" class="form-input" rows="3">${sec.descriptionEn}</textarea></div>
+      <button onclick="saveSector(${sec.id})" class="btn-primary w-full mt-4">حفظ القطاع</button>
+    </div>
+  `);
+}
+
+function saveSector(id) {
+  const sectors = SiteData.getData('sectors') || [];
+  const sec = {
+    title: document.getElementById('sec-title').value,
+    titleEn: document.getElementById('sec-titleEn').value,
+    icon: document.getElementById('sec-icon').value,
+    image: document.getElementById('sec-image').value,
+    description: document.getElementById('sec-description').value,
+    descriptionEn: document.getElementById('sec-descriptionEn').value
+  };
+  
+  if (id) {
+    const idx = sectors.findIndex(x => x.id === id);
+    if (idx > -1) {
+      sec.id = id;
+      sectors[idx] = sec;
+    }
+  } else {
+    sec.id = SiteData.newId(sectors);
+    sectors.push(sec);
+  }
+  
+  SiteData.saveData('sectors', sectors);
+  closeModal();
+  loadSectors();
+  showToast('تم حفظ القطاع بنجاح ✓');
+}
+
+function deleteSector(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا القطاع؟')) return;
+  const sectors = SiteData.getData('sectors') || [];
+  SiteData.saveData('sectors', sectors.filter(x => x.id !== id));
+  loadSectors();
+  showToast('تم حذف القطاع');
+}
+
+function saveSectors() {
+  const sectors = SiteData.getData('sectors') || [];
+  SiteData.saveData('sectors', sectors);
+  showToast('تم حفظ جميع القطاعات بنجاح ✓');
+}
+
+// ========== FAQS ==========
+function loadFaqs() {
+  const faqs = SiteData.getData('faqs') || [];
+  const c = document.getElementById('faqs-list');
+  if (!c) return;
+  c.innerHTML = faqs.map(f => `
+    <div class="item-card justify-between flex items-center p-3 bg-surface-gray/10 rounded-xl border border-outline-variant/30">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-xl">help_outline</span>
+        <div class="text-right">
+          <h4 class="font-bold text-sm text-on-surface">${f.question}</h4>
+          <p class="text-xs text-on-surface-variant truncate max-w-lg">${f.answer}</p>
+        </div>
+      </div>
+      <div class="flex gap-1">
+        <button onclick="openFaqModal(${f.id})" class="p-1.5 hover:bg-surface-gray rounded-lg"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+        <button onclick="deleteFaq(${f.id})" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openFaqModal(id) {
+  const faqs = SiteData.getData('faqs') || [];
+  const faq = id ? faqs.find(x => x.id === id) : { id: 0, question: '', questionEn: '', answer: '', answerEn: '', category: 'rfq' };
+  
+  openModal(id ? 'تعديل سؤال شائِع' : 'إضافة سؤال جديد', `
+    <div class="space-y-4 text-right" dir="rtl">
+      <div><label class="block text-sm font-semibold mb-1">قسم السؤال</label>
+        <select id="faq-category" class="form-input">
+          <option value="rfq" ${faq.category==='rfq'?'selected':''}>طلبات عروض الأسعار</option>
+          <option value="products" ${faq.category==='products'?'selected':''}>المنتجات والتوافر</option>
+          <option value="delivery" ${faq.category==='delivery'?'selected':''}>التسليم والشحن</option>
+          <option value="technical" ${faq.category==='technical'?'selected':''}>الدعم الفني</option>
+          <option value="payment" ${faq.category==='payment'?'selected':''}>الدفع والعقود</option>
+        </select>
+      </div>
+      <div><label class="block text-sm font-semibold mb-1">السؤال بالعربي</label><input id="faq-question" class="form-input" value="${faq.question}"></div>
+      <div><label class="block text-sm font-semibold mb-1">السؤال بالإنجليزي</label><input id="faq-questionEn" class="form-input" value="${faq.questionEn}"></div>
+      <div><label class="block text-sm font-semibold mb-1">الإجابة بالعربي</label><textarea id="faq-answer" class="form-input" rows="4">${faq.answer}</textarea></div>
+      <div><label class="block text-sm font-semibold mb-1">الإجابة بالإنجليزي</label><textarea id="faq-answerEn" class="form-input" rows="4">${faq.answerEn}</textarea></div>
+      <button onclick="saveFaq(${faq.id})" class="btn-primary w-full mt-4">حفظ السؤال</button>
+    </div>
+  `);
+}
+
+function saveFaq(id) {
+  const faqs = SiteData.getData('faqs') || [];
+  const faq = {
+    category: document.getElementById('faq-category').value,
+    question: document.getElementById('faq-question').value,
+    questionEn: document.getElementById('faq-questionEn').value,
+    answer: document.getElementById('faq-answer').value,
+    answerEn: document.getElementById('faq-answerEn').value
+  };
+  
+  if (id) {
+    const idx = faqs.findIndex(x => x.id === id);
+    if (idx > -1) {
+      faq.id = id;
+      faqs[idx] = faq;
+    }
+  } else {
+    faq.id = SiteData.newId(faqs);
+    faqs.push(faq);
+  }
+  
+  SiteData.saveData('faqs', faqs);
+  closeModal();
+  loadFaqs();
+  showToast('تم حفظ السؤال بنجاح ✓');
+}
+
+function deleteFaq(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا السؤال؟')) return;
+  const faqs = SiteData.getData('faqs') || [];
+  SiteData.saveData('faqs', faqs.filter(x => x.id !== id));
+  loadFaqs();
+  showToast('تم الحذف');
+}
+
+function saveFaqs() {
+  const faqs = SiteData.getData('faqs') || [];
+  SiteData.saveData('faqs', faqs);
+  showToast('تم حفظ الأسئلة الشائعة بنجاح ✓');
+}
+
 // ========== LOADERS MAP ==========
-const loaders = { settings: loadSettings, homepage: loadHomepage, products: loadProducts, categories: loadCategories, brands: loadBrands, projects: loadProjects, blog: loadBlog, about: loadAbout, contact: loadContact, orders: loadOrders, banners: loadBanners };
+const loaders = { settings: loadSettings, homepage: loadHomepage, products: loadProducts, categories: loadCategories, brands: loadBrands, projects: loadProjects, blog: loadBlog, about: loadAbout, contact: loadContact, orders: loadOrders, banners: loadBanners, services: loadHomepage, sectors: loadSectors, faqs: loadFaqs };
 
 // ========== AUTHENTICATION ==========
 function attemptLogin() {
