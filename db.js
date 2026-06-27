@@ -19,7 +19,9 @@ let dbConnected = false;
 
 function getDefaultData() {
   try {
-    const code = fs.readFileSync(path.join(__dirname, 'site-data.js'), 'utf8');
+    let code = fs.readFileSync(path.join(__dirname, 'site-data.js'), 'utf8');
+    // Ensure SiteData is exported to global scope in VM context
+    code += '\nthis.SiteData = SiteData;';
     const sandbox = {
       localStorage: {
         getItem: () => null,
