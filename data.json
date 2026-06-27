@@ -62,14 +62,14 @@
       "icon": "precision_manufacturing",
       "image": "images/industrial_substation_aramco.png",
       "description": "أنظمة التحكم والأتمتة الصناعية، لوحات التحكم بالمحركات، وحماية خطوط الإنتاج والآليات.",
-      "descriptionEn: "Industrial control and automation systems, motor control centers, and production line protection."
+      "descriptionEn": "Industrial control and automation systems, motor control centers, and production line protection."
     },
     {
       "id": 3,
       "title": "قطاع المقاولات والإنشاءات",
       "titleEn": "Construction & Buildings Sector",
       "icon": "apartment",
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8",
+      "image": "images/industrial_substation_aramco.png",
       "description": "توريد التجهيزات والشبكات الكهربائية والمفاتيح وأنظمة التوزيع والأمان للمباني السكنية والتجارية.",
       "descriptionEn": "Supply of electrical equipment, network installations, switches, and distribution systems for buildings."
     }
@@ -118,7 +118,7 @@
     {
       "id": 6,
       "question": "هل تقدمون استشارات هندسية قبل الشراء؟",
-      "questionEn: "Do you provide engineering consultations before purchase?",
+      "questionEn": "Do you provide engineering consultations before purchase?",
       "answer": "نعم، لدينا فريق من المهندسين المتخصصين يمكنهم مساعدتك في اختيار المواصفات الصحيحة، مراجعة المخططات الكهربائية، وتقديم التوصيات التقنية المناسبة لمشروعك قبل الشراء — دون تكلفة إضافية.",
       "answerEn": "Yes, we have a team of specialized engineers who can help you choose the right specifications, review electrical drawings, and provide appropriate technical recommendations for your project before purchasing — at no additional cost.",
       "category": "technical"
@@ -143,13 +143,13 @@
   "messages": [],
   "banners": {
     "secondaryBanner1": "images/secondary_banner_1.png",
-    "secondaryBanner2": "https://lh3.googleusercontent.com/aida-public/AB6AXuC0tthI4fhDyhtpklMUl8DUCabujBzux8rgeM701hxnqM77IvxhU1lVYRrNlQvGaBdgFlDi6hXBDDwiNOmsuRQtu6_APzEEwozVvlxAqvASyj3vkm67kmp3SJQcQvm5l2R4z2UcSJhploj_Jop5EqzeRO6agHuiPyRAb6-CtLB_jlh-2FSFI5GCviw4vYt-Fl3uA06o3K9SNmLZOfHLdD37yc25SZh8RVXlf7lkwTmAMpENhB7InBiXxy68-BSvEaDfWQl8k5jhZVraiw",
+    "secondaryBanner2": "images/secondary_banner_1.png",
     "legrand1": "images/legrand_1.png",
     "legrand2": "images/legrand_2.png",
     "legrand3": "images/legrand_3.png",
     "legrand4": "images/legrand_4.png",
     "philipsBanner": "images/philips_banner.png",
-    "bahraLogo": "https://lh3.googleusercontent.com/aida-public/AB6AXuCbARia0jMZFX3-akBzwQjlUKVTLzcUMl4IMI_r0cUr7EERRdIvNTdyI6TA1u3b0xh7M7UEamU6jNYfyYdDKF26z4DXD3ZqHLP2mdiOwltEBg3P46DQxSDcMHH0-RwavbIfQ0LRslvjYLPnINOCUkEGJfzODMTk1uiB0mww8limKbva3ncSvsWhz4G4hzwFkwXTj4GH0pkpNUGp-B7vclLsFR18cAs7P4g0WJFek2l-l9ilm3iHKieCdPnFYwZ2H6LhGlU_IYGxFa8",
+    "bahraLogo": "",
     "bahra1": "images/bahra_1.png",
     "bahra2": "images/bahra_2.png",
     "bahra3": "images/bahra_3.png",
@@ -198,7 +198,7 @@
         "titleEn": "Integrated Industrial Solutions",
         "description": "حلول صناعية متكاملة تشمل تصميم خطوط الإنتاج، أنظمة الأتمتة، والتحكم الصناعي.",
         "descriptionEn": "Integrated industrial solutions including production line design, automation systems, and industrial control.",
-        "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8",
+        "image": "images/industrial_substation_aramco.png",
         "style": "dark",
         "features": [
           "تصميم خطوط الإنتاج المتطورة",
@@ -216,7 +216,7 @@
         "titleEn": "Industrial Electrical Systems",
         "description": "تصميم وتوريد لوحات التوزيع، أنظمة الجهد المنخفض والمتوسط، وحماية الأنظمة.",
         "descriptionEn": "Low and Medium Voltage Systems, Power Distribution, Control Panels, Protection Systems.",
-        "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBbcqI9I-D2WNM85FZ5AQhxemwEEwf0ryDKVqbKJEMOW_dNt8MBJCgHpW2gQhK1Hxuz90jt2EPMqnMNEpLJSJkfvSBJm_1wEulm3lhgLvpQPUbYuSsEQjq-7VKw4n2R0rQq_dqKwjJ1mCJOVcP6rAcvIeCVmfkfQ0vaqbZNfCi4f3z9HX2QY7U2oq9r4h_2r4RXWF_MKTA6GXKLRZWx5xcZJJ-3VJJxpkDe8r1OHUC-I3TtHqyI5XkAm8m0C-H2bBcHa2lC3Gl7A",
+        "image": "images/electrical_support_team.png",
         "style": "light",
         "features": [
           "لوحات التحكم والتوزيع الكهربائي",
@@ -485,7 +485,7 @@
       "id": 1,
       "name": "شنايدر إليكتريك",
       "nameEn": "Schneider Electric",
-      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuCZPLWgz3OlXQj-8UXiJwwPJbYSCZjR5l5nV0C5Wd0UBE1S0GDdrk3S2KpG8d2tpVlXe8Tpv5hGlMDTxL5dBzzRVBkUADfMFnGnIX1GqvSNQWNLZGm0ZY8xxE9INc6IxC1cOCdVLwZU7Dkq2Jv8cM3wwbQKTHSVEL1OIzANqVLkm1TfPm50d6ycDRIzm8U-Y81Rz6WqLhqedJBdaGV9bCiNqcNf8jbilANy8sGWlR73yO1FEh2Mds9HZ84_7KdSUXSFi8i-UOk",
+      "logo": "",
       "description": "شركة فرنسية رائدة في إدارة الطاقة والأتمتة",
       "country": "فرنسا"
     },
@@ -537,9 +537,9 @@
       "nameEn": "Agricultural Solar Station Project - Hama Countryside",
       "description": "تصميم وتوريد وتركيب كافة المحولات واللوحات الكهربائية ومولدات الطاقة الشمسية لإنشاء أول محطة زراعية ذكية متكاملة لتوليد الطاقة النظيفة.",
       "descriptionEn": "Designing, supplying, and installing all transformers, electrical panels, and solar generators to establish the first integrated smart agricultural clean energy station.",
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY",
+      "image": "images/solar_energy_station.png",
       "images": [
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY"
+        "images/solar_energy_station.png"
       ],
       "status": "مكتمل",
       "statusEn": "Completed",
@@ -572,9 +572,9 @@
       "nameEn": "Automation of Al-Ahlia Spinning and Weaving Production Lines - Aleppo",
       "description": "توريد وتركيب أنظمة تحكم مبرمج PLC وشاشات HMI متكاملة لتحديث وتطوير أنظمة القيادة وخطوط الغزل والنسيج القديمة.",
       "descriptionEn": "Supplying and installing integrated PLC control systems and HMI screens to modernize and upgrade driver systems and old spinning/weaving lines.",
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDmDp8b39IJ2F9j0H-pQP7RJPS9sQdeMVfU17FqUCTCPbxQ9P_gXYx-uSK4M8raxk45k4ItXhIf6vMqA_HfijgaJvY1s4q-lthFjrGLN0hQZLj-eKxKgO2nFE_4sJc1DKSy_vq-bj8zBbgH_IFRqawWKGTv7uFJ3g3K2dC86_MUjzwmPCWxV-Cxf3N3VhKzCYlxr5sL2aCVA2rp-3yxF1ZLXoJDqGEq8y9VDUWxQPkN8HpqJc4vGjcCPUz5O8f5Ub1xDlWw9P4w",
+      "image": "images/product_irrigation.png",
       "images": [
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDmDp8b39IJ2F9j0H-pQP7RJPS9sQdeMVfU17FqUCTCPbxQ9P_gXYx-uSK4M8raxk45k4ItXhIf6vMqA_HfijgaJvY1s4q-lthFjrGLN0hQZLj-eKxKgO2nFE_4sJc1DKSy_vq-bj8zBbgH_IFRqawWKGTv7uFJ3g3K2dC86_MUjzwmPCWxV-Cxf3N3VhKzCYlxr5sL2aCVA2rp-3yxF1ZLXoJDqGEq8y9VDUWxQPkN8HpqJc4vGjcCPUz5O8f5Ub1xDlWw9P4w"
+        "images/product_irrigation.png"
       ],
       "status": "مكتمل",
       "statusEn": "Completed",
@@ -632,7 +632,7 @@
       "id": 1,
       "title": "كيف تختار القاطع الكهربائي الصناعي المناسب لمشروعك",
       "excerpt": "دليل شامل لاختيار القواطع الكهربائية الصناعية ونظم الحماية مع نصائح من مهندسينا لضمان السلامة والتشغيل المستمر.",
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDKRJF_KG0Y5lPMkbycFzUoQ12qvIKuF7ynVTgkSPHRnRJLMfWcl7S7-TH4DvFhVb6NvUiE0xEsHjH2WpDphIy2HsCFJbZcVCCVLsavnLCQBiKaIUhXJVSyUJyeL2w-6XlI3NLFzBVt3h8P3_8Uyo8Ey-m_vOKv2ER9GNqIuHLqrfKxkS4MXS8YBz1kj7FhqPITGDm2E3_vKBifqHVmgUXFO4HK69h33iKmg7tGS7GHlmqFIqIe5bawIJNOSQWnqQ1M5WFb-3kk",
+      "image": "images/product_mccb_breaker.png",
       "date": "2026-03-15",
       "category": "نصائح فنية",
       "content": "محتوى المقال الكامل هنا..."

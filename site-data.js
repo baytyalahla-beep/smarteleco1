@@ -68,7 +68,7 @@ const SiteData = (() => {
         title: "قطاع المقاولات والإنشاءات",
         titleEn: "Construction & Buildings Sector",
         icon: "apartment",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8",
+        image: "images/industrial_substation_aramco.png",
         description: "توريد التجهيزات والشبكات الكهربائية والمفاتيح وأنظمة التوزيع والأمان للمباني السكنية والتجارية.",
         descriptionEn: "Supply of electrical equipment, network installations, switches, and distribution systems for buildings."
       }
@@ -145,13 +145,13 @@ const SiteData = (() => {
 
     banners: {
       secondaryBanner1: "images/secondary_banner_1.png",
-      secondaryBanner2: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0tthI4fhDyhtpklMUl8DUCabujBzux8rgeM701hxnqM77IvxhU1lVYRrNlQvGaBdgFlDi6hXBDDwiNOmsuRQtu6_APzEEwozVvlxAqvASyj3vkm67kmp3SJQcQvm5l2R4z2UcSJhploj_Jop5EqzeRO6agHuiPyRAb6-CtLB_jlh-2FSFI5GCviw4vYt-Fl3uA06o3K9SNmLZOfHLdD37yc25SZh8RVXlf7lkwTmAMpENhB7InBiXxy68-BSvEaDfWQl8k5jhZVraiw",
+      secondaryBanner2: "images/secondary_banner_1.png",
       legrand1: "images/legrand_1.png",
       legrand2: "images/legrand_2.png",
       legrand3: "images/legrand_3.png",
       legrand4: "images/legrand_4.png",
       philipsBanner: "images/philips_banner.png",
-      bahraLogo: "https://lh3.googleusercontent.com/aida-public/AB6AXuCbARia0jMZFX3-akBzwQjlUKVTLzcUMl4IMI_r0cUr7EERRdIvNTdyI6TA1u3b0xh7M7UEamU6jNYfyYdDKF26z4DXD3ZqHLP2mdiOwltEBg3P46DQxSDcMHH0-RwavbIfQ0LRslvjYLPnINOCUkEGJfzODMTk1uiB0mww8limKbva3ncSvsWhz4G4hzwFkwXTj4GH0pkpNUGp-B7vclLsFR18cAs7P4g0WJFek2l-l9ilm3iHKieCdPnFYwZ2H6LhGlU_IYGxFa8",
+      bahraLogo: "",
       bahra1: "images/bahra_1.png",
       bahra2: "images/bahra_2.png",
       bahra3: "images/bahra_3.png",
@@ -167,9 +167,9 @@ const SiteData = (() => {
       heroSubtitleEn: "Smart Electricity Company (SEC)",
       heroDescription: "شركة هندسية رائدة متخصصة في تقديم الحلول الكهربائية والصناعية المتكاملة، تشمل التوريد والتصميم والاستشارات والأتمتة الصناعية، لدعم المشاريع بأنظمة موثوقة وعالية الكفاءة.",
       heroDescriptionEn: "Smart Electricity Company (SEC) is a leading engineering company specialized in providing integrated electrical and industrial solutions, including supply, design, consultancy, and automation.",
-      heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY",
+      heroImage: "images/solar_energy_station.png",
       heroImages: [
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY",
+        "images/solar_energy_station.png",
         "images/solar_energy_station.png",
         "images/industrial_substation_aramco.png"
       ],
@@ -186,7 +186,7 @@ const SiteData = (() => {
           titleEn: "Integrated Industrial Solutions", 
           description: "حلول صناعية متكاملة تشمل تصميم خطوط الإنتاج، أنظمة الأتمتة، والتحكم الصناعي.", 
           descriptionEn: "Integrated industrial solutions including production line design, automation systems, and industrial control.",
-          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8",
+          image: "images/industrial_substation_aramco.png",
           style: "dark",
           features: ["تصميم خطوط الإنتاج المتطورة", "تطوير الأنظمة الصناعية وإعادة التأهيل"],
           featuresEn: ["Advanced production lines design", "Industrial systems development & rehabilitation"]
@@ -197,7 +197,7 @@ const SiteData = (() => {
           titleEn: "Industrial Electrical Systems", 
           description: "تصميم وتوريد لوحات التوزيع، أنظمة الجهد المنخفض والمتوسط، وحماية الأنظمة.", 
           descriptionEn: "Low and Medium Voltage Systems, Power Distribution, Control Panels, Protection Systems.",
-          image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBbcqI9I-D2WNM85FZ5AQhxemwEEwf0ryDKVqbKJEMOW_dNt8MBJCgHpW2gQhK1Hxuz90jt2EPMqnMNEpLJSJkfvSBJm_1wEulm3lhgLvpQPUbYuSsEQjq-7VKw4n2R0rQq_dqKwjJ1mCJOVcP6rAcvIeCVmfkfQ0vaqbZNfCi4f3z9HX2QY7U2oq9r4h_2r4RXWF_MKTA6GXKLRZWx5xcZJJ-3VJJxpkDe8r1OHUC-I3TtHqyI5XkAm8m0C-H2bBcHa2lC3Gl7A",
+          image: "images/electrical_support_team.png",
           style: "light",
           features: ["لوحات التحكم والتوزيع الكهربائي", "أنظمة الحماية والجهد المنخفض والمتوسط"],
           featuresEn: ["Control & distribution panels", "Protection systems, Low & Medium voltage"]
@@ -241,7 +241,7 @@ const SiteData = (() => {
         stockTotal: 100,
         stockSold: 45,
         category: "أنظمة الحماية الكهربائية",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB34iMeaGp3DXKRJ0oD-YKIRgi8llcWFBwntPYaJDOisWmvq-52cNZGsIluKITVQRrH5Su3HPv3gBwnTjJHqCxx7nC5WLPQqgJ3-uwLtX_bY_sum7_CfcIQIqf_n4W0esJBXCSbAVzqKtB7scxwx_92L7ITZ2K07PZCzhiL6P35WBZ-xYNMwftX1SHWoJ_vJzzro528-AnDF2tnhVEiBMtY7rmC9DuhmeqszVRWwh6XgwVuoD-T9aaU2aciKqZqqq5WexbAFLmRfH0",
+        image: "images/product_mccb_breaker.png",
         description: "قاطع تيار كهربائي صناعي ذو كفاءة عالية لحماية الموتورات والشبكات الصناعية.",
         descriptionEn: "High quality industrial molded case circuit breaker for motor and power distribution protection.",
         featured: true
@@ -258,7 +258,7 @@ const SiteData = (() => {
         stockTotal: 80,
         stockSold: 12,
         category: "أنظمة الحماية الكهربائية",
-        image: "images/smart_cctv_camera.png",
+        image: "images/product_protection_relay.png",
         description: "مرحل حماية متكامل ذكي لحماية المحركات الكهربائية ثلاثية الأطوار من الحمل الزائد وسقوط الفاز.",
         descriptionEn: "Smart integrated protection relay to protect three-phase electric motors from overload and phase loss.",
         featured: true
@@ -275,7 +275,7 @@ const SiteData = (() => {
         stockTotal: 50,
         stockSold: 20,
         category: "أنظمة القيادة والتحكم",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBDKmEVX4OHPhmPljmZhSGmwV4Vn7xorDulUVDR4MWwJCSDsoUttxXQ1WgIJqpPCNwhK5urQ3nyhJQCUvPqlQKgzjoqL46nVPe-nBeTWPkjulnG4vR0VhZUAExB-sc8jsq1eyt-rEJrCnfCxwH3lHBiu1P3_3INaBWt7jAtbVEjotEqjmsEeGZp7QXGDM4hn_fWrl0eex-oOjBWG77RcGfUHNbgHimIvoRr5QfRRC1icUZ8GHX3mx0Fyr4tDYVZTVl43f6c75jsWxs",
+        image: "images/product_vfd_drive.png",
         description: "مغير تردد ذكي للتحكم في سرعة المحركات وتوفير الطاقة مع دعم بروتوكول Modbus.",
         descriptionEn: "Smart variable frequency drive to control motor speed, optimize energy consumption with Modbus support.",
         featured: true
@@ -292,7 +292,7 @@ const SiteData = (() => {
         stockTotal: 150,
         stockSold: 62,
         category: "أنظمة التحكم الصناعي",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB34iMeaGp3DXKRJ0oD-YKIRgi8llcWFBwntPYaJDOisWmvq-52cNZGsIluKITVQRrH5Su3HPv3gBwnTjJHqCxx7nC5WLPQqgJ3-uwLtX_bY_sum7_CfcIQIqf_n4W0esJBXCSbAVzqKtB7scxwx_92L7ITZ2K07PZCzhiL6P35WBZ-xYNMwftX1SHWoJ_vJzzro528-AnDF2tnhVEiBMtY7rmC9DuhmeqszVRWwh6XgwVuoD-T9aaU2aciKqZqqq5WexbAFLmRfH0",
+        image: "images/product_mccb_breaker.png",
         description: "كونتاكتور موثوق مع نقاط تلامس مساعدة للتحكم في الأحمال الكهربائية الكبيرة.",
         descriptionEn: "Highly reliable contactor with auxiliary contacts for industrial load switching and control.",
         featured: true
@@ -343,7 +343,7 @@ const SiteData = (() => {
         stockTotal: 70,
         stockSold: 22,
         category: "أجهزة القياس والتحكم الفني",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBDKmEVX4OHPhmPljmZhSGmwV4Vn7xorDulUVDR4MWwJCSDsoUttxXQ1WgIJqpPCNwhK5urQ3nyhJQCUvPqlQKgzjoqL46nVPe-nBeTWPkjulnG4vR0VhZUAExB-sc8jsq1eyt-rEJrCnfCxwH3lHBiu1P3_3INaBWt7jAtbVEjotEqjmsEeGZp7QXGDM4hn_fWrl0eex-oOjBWG77RcGfUHNbgHimIvoRr5QfRRC1icUZ8GHX3mx0Fyr4tDYVZTVl43f6c75jsWxs",
+        image: "images/product_vfd_drive.png",
         description: "جهاز قياس وتحليل متكامل لمعامل القدرة، الجهد، والتيار، ومراقبة استهلاك الطاقة الكلي.",
         descriptionEn: "Complete measurement and analysis of power factor, voltage, current and total energy consumption monitoring.",
         featured: false
@@ -378,7 +378,7 @@ const SiteData = (() => {
     ],
 
     brands: [
-      { id: 1, name: "شنايدر إليكتريك", nameEn: "Schneider Electric", logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZPLWgz3OlXQj-8UXiJwwPJbYSCZjR5l5nV0C5Wd0UBE1S0GDdrk3S2KpG8d2tpVlXe8Tpv5hGlMDTxL5dBzzRVBkUADfMFnGnIX1GqvSNQWNLZGm0ZY8xxE9INc6IxC1cOCdVLwZU7Dkq2Jv8cM3wwbQKTHSVEL1OIzANqVLkm1TfPm50d6ycDRIzm8U-Y81Rz6WqLhqedJBdaGV9bCiNqcNf8jbilANy8sGWlR73yO1FEh2Mds9HZ84_7KdSUXSFi8i-UOk", description: "شركة فرنسية رائدة في إدارة الطاقة والأتمتة", country: "فرنسا" },
+      { id: 1, name: "شنايدر إليكتريك", nameEn: "Schneider Electric", logo: "", description: "شركة فرنسية رائدة في إدارة الطاقة والأتمتة", country: "فرنسا" },
       { id: 2, name: "سيمنز", nameEn: "Siemens", logo: "", description: "شركة ألمانية متعددة الجنسيات للهندسة الكهربائية", country: "ألمانيا" },
       { id: 3, name: "إيه بي بي", nameEn: "ABB", logo: "", description: "شركة سويسرية-سويدية متخصصة في تقنيات الطاقة", country: "سويسرا" },
       { id: 4, name: "لوغراند", nameEn: "Legrand", logo: "", description: "شركة فرنسية متخصصة في البنية التحتية الكهربائية", country: "فرنسا" },
@@ -392,9 +392,9 @@ const SiteData = (() => {
         nameEn: "Agricultural Solar Station Project - Hama Countryside",
         description: "تصميم وتوريد وتركيب كافة المحولات واللوحات الكهربائية ومولدات الطاقة الشمسية لإنشاء أول محطة زراعية ذكية متكاملة لتوليد الطاقة النظيفة.", 
         descriptionEn: "Designing, supplying, and installing all transformers, electrical panels, and solar generators to establish the first integrated smart agricultural clean energy station.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY", 
+        image: "images/solar_energy_station.png", 
         images: [
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY"
+          "images/solar_energy_station.png"
         ],
         status: "مكتمل", 
         statusEn: "Completed",
@@ -419,9 +419,9 @@ const SiteData = (() => {
         nameEn: "Automation of Al-Ahlia Spinning and Weaving Production Lines - Aleppo",
         description: "توريد وتركيب أنظمة تحكم مبرمج PLC وشاشات HMI متكاملة لتحديث وتطوير أنظمة القيادة وخطوط الغزل والنسيج القديمة.", 
         descriptionEn: "Supplying and installing integrated PLC control systems and HMI screens to modernize and upgrade driver systems and old spinning/weaving lines.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDmDp8b39IJ2F9j0H-pQP7RJPS9sQdeMVfU17FqUCTCPbxQ9P_gXYx-uSK4M8raxk45k4ItXhIf6vMqA_HfijgaJvY1s4q-lthFjrGLN0hQZLj-eKxKgO2nFE_4sJc1DKSy_vq-bj8zBbgH_IFRqawWKGTv7uFJ3g3K2dC86_MUjzwmPCWxV-Cxf3N3VhKzCYlxr5sL2aCVA2rp-3yxF1ZLXoJDqGEq8y9VDUWxQPkN8HpqJc4vGjcCPUz5O8f5Ub1xDlWw9P4w", 
+        image: "images/product_irrigation.png", 
         images: [
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuDmDp8b39IJ2F9j0H-pQP7RJPS9sQdeMVfU17FqUCTCPbxQ9P_gXYx-uSK4M8raxk45k4ItXhIf6vMqA_HfijgaJvY1s4q-lthFjrGLN0hQZLj-eKxKgO2nFE_4sJc1DKSy_vq-bj8zBbgH_IFRqawWKGTv7uFJ3g3K2dC86_MUjzwmPCWxV-Cxf3N3VhKzCYlxr5sL2aCVA2rp-3yxF1ZLXoJDqGEq8y9VDUWxQPkN8HpqJc4vGjcCPUz5O8f5Ub1xDlWw9P4w"
+          "images/product_irrigation.png"
         ],
         status: "مكتمل", 
         statusEn: "Completed",
@@ -466,7 +466,7 @@ const SiteData = (() => {
     ],
 
     blogPosts: [
-      { id: 1, title: "كيف تختار القاطع الكهربائي الصناعي المناسب لمشروعك", excerpt: "دليل شامل لاختيار القواطع الكهربائية الصناعية ونظم الحماية مع نصائح من مهندسينا لضمان السلامة والتشغيل المستمر.", image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDKRJF_KG0Y5lPMkbycFzUoQ12qvIKuF7ynVTgkSPHRnRJLMfWcl7S7-TH4DvFhVb6NvUiE0xEsHjH2WpDphIy2HsCFJbZcVCCVLsavnLCQBiKaIUhXJVSyUJyeL2w-6XlI3NLFzBVt3h8P3_8Uyo8Ey-m_vOKv2ER9GNqIuHLqrfKxkS4MXS8YBz1kj7FhqPITGDm2E3_vKBifqHVmgUXFO4HK69h33iKmg7tGS7GHlmqFIqIe5bawIJNOSQWnqQ1M5WFb-3kk", date: "2026-03-15", category: "نصائح فنية", content: "محتوى المقال الكامل هنا..." },
+      { id: 1, title: "كيف تختار القاطع الكهربائي الصناعي المناسب لمشروعك", excerpt: "دليل شامل لاختيار القواطع الكهربائية الصناعية ونظم الحماية مع نصائح من مهندسينا لضمان السلامة والتشغيل المستمر.", image: "images/product_mccb_breaker.png", date: "2026-03-15", category: "نصائح فنية", content: "محتوى المقال الكامل هنا..." },
       { id: 2, title: "مستقبل الطاقة الشمسية وأنظمة الري الذكي في سوريا", excerpt: "نظرة معمقة على تطور قطاع الطاقة الشمسية والضخ الشمسي ودور شركة الكهرباء الذكية في دعم مشاريع ري الأراضي الزراعية.", image: "", date: "2026-02-28", category: "طاقة متجددة", content: "محتوى المقال الكامل هنا..." },
       { id: 3, title: "دور الأتمتة الصناعية ونظم SCADA في زيادة الكفاءة التشغيلية للآلات", excerpt: "استعراض عملي لكيفية تحويل الأنظمة التقليدية إلى منظومة ذكية مبنية على PLC وتوفير استهلاك الطاقة.", image: "", date: "2026-01-10", category: "تقنية", content: "محتوى المقال الكامل هنا..." }
     ],
@@ -574,7 +574,7 @@ const SiteData = (() => {
       // Sanitize homepage hero images
       if (merged.homepage) {
         if (!merged.homepage.heroImages || !Array.isArray(merged.homepage.heroImages) || merged.homepage.heroImages.length === 0) {
-          merged.homepage.heroImages = [merged.homepage.heroImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY"];
+          merged.homepage.heroImages = [merged.homepage.heroImage || "images/solar_energy_station.png"];
         }
       }
       
