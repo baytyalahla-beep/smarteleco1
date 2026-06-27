@@ -17,7 +17,7 @@ const TRANSLATIONS = {
     products: "المنتجات",
     projects: "المشاريع",
     brands: "العلامات التجارية",
-    blog: "المدونة",
+    blog: "مركز المعرفة",
     contact: "اتصل بنا",
     offers: "العروض",
     subscribe: "اشترك",
@@ -28,8 +28,19 @@ const TRANSLATIONS = {
     footer_newsletter: "اشترك في النشرة البريدية",
     footer_newsletter_desc: "ابقَ على اطلاع بأحدث المنتجات والعروض الحصرية.",
     rights_reserved: "جميع الحقوق محفوظة لشركة الكهرباء الذكية",
-    currency: "ر.س",
+    currency: "ل.س",
     add_to_cart: "أضف للسلة",
+    rfq_intro: "للحصول على عرض سعر فني ومالي مخصص لمشروعك، يرجى ملء البيانات التالية وسيقوم مهندسونا بالتواصل معك فوراً.",
+    company_name: "اسم الشركة / المؤسسة",
+    boq_file: "ملف جدول الكميات والمواصفات (BOQ)",
+    project_notes: "ملاحظات أو متطلبات خاصة بالطلب",
+    submit_rfq_btn: "إرسال طلب التسعير",
+    name_field: "الاسم الكامل",
+    email_field: "البريد الإلكتروني المهني",
+    phone_field: "رقم الهاتف / الجوال",
+    secure_checkout: "تواصل آمن ومباشر مع مبيعاتنا",
+    thank_you_title: "تم استلام طلب التسعير بنجاح ✓",
+    thank_you_desc: "شكراً لتواصلك معنا. تم تسجيل طلب التسعير الخاص بمشروعكم بنجاح وسيقوم فريقنا الهندسي بدراسة الكميات والمواصفات الفنية والتواصل معكم خلال 24 ساعة.",
     project_details: "تفاصيل المشروع",
     whatsapp_enquiry: "تواصل عبر واتساب",
     request_quote: "طلب عرض سعر",
@@ -123,7 +134,7 @@ const TRANSLATIONS = {
     products: "Products",
     projects: "Projects",
     brands: "Brands",
-    blog: "Blog",
+    blog: "Knowledge Center",
     contact: "Contact Us",
     offers: "Offers",
     subscribe: "Subscribe",
@@ -136,6 +147,17 @@ const TRANSLATIONS = {
     rights_reserved: "All rights reserved to Smart Electricity Company (SEC) © 2026",
     currency: "SYP",
     add_to_cart: "Add to Cart",
+    rfq_intro: "To get a customized technical and financial quotation for your project, please fill in the details below. Our engineers will contact you shortly.",
+    company_name: "Company / Institution Name",
+    boq_file: "Bill of Quantities & Specs (BOQ) File",
+    project_notes: "Special Notes or Requirements",
+    submit_rfq_btn: "Submit Quote Request",
+    name_field: "Full Name",
+    email_field: "Professional Email",
+    phone_field: "Phone Number / Mobile",
+    secure_checkout: "Secure and direct contact with our sales team",
+    thank_you_title: "Quotation Request Submitted Successfully ✓",
+    thank_you_desc: "Thank you for reaching out. Your RFQ has been registered. Our engineering team will review the BOQ and technical specifications and contact you within 24 hours.",
     project_details: "Project Details",
     whatsapp_enquiry: "WhatsApp Enquiry",
     request_quote: "Request Quote",
@@ -780,12 +802,9 @@ function renderHeader(s, currentPage) {
     toggleBtn.className = 'md:hidden p-1.5 text-deep-forest hover:bg-surface-gray rounded-lg order-first flex items-center justify-center';
     toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[28px]">menu</span>';
     mainHeaderBar.insertBefore(toggleBtn, mainHeaderBar.firstChild);
-    
-    toggleBtn.onclick = () => {
-      window.toggleMobileMenu();
-    };
+    toggleBtn.onclick = () => { window.toggleMobileMenu(); };
   }
-  
+
   // Dynamic navigation injection for Services page
   const nav = header.querySelector('nav');
   if (nav) {
@@ -793,45 +812,129 @@ function renderHeader(s, currentPage) {
     nav.querySelectorAll('a').forEach(a => {
       const text = (a.textContent || '').trim();
       const href = a.getAttribute('href');
-      if (href === '#' || href === 'services.html' || href === 'offers.html' || !href) {
-        if (text === 'الخدمات' || text === 'Services' || text === 'العروض' || text === 'Offers') {
-          if (text === 'الخدمات' || text === 'Services') {
-            a.setAttribute('href', 'services.html');
-          } else {
-            a.setAttribute('href', 'offers.html');
-          }
-        }
+      if ((href === '#' || !href) && (text === 'العروض' || text === 'Offers')) {
+        a.setAttribute('href', 'offers.html');
       }
     });
-
-    if (!nav.querySelector('a[href="services.html"]')) {
+    if (!nav.querySelector('a[href="services.html"], .nav-dropdown')) {
       const servicesLink = document.createElement('a');
       servicesLink.href = 'services.html';
       servicesLink.textContent = 'الخدمات';
       servicesLink.className = 'text-on-surface-variant hover:text-primary transition-all text-label-lg font-label-lg pb-1';
-      
       const links = Array.from(nav.children);
-      const aboutLinkIndex = links.findIndex(l => l.getAttribute('href') === 'about.html');
-      if (aboutLinkIndex !== -1 && aboutLinkIndex + 1 < links.length) {
-        nav.insertBefore(servicesLink, links[aboutLinkIndex + 1]);
-      } else {
-        nav.appendChild(servicesLink);
-      }
+      const aboutIdx = links.findIndex(l => l.getAttribute?.('href') === 'about.html');
+      if (aboutIdx !== -1) nav.insertBefore(servicesLink, links[aboutIdx + 1] || null);
+      else nav.appendChild(servicesLink);
     }
-    
     if (!nav.querySelector('a[href="offers.html"]')) {
       const offersLink = document.createElement('a');
       offersLink.href = 'offers.html';
       offersLink.textContent = 'العروض';
       offersLink.className = 'text-on-surface-variant hover:text-primary transition-all text-label-lg font-label-lg pb-1';
-      
       const links = Array.from(nav.children);
-      const servicesLinkIndex = links.findIndex(l => l.getAttribute('href') === 'services.html');
+      const servicesLinkIndex = links.findIndex(l => l.getAttribute?.('href') === 'services.html');
       if (servicesLinkIndex !== -1 && servicesLinkIndex + 1 < links.length) {
         nav.insertBefore(offersLink, links[servicesLinkIndex + 1]);
       } else {
         nav.appendChild(offersLink);
       }
+    }
+  }
+
+  // === GLOBAL DROPDOWN NAV UPGRADE ===
+  // Inject dropdown CSS globally (once) and upgrade nav links to dropdown menus
+  if (!document.getElementById('global-dropdown-css')) {
+    const dropCSS = document.createElement('style');
+    dropCSS.id = 'global-dropdown-css';
+    dropCSS.textContent = `
+      .nav-dropdown { position: relative; }
+      .nav-dropdown-menu {
+        display: none; position: absolute; top: calc(100% + 8px); right: 0;
+        background: white; border: 1px solid #bccac3; border-radius: 12px;
+        box-shadow: 0 10px 36px rgba(0,105,84,0.13); min-width: 220px;
+        z-index: 200; padding: 8px 0; direction: rtl;
+      }
+      .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+      .nav-dropdown-menu a {
+        display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+        color: #3d4945; font-size: 14px; transition: all 0.18s;
+        border-right: 3px solid transparent; text-decoration: none;
+        font-family: 'Cairo', sans-serif;
+      }
+      .nav-dropdown-menu a:hover { color: #006954; background: #f1f3ff; border-right-color: #006954; }
+      .nav-dropdown-menu .drop-section-title {
+        padding: 8px 16px 3px; font-size: 11px; font-weight: 700; color: #6d7a74;
+        letter-spacing: 0.05em; font-family: 'Cairo', sans-serif;
+      }
+      .nav-dropdown-menu .drop-divider { height: 1px; background: #e0e7e5; margin: 4px 12px; }
+      .nav-dropdown-trigger { display: inline-flex; align-items: center; gap: 3px; cursor: pointer; }
+      .nav-dropdown-trigger .drop-arr { font-size: 18px; transition: transform 0.22s; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      .nav-dropdown:hover .drop-arr { transform: rotate(180deg); }
+    `;
+    document.head.appendChild(dropCSS);
+  }
+
+  // Upgrade existing nav links to rich dropdowns (runs once per page load)
+  const navForDrop = header.querySelector('nav');
+  if (navForDrop && !navForDrop.dataset.dropdownDone) {
+    navForDrop.dataset.dropdownDone = 'true';
+    const isEn = (localStorage.getItem('electric_house_lang') || 'ar') === 'en';
+
+    // 1. Upgrade services link → dropdown
+    const srvLink = navForDrop.querySelector('a[href="services.html"]');
+    if (srvLink && !srvLink.closest('.nav-dropdown')) {
+      const wr = document.createElement('div');
+      wr.className = 'nav-dropdown';
+      wr.innerHTML = `
+        <span class="nav-dropdown-trigger text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg">
+          ${isEn ? 'Services' : 'الخدمات'}
+          <span class="material-symbols-outlined drop-arr">expand_more</span>
+        </span>
+        <div class="nav-dropdown-menu">
+          <a href="services.html"><span class="material-symbols-outlined text-[17px] text-primary">electric_bolt</span>${isEn ? 'All Services' : 'جميع الخدمات'}</a>
+          <a href="services.html#electrical"><span class="material-symbols-outlined text-[17px] text-primary">electrical_services</span>${isEn ? 'Electrical Solutions' : 'الحلول الكهربائية'}</a>
+          <a href="services.html#solar"><span class="material-symbols-outlined text-[17px] text-primary">solar_power</span>${isEn ? 'Solar Energy' : 'الطاقة الشمسية'}</a>
+          <a href="services.html#automation"><span class="material-symbols-outlined text-[17px] text-primary">precision_manufacturing</span>${isEn ? 'Industrial Automation' : 'الأتمتة الصناعية'}</a>
+          <a href="services.html#agriculture"><span class="material-symbols-outlined text-[17px] text-primary">grass</span>${isEn ? 'Agricultural Solutions' : 'الحلول الزراعية'}</a>
+        </div>`;
+      srvLink.parentNode.insertBefore(wr, srvLink);
+      srvLink.remove();
+    }
+
+    // 2. Upgrade products link → dropdown
+    const prdLink = navForDrop.querySelector('a[href="products.html"]');
+    if (prdLink && !prdLink.closest('.nav-dropdown')) {
+      const wr = document.createElement('div');
+      wr.className = 'nav-dropdown';
+      wr.innerHTML = `
+        <span class="nav-dropdown-trigger text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg">
+          ${isEn ? 'Products' : 'المنتجات'}
+          <span class="material-symbols-outlined drop-arr">expand_more</span>
+        </span>
+        <div class="nav-dropdown-menu">
+          <a href="products.html"><span class="material-symbols-outlined text-[17px] text-primary">inventory_2</span>${isEn ? 'All Products' : 'جميع المنتجات'}</a>
+          <div class="drop-divider"></div>
+          <div class="drop-section-title">${isEn ? 'By Category' : 'تصفح حسب الفئة'}</div>
+          <a href="products.html?cat=${encodeURIComponent('أنظمة الحماية الكهربائية')}"><span class="material-symbols-outlined text-[17px] text-primary">security</span>${isEn ? 'Protection Systems' : 'أنظمة الحماية'}</a>
+          <a href="products.html?cat=${encodeURIComponent('أنظمة القيادة والتحكم')}"><span class="material-symbols-outlined text-[17px] text-primary">settings_input_component</span>${isEn ? 'Control Systems' : 'القيادة والتحكم'}</a>
+          <a href="products.html?cat=${encodeURIComponent('الأتمتة الصناعية')}"><span class="material-symbols-outlined text-[17px] text-primary">smart_toy</span>${isEn ? 'Industrial Automation' : 'الأتمتة الصناعية'}</a>
+          <a href="products.html?cat=${encodeURIComponent('الأنظمة الكهروميكانيكية والحركة')}"><span class="material-symbols-outlined text-[17px] text-primary">conveyor_belt</span>${isEn ? 'Electromechanical' : 'الكهروميكانيكية'}</a>
+          <div class="drop-divider"></div>
+          <a href="offers.html"><span class="material-symbols-outlined text-[17px] text-primary">local_offer</span>${isEn ? 'Special Offers' : 'العروض الخاصة'}</a>
+        </div>`;
+      prdLink.parentNode.insertBefore(wr, prdLink);
+      prdLink.remove();
+    }
+
+    // 3. Add FAQ link if not already present
+    if (!navForDrop.querySelector('a[href="faq.html"]')) {
+      const faqA = document.createElement('a');
+      faqA.href = 'faq.html';
+      faqA.textContent = isEn ? 'FAQ' : 'الأسئلة الشائعة';
+      faqA.className = 'text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg';
+      const contactA = navForDrop.querySelector('a[href="contact.html"]');
+      if (contactA) navForDrop.insertBefore(faqA, contactA);
+      else navForDrop.appendChild(faqA);
     }
   }
 
@@ -919,7 +1022,7 @@ function renderHeader(s, currentPage) {
               </a>
               <a href="blog.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
                 <span class="material-symbols-outlined text-primary text-[20px]">article</span>
-                <span>${isEn ? 'Blog' : 'المدونة'}</span>
+                <span>${isEn ? 'Knowledge Center' : 'مركز المعرفة'}</span>
               </a>
               <a href="contact.html" class="flex items-center gap-3 py-2 px-3 hover:bg-primary/5 rounded-lg text-on-surface hover:text-primary transition-all font-semibold">
                 <span class="material-symbols-outlined text-primary text-[20px]">call</span>
@@ -930,10 +1033,10 @@ function renderHeader(s, currentPage) {
           
           <div class="border-t border-outline-variant/30 pt-6 space-y-4">
             <div class="flex justify-between items-center">
-              <button onclick="toggleLanguage()" class="bg-primary/10 text-primary py-1.5 px-4 rounded-full font-bold text-xs">
-                ${isEn ? 'العربية' : 'English'}
-              </button>
-              <span class="text-sm font-bold text-deep-forest">${s.currency || 'ر.س'}</span>
+               <button onclick="toggleLanguage()" class="bg-primary/10 text-primary py-1.5 px-4 rounded-full font-bold text-xs">
+                 ${isEn ? 'العربية' : 'English'}
+               </button>
+               <span class="text-sm font-bold text-deep-forest">${s.currency || 'ل.س'}</span>
             </div>
             <div class="text-[11px] text-on-surface-variant text-center">
               ${isEn ? 'Smart Electricity Company' : 'شركة الكهرباء الذكية'}
@@ -1018,33 +1121,52 @@ function renderFooter(s) {
       pinterest: `<svg class="w-3 h-3 fill-current text-white" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.966 1.406-5.966s-.359-.72-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146 1.124.347 2.317.535 3.554.535 6.627 0 11.988-5.366 11.988-11.987C23.988 5.367 18.627 0 12.017 0z"/></svg>`,
       whatsapp: `<svg class="w-3 h-3 fill-current text-white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.45L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.019-5.117-2.875-6.974-1.858-1.857-4.339-2.876-6.979-2.877-5.442 0-9.868 4.42-9.873 9.869-.001 1.699.444 3.359 1.29 4.825L1.879 21.8l4.768-1.251zM17.43 14.33c-.297-.149-1.758-.868-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>`
     };
-    const platforms = [
-      { key: 'facebook', title: 'Facebook' },
-      { key: 'instagram', title: 'Instagram' },
-      { key: 'twitter', title: 'Twitter' },
-      { key: 'linkedin', title: 'LinkedIn' },
-      { key: 'youtube', title: 'YouTube' },
-      { key: 'tiktok', title: 'TikTok' },
-      { key: 'snapchat', title: 'Snapchat' },
-      { key: 'telegram', title: 'Telegram' },
-      { key: 'pinterest', title: 'Pinterest' },
-      { key: 'whatsapp', title: 'WhatsApp' }
-    ];
     let html = '';
-    platforms.forEach(p => {
-      if (s[p.key]) {
-        const svgContent = PLATFORM_SVGS[p.key] || '';
-        html += `
-          <a class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all duration-300 hover-swell text-white" href="${s[p.key]}" title="${p.title}" target="_blank">
-            ${svgContent}
-          </a>
-        `;
+    for (const key in PLATFORM_SVGS) {
+      if (s[key]) {
+        html += `<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="${s[key]}" target="_blank" title="${key}">${PLATFORM_SVGS[key]}</a>`;
       }
-    });
+    }
     if (html) {
       socialContainer.innerHTML = html;
       socialContainer.classList.add('flex-wrap', 'gap-2');
       socialContainer.classList.remove('gap-4');
+    }
+  }
+
+  // Update footer categories dynamically
+  const categoriesCol = Array.from(footer.querySelectorAll('.space-y-4')).find(col => {
+    const h3 = col.querySelector('h3');
+    return h3 && (h3.textContent.includes('تسوق') || h3.textContent.includes('Shop') || h3.textContent.includes('القسم') || h3.textContent.includes('Category'));
+  });
+  
+  if (categoriesCol) {
+    const h3 = categoriesCol.querySelector('h3');
+    const lang = localStorage.getItem('electric_house_lang') || 'ar';
+    const isEn = lang === 'en';
+    if (h3) h3.textContent = isEn ? 'Product Categories' : 'أقسام المنتجات';
+    
+    const ul = categoriesCol.querySelector('ul');
+    if (ul) {
+      const dbCategories = (typeof SiteData !== 'undefined') ? (SiteData.getData('categories') || []) : [];
+      ul.innerHTML = dbCategories.map(cat => {
+        const cName = isEn ? (CATEGORY_TRANSLATIONS[cat] || cat) : cat;
+        return `<li><a class="hover:text-primary-fixed transition-colors" href="products.html?category=${encodeURIComponent(cat)}">${cName}</a></li>`;
+      }).join('');
+    }
+  }
+
+  // Rename Blog link to Knowledge Center in footer quick links
+  const quickLinksCol = Array.from(footer.querySelectorAll('.space-y-4')).find(col => {
+    const h3 = col.querySelector('h3');
+    return h3 && (h3.textContent.includes('روابط') || h3.textContent.includes('Quick') || h3.textContent.includes('سريعة'));
+  });
+  if (quickLinksCol) {
+    const lang = localStorage.getItem('electric_house_lang') || 'ar';
+    const isEn = lang === 'en';
+    const blogLink = quickLinksCol.querySelector('a[href="blog.html"]');
+    if (blogLink) {
+      blogLink.textContent = isEn ? 'Knowledge Center' : 'مركز المعرفة';
     }
   }
 }
@@ -1751,12 +1873,13 @@ function renderProductsPage(data) {
   const brands = data.brands || [];
   const lang = localStorage.getItem('electric_house_lang') || 'ar';
   const isEn = lang === 'en';
-  const currency = isEn ? (s.currencyEn || s.currency || 'SAR') : (s.currency || 'ر.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
 
   // Read initial search query from URL parameter
   const params = new URLSearchParams(location.search);
   const initialSearch = params.get('search');
   const initialBrand = params.get('brand');
+  const initialCategory = params.get('category');
   const headerSearchInput = document.querySelector('header input[type="text"]');
   if (initialSearch && headerSearchInput) {
     headerSearchInput.value = initialSearch;
@@ -1765,6 +1888,16 @@ function renderProductsPage(data) {
   if (initialBrand) {
     setTimeout(() => {
       const chk = Array.from(document.querySelectorAll('.brand-checkbox')).find(el => el.value === initialBrand);
+      if (chk) {
+        chk.checked = true;
+        chk.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }, 50);
+  }
+
+  if (initialCategory) {
+    setTimeout(() => {
+      const chk = Array.from(document.querySelectorAll('.cat-checkbox')).find(el => el.value === initialCategory);
       if (chk) {
         chk.checked = true;
         chk.dispatchEvent(new Event('change', { bubbles: true }));
@@ -2169,6 +2302,13 @@ function renderProductDetailPage(data) {
     const plusBtn = document.querySelector('.flex.items-center.border.border-outline.rounded-lg button:last-child');
     const addBtn = document.querySelector('button.flex-1.bg-primary');
     
+    if (addBtn) {
+      if (product.showPrice === false) {
+        const btnText = addBtn.querySelector('span:last-child');
+        if (btnText) btnText.textContent = isEn ? 'Add to Quote Request' : 'إضافة إلى طلب التسعير';
+      }
+    }
+
     if (qtyInput && minusBtn && plusBtn && addBtn) {
       minusBtn.onclick = (e) => {
         e.preventDefault();
@@ -2204,6 +2344,143 @@ function renderProductDetailPage(data) {
         };
       }
     }
+
+    // --- Dynamic Related Products ---
+    const relatedContainer = document.getElementById('related-products-grid');
+    if (relatedContainer) {
+      let related = data.products.filter(p => p.id !== product.id && p.category === product.category);
+      if (related.length < 4) {
+        const fallback = data.products.filter(p => p.id !== product.id && p.category !== product.category);
+        related = related.concat(fallback).slice(0, 4);
+      } else {
+        related = related.slice(0, 4);
+      }
+      const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
+      renderProductCards(relatedContainer, related, currency);
+    }
+
+    // --- Dynamic Tabs Content & Switcher ---
+    // Specs Tab Content
+    const specsTab = document.getElementById('tab-specs');
+    if (specsTab) {
+      const pBrand = product.brand || (isEn ? 'SEC' : 'شركة الكهرباء الذكية');
+      let pOrigin = isEn ? 'Germany / France' : 'ألمانيا / فرنسا';
+      if (pBrand.includes('شنايدر') || pBrand.toLowerCase().includes('schneider')) pOrigin = isEn ? 'France' : 'فرنسا';
+      else if (pBrand.includes('سيمنز') || pBrand.toLowerCase().includes('siemens')) pOrigin = isEn ? 'Germany' : 'ألمانيا';
+      else if (pBrand.includes('لوغراند') || pBrand.toLowerCase().includes('legrand')) pOrigin = isEn ? 'France' : 'فرنسا';
+      else if (pBrand.includes('بحرة') || pBrand.toLowerCase().includes('bahra')) pOrigin = isEn ? 'Saudi Arabia' : 'المملكة العربية السعودية';
+      
+      specsTab.innerHTML = `
+        <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm max-w-3xl mx-auto overflow-hidden">
+          <table class="w-full text-right ${isEn ? 'text-left' : 'text-right'} border-collapse">
+            <tbody>
+              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest w-1/3">${isEn ? 'Brand' : 'العلامة التجارية'}</td><td class="py-3 text-on-surface">${pBrand}</td></tr>
+              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Category' : 'الفئة'}</td><td class="py-3 text-on-surface">${isEn ? (CATEGORY_TRANSLATIONS[product.category] || product.category) : product.category}</td></tr>
+              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Voltage' : 'الجهد الكهربائي'}</td><td class="py-3 text-on-surface">${isEn ? '380V - 415V AC' : '380 - 415 فولت AC'}</td></tr>
+              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Poles' : 'عدد الأقطاب'}</td><td class="py-3 text-on-surface">${isEn ? '3-Pole (3P) / 4-Pole (4P)' : '3 أقطاب (3P) / 4 أقطاب (4P)'}</td></tr>
+              <tr class="border-b border-outline-variant/30"><td class="py-3 font-bold text-deep-forest">${isEn ? 'Protection Class' : 'درجة الحماية'}</td><td class="py-3 text-on-surface">IP40 / IK08</td></tr>
+              <tr><td class="py-3 font-bold text-deep-forest">${isEn ? 'Country of Origin' : 'بلد المنشأ'}</td><td class="py-3 text-on-surface">${pOrigin}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // Techfiles Tab Content
+    const techTab = document.getElementById('tab-techfiles');
+    if (techTab) {
+      techTab.innerHTML = `
+        <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm max-w-3xl mx-auto space-y-4">
+          <h4 class="font-bold text-deep-forest mb-4">${isEn ? 'Technical Datasheets & User Manuals' : 'الكتيبات الفنية وشهادات المطابقة'}</h4>
+          <div class="divide-y divide-outline-variant/30">
+            <div class="py-3 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
+                <div>
+                  <p class="font-bold text-on-surface">${isEn ? 'Technical Datasheet' : 'كتالوج المنتج الفني الفصيلي'}</p>
+                  <p class="text-xs text-on-surface-variant">PDF (2.4 MB)</p>
+                </div>
+              </div>
+              <a href="#" onclick="event.preventDefault(); alert('${isEn ? 'Downloading Technical Datasheet...' : 'جاري تحميل الكتالوج الفني...' || 'Downloading...'}')" class="text-primary font-bold hover:underline flex items-center gap-1">
+                <span>${isEn ? 'Download' : 'تحميل'}</span>
+                <span class="material-symbols-outlined text-sm">download</span>
+              </a>
+            </div>
+            <div class="py-3 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-red-600 text-3xl">picture_as_pdf</span>
+                <div>
+                  <p class="font-bold text-on-surface">${isEn ? 'Installation & Safety Guide' : 'دليل التركيب والصيانة والتشغيل'}</p>
+                  <p class="text-xs text-on-surface-variant">PDF (1.8 MB)</p>
+                </div>
+              </div>
+              <a href="#" onclick="event.preventDefault(); alert('${isEn ? 'Downloading Installation Guide...' : 'جاري تحميل دليل التركيب...' || 'Downloading...'}')" class="text-primary font-bold hover:underline flex items-center gap-1">
+                <span>${isEn ? 'Download' : 'تحميل'}</span>
+                <span class="material-symbols-outlined text-sm">download</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Reviews Tab Content
+    const reviewsTab = document.getElementById('tab-reviews');
+    if (reviewsTab) {
+      reviewsTab.innerHTML = `
+        <div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm max-w-3xl mx-auto space-y-6">
+          <div class="flex items-center gap-4 border-b border-outline-variant/30 pb-4">
+            <div class="text-center">
+              <p class="text-5xl font-black text-deep-forest">4.8</p>
+              <p class="text-xs text-on-surface-variant mt-1">${isEn ? 'out of 5 stars' : 'من 5 نجوم'}</p>
+            </div>
+            <div>
+              <div class="flex text-amber-500"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span></div>
+              <p class="text-sm text-on-surface-variant mt-1">${isEn ? 'Based on 12 reviews' : 'بناءً على 12 تقييماً معتمداً'}</p>
+            </div>
+          </div>
+          <div class="space-y-4 divide-y divide-outline-variant/20">
+            <div class="pt-4 text-right ${isEn ? 'text-left' : 'text-right'}">
+              <div class="flex justify-between items-center mb-1">
+                <p class="font-bold text-deep-forest">${isEn ? 'Eng. Khalid Al-Homsi' : 'م. خالد الحمصي'}</p>
+                <div class="flex text-amber-500 text-sm"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span></div>
+              </div>
+              <p class="text-body-md text-on-surface-variant">${isEn ? 'Excellent build quality, highly reliable for massive electrical projects. Approved in our company.' : 'ممتاز جداً للمشاريع الكهربائية الكبيرة، جودة التصنيع عالية جداً ومعتمد في مشاريعنا الهندسية.'}</p>
+            </div>
+            <div class="pt-4 text-right ${isEn ? 'text-left' : 'text-right'}">
+              <div class="flex justify-between items-center mb-1">
+                <p class="font-bold text-deep-forest">${isEn ? 'Anas Al-Sayed' : 'أنس السيد'}</p>
+                <div class="flex text-amber-500 text-sm"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span></div>
+              </div>
+              <p class="text-body-md text-on-surface-variant">${isEn ? 'Super fast response and excellent support. The component operates flawlessly.' : 'توصيل سريع وخدمة عملاء ممتازة من شركة الكهرباء الذكية. القاطع يعمل بكفاءة تامة.'}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Tabs Click Logic
+    const tabButtons = document.querySelectorAll('#product-tabs .tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabButtons.forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const targetTab = btn.getAttribute('data-tab');
+        
+        tabButtons.forEach(b => {
+          b.className = "tab-btn text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap border-b-2 border-transparent transition-all";
+        });
+        btn.className = "tab-btn text-primary font-bold border-b-2 border-primary pb-4 whitespace-nowrap transition-all";
+        
+        tabContents.forEach(content => {
+          if (content.id === `tab-${targetTab}`) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
+      };
+    });
   }
 }
 
@@ -2671,7 +2948,7 @@ function renderOffersPage(data) {
 
   // Render Offer Products Grid
   const grid = document.getElementById('offers-products-grid');
-  const currency = isEn ? (s.currencyEn || s.currency || 'SAR') : (s.currency || 'ر.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
   if (grid) {
     renderOfferProductCards(grid, offerProducts, currency);
   }
@@ -2964,7 +3241,7 @@ function renderCartPage(data) {
   let subtotal = 0;
   let hasHiddenPrice = false;
   let itemsCount = 0;
-  const currency = isEn ? (s.currencyEn || s.currency || 'SAR') : (s.currency || 'ر.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
   
   let cartItemsHtml = '';
   cart.forEach((item, index) => {
@@ -3076,14 +3353,40 @@ function renderCartPage(data) {
           </div>
         </div>
         
-        <div class="space-y-4">
-          <p class="text-center text-on-surface-variant font-label-sm leading-relaxed mb-4">${isEn ? 'To complete your order and receive corporate quotations, please contact our sales team directly via WhatsApp.' : 'لإتمام عملية الشراء والحصول على أفضل عرض سعر للمؤسسات، يرجى التواصل معنا مباشرة عبر الواتساب.'}</p>
-          <button onclick="sendOrderWhatsApp()" class="whatsapp-gradient text-white flex items-center justify-center gap-3 py-5 px-6 rounded-xl font-headline-md text-headline-md hover:opacity-90 active:scale-95 transition-all shadow-lg hover:shadow-xl w-full">
-            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path>
-            </svg>
-            ${isEn ? 'Order via WhatsApp' : 'طلب عبر الواتساب'}
-          </button>
+        <div id="rfq-form-container" class="space-y-4">
+          <p class="text-center text-on-surface-variant font-label-sm leading-relaxed mb-4">
+            ${isEn ? 'To get a customized technical and financial quotation for your project, please fill in the details below. Our engineers will contact you shortly.' : 'للحصول على عرض سعر فني ومالي مخصص لمشروعك، يرجى ملء البيانات التالية وسيقوم مهندسونا بالتواصل معك فوراً.'}
+          </p>
+          <form id="rfq-checkout-form" class="space-y-4" onsubmit="window.handleRFQSubmit(event)">
+            <div class="space-y-1">
+              <label class="block font-label-sm text-label-sm text-on-surface-variant text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Full Name' : 'الاسم الكامل'}</label>
+              <input id="rfq-name" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary outline-none" required type="text">
+            </div>
+            <div class="space-y-1">
+              <label class="block font-label-sm text-label-sm text-on-surface-variant text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Company / Institution Name' : 'اسم الشركة / المؤسسة'}</label>
+              <input id="rfq-company" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary outline-none" required type="text">
+            </div>
+            <div class="space-y-1">
+              <label class="block font-label-sm text-label-sm text-on-surface-variant text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Professional Email' : 'البريد الإلكتروني المهني'}</label>
+              <input id="rfq-email" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary outline-none" required type="email">
+            </div>
+            <div class="space-y-1">
+              <label class="block font-label-sm text-label-sm text-on-surface-variant text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Phone Number / Mobile' : 'رقم الهاتف / الجوال'}</label>
+              <input id="rfq-phone" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary outline-none" required type="tel">
+            </div>
+            <div class="space-y-1">
+              <label class="block font-label-sm text-label-sm text-on-surface-variant text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Bill of Quantities & Specs (BOQ) File' : 'ملف جدول الكميات والمواصفات (BOQ)'}</label>
+              <input id="rfq-file" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary outline-none" type="file">
+            </div>
+            <div class="space-y-1">
+              <label class="block font-label-sm text-label-sm text-on-surface-variant text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Special Notes or Requirements' : 'ملاحظات أو متطلبات خاصة بالطلب'}</label>
+              <textarea id="rfq-notes" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary outline-none" rows="3"></textarea>
+            </div>
+            <button type="submit" class="bg-primary text-white flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold hover:bg-deep-forest active:scale-95 transition-all shadow-lg hover:shadow-xl w-full">
+              <span class="material-symbols-outlined">send</span>
+              <span>${isEn ? 'Submit Quote Request' : 'إرسال طلب التسعير'}</span>
+            </button>
+          </form>
           <div class="flex items-center justify-center gap-2 text-on-surface-variant mt-4">
             <span class="material-symbols-outlined text-sm">lock</span>
             <span class="font-label-sm text-label-sm">${isEn ? 'Secure and direct contact with our sales team' : 'تواصل آمن ومباشر مع مبيعاتنا'}</span>
@@ -3360,7 +3663,7 @@ window.sendOrderWhatsApp = function() {
     
   let total = 0;
   let hasHiddenPrice = false;
-  const currency = isEn ? (s.currencyEn || s.currency || 'SAR') : (s.currency || 'ر.س');
+  const currency = isEn ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
   
   cart.forEach((item, idx) => {
     let p;
@@ -3439,6 +3742,99 @@ window.sendOrderWhatsApp = function() {
   const finalUrl = `${baseUrl}?text=${encodeURIComponent(msgText)}`;
   window.open(finalUrl, '_blank');
   
+  window.location.href = 'thank-you.html';
+};
+
+window.handleRFQSubmit = function(e) {
+  e.preventDefault();
+  const name = document.getElementById('rfq-name').value;
+  const company = document.getElementById('rfq-company').value;
+  const email = document.getElementById('rfq-email').value;
+  const phone = document.getElementById('rfq-phone').value;
+  const notes = document.getElementById('rfq-notes').value;
+  const fileInput = document.getElementById('rfq-file');
+  
+  let fileName = "";
+  if (fileInput && fileInput.files && fileInput.files.length > 0) {
+    fileName = fileInput.files[0].name;
+  }
+  
+  const lang = localStorage.getItem('electric_house_lang') || 'ar';
+  const isEn = lang === 'en';
+
+  const cart = JSON.parse(localStorage.getItem('electric_house_cart') || '[]');
+  const products = SiteData.getData('products') || [];
+
+  let total = 0;
+  let hasHiddenPrice = false;
+  
+  const items = cart.map(item => {
+    let p;
+    if (typeof item.productId === 'string' && item.productId.startsWith('service_')) {
+      const sIndex = parseInt(item.productId.split('_')[1]);
+      const service = data.homepage.services[sIndex];
+      if (service) {
+        p = {
+          name: isEn ? (service.titleEn || service.title) : service.title,
+          nameEn: service.titleEn || service.title,
+          showPrice: false
+        };
+      }
+    } else {
+      p = products.find(prod => prod.id === item.productId);
+    }
+    if (!p) return null;
+    const pName = isEn ? (p.nameEn || p.name) : p.name;
+    if (p.showPrice !== false) {
+      total += p.price * item.qty;
+    } else {
+      hasHiddenPrice = true;
+    }
+    return {
+      name: pName,
+      qty: item.qty,
+      price: p.showPrice !== false ? p.price : null
+    };
+  }).filter(Boolean);
+
+  const rfqId = 'RFQ-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+  
+  const rfqData = {
+    rfqId: rfqId,
+    name: name,
+    company: company,
+    email: email,
+    phone: phone,
+    notes: notes,
+    boqFileName: fileName,
+    date: new Date().toLocaleDateString(isEn ? 'en-US' : 'ar-SA'),
+    items: items,
+    subtotal: total,
+    vat: total * 0.15,
+    finalTotal: total * 1.15,
+    hasHiddenPrice: hasHiddenPrice
+  };
+
+  // Save the RFQ to localStorage for the thank you page
+  localStorage.setItem('electric_house_latest_rfq', JSON.stringify(rfqData));
+
+  // Save order to the dashboard database so admin can see it in orders tab
+  const orders = SiteData.getData('orders') || [];
+  const newOrder = {
+    id: rfqId,
+    date: rfqData.date,
+    product: items.map(it => `${it.name} (x${it.qty})`).join('، '),
+    total: hasHiddenPrice ? 0 : rfqData.finalTotal,
+    status: isEn ? 'New RFQ' : 'طلب تسعير جديد',
+    customer: company ? `${name} (${company})` : name
+  };
+  orders.push(newOrder);
+  SiteData.saveData('orders', orders);
+
+  // Clear cart and redirect
+  localStorage.removeItem('electric_house_cart');
+  if (typeof updateCartBadge === 'function') updateCartBadge();
+
   window.location.href = 'thank-you.html';
 };
 

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <script src="site-data.js?v=1781951290849"></script>
+  <script src="site-renderer.js?v=1781951290849" defer></script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>الأسئلة الشائعة | شركة الكهرباء الذكية</title>
+  <meta name="description" content="إجابات على أكثر الأسئلة شيوعاً حول منتجات وخدمات شركة الكهرباء الذكية SEC في حماة، سوريا.">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "deep-forest": "#004A3C", "primary": "#006954", "primary-container": "#00846b",
+            "secondary": "#2b6959", "secondary-container": "#aeecd9", "on-primary": "#ffffff",
+            "on-surface": "#141b2b", "on-surface-variant": "#3d4945", "surface": "#f9f9ff",
+            "surface-gray": "#F3F4F6", "outline": "#6d7a74", "outline-variant": "#bccac3",
+            "surface-container": "#e9edff", "surface-container-low": "#f1f3ff",
+            "inverse-primary": "#68daba", "error": "#ba1a1a", "success-teal": "#009478"
+          },
+          "spacing": {
+            "stack-sm": "0.5rem", "stack-md": "1rem", "stack-lg": "2rem",
+            "margin-desktop": "2rem", "gutter": "1.5rem", "container-max": "1280px"
+          },
+          "fontFamily": { "label-lg": ["Cairo"], "headline-xl": ["Cairo"], "body-md": ["Cairo"] },
+          "fontSize": {
+            "label-lg": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+            "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+            "headline-xl": ["48px", {"lineHeight": "60px", "fontWeight": "700"}],
+            "headline-lg": ["32px", {"lineHeight": "44px", "fontWeight": "700"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; background-color: #F9F9FF; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .RTL { direction: rtl; }
+    .faq-item .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.2s; }
+    .faq-item.open .faq-answer { max-height: 500px; }
+    .faq-item .faq-icon { transition: transform 0.3s; }
+    .faq-item.open .faq-icon { transform: rotate(180deg); }
+    .faq-item.open .faq-question { color: #006954; }
+    /* Dropdown Menu Styles */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 8px); right: 0;
+      background: white; border: 1px solid #bccac3; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,105,84,0.12); min-width: 200px;
+      z-index: 100; padding: 8px 0; direction: rtl;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a {
+      display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+      color: #3d4945; font-size: 14px; transition: all 0.2s;
+      border-right: 3px solid transparent; text-decoration: none;
+    }
+    .nav-dropdown-menu a:hover { color: #006954; background: #f1f3ff; border-right-color: #006954; }
+    .nav-dropdown-trigger { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-dropdown-trigger .drop-arrow { font-size: 16px; transition: transform 0.2s; }
+    .nav-dropdown:hover .drop-arrow { transform: rotate(180deg); }
+    .category-btn.active { background: #006954; color: white; }
+  </style>
+</head>
+<body class="bg-background text-on-background RTL min-h-screen flex flex-col">
+
+<!-- Header -->
+<header class="bg-white sticky top-0 z-50 shadow-sm border-b border-outline-variant">
+  <div class="max-w-container-max mx-auto px-margin-desktop flex flex-col">
+    <div class="flex justify-between items-center py-2 text-label-lg font-label-lg text-on-surface-variant border-b border-surface-variant/50">
+      <div class="flex gap-4">
+        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">location_on</span> حماة، سوريا</span>
+        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">call</span> +963 13 251 0480</span>
+      </div>
+      <div class="flex gap-4">
+        <span>English</span>
+        <span>ل.س</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between py-4 gap-gutter">
+      <div class="shrink-0 h-14 w-auto">
+        <a href="index.html"><img id="site-logo" src="" alt="شركة الكهرباء الذكية" class="h-full w-auto object-contain"></a>
+      </div>
+      <div class="flex-1 max-w-2xl relative">
+        <input class="w-full bg-surface-gray border-none rounded-full py-3 px-6 pr-12 text-body-md font-body-md focus:ring-2 focus:ring-primary transition-all" placeholder="ما الذي تبحث عنه؟" type="text">
+        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="dashboard.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors">
+          <span class="material-symbols-outlined">person</span>
+          <span class="text-label-sm font-label-sm">حسابي</span>
+        </a>
+        <a href="cart.html" class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors relative">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span class="text-label-sm font-label-sm">السلة</span>
+        </a>
+      </div>
+    </div>
+    <nav class="flex items-center gap-6 py-3">
+      <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="index.html">الرئيسية</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="about.html">من نحن</a>
+      <div class="nav-dropdown">
+        <span class="nav-dropdown-trigger text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg">
+          الخدمات <span class="material-symbols-outlined drop-arrow text-[16px]">expand_more</span>
+        </span>
+        <div class="nav-dropdown-menu">
+          <a href="services.html">جميع الخدمات</a>
+          <a href="services.html#electrical">الحلول الكهربائية</a>
+          <a href="services.html#solar">الطاقة الشمسية</a>
+          <a href="services.html#automation">الأتمتة الصناعية</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <span class="nav-dropdown-trigger text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg">
+          المنتجات <span class="material-symbols-outlined drop-arrow text-[16px]">expand_more</span>
+        </span>
+        <div class="nav-dropdown-menu">
+          <a href="products.html">جميع المنتجات</a>
+          <a href="products.html?cat=أنظمة الحماية الكهربائية">أنظمة الحماية</a>
+          <a href="products.html?cat=الأتمتة الصناعية">الأتمتة الصناعية</a>
+          <a href="offers.html">العروض الخاصة</a>
+        </div>
+      </div>
+      <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="brands.html">العلامات التجارية</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="projects.html">المشاريع</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="blog.html">المدونة</a>
+      <a class="text-primary border-b-2 border-primary font-bold pb-1 text-label-lg font-label-lg" href="faq.html">الأسئلة الشائعة</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="contact.html">اتصل بنا</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-1 max-w-container-max mx-auto px-margin-desktop py-stack-lg w-full">
+
+  <!-- Page Header -->
+  <div class="mb-10">
+    <div class="flex items-center gap-2 text-outline font-label-sm mb-3">
+      <a class="hover:text-primary" href="index.html">الرئيسية</a>
+      <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+      <span class="text-primary font-bold">الأسئلة الشائعة</span>
+    </div>
+    <h1 class="font-headline-lg text-deep-forest mb-3">الأسئلة الشائعة</h1>
+    <p class="font-body-lg text-on-surface-variant max-w-2xl">إجابات شاملة على أكثر الأسئلة التي يطرحها عملاؤنا حول منتجاتنا وخدماتنا وطريقة التعامل معنا.</p>
+  </div>
+
+  <!-- Category Filter Tabs -->
+  <div class="flex flex-wrap gap-3 mb-8">
+    <button class="category-btn active px-5 py-2 rounded-full border border-primary text-sm font-semibold transition-all" data-cat="all">جميع الأسئلة</button>
+    <button class="category-btn px-5 py-2 rounded-full border border-outline-variant text-sm font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all" data-cat="rfq">طلبات عروض الأسعار</button>
+    <button class="category-btn px-5 py-2 rounded-full border border-outline-variant text-sm font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all" data-cat="products">المنتجات والتوافر</button>
+    <button class="category-btn px-5 py-2 rounded-full border border-outline-variant text-sm font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all" data-cat="delivery">التسليم والشحن</button>
+    <button class="category-btn px-5 py-2 rounded-full border border-outline-variant text-sm font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all" data-cat="technical">الدعم الفني</button>
+    <button class="category-btn px-5 py-2 rounded-full border border-outline-variant text-sm font-semibold text-on-surface-variant hover:border-primary hover:text-primary transition-all" data-cat="payment">الدفع والعقود</button>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- FAQ List -->
+    <div class="lg:col-span-2 space-y-3" id="faq-list">
+
+      <!-- RFQ Questions -->
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="rfq">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>كيف أرسل طلب عرض سعر (RFQ)؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">يمكنك إرسال طلب عرض سعر بعدة طرق: (1) أضف المنتجات المطلوبة إلى السلة ثم اضغط "طلب عرض سعر" وأكمل النموذج. (2) تواصل معنا مباشرة عبر واتساب على +963 986 001 965. (3) أرسل بريداً إلكترونياً إلى sales@smarteleco.com مع تفاصيل المنتجات والكميات المطلوبة.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="rfq">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>ما المدة المتوقعة للرد على طلب عرض السعر؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نلتزم بالرد على جميع طلبات عروض الأسعار خلال 24-48 ساعة عمل. للطلبات العاجلة يمكنك التواصل معنا مباشرة عبر الهاتف أو الواتساب وسنحاول الرد فورياً.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="rfq">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>هل يمكن طلب كميات كبيرة للمشاريع؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نعم، نخدم المقاولين والمشاريع الكبيرة بأسعار تنافسية ومرنة. يرجى إرسال قائمة المواصفات الكاملة وكميات كل منتج وسنقدم لك عرض سعر مفصلاً لكامل المشروع.</div>
+        </div>
+      </div>
+
+      <!-- Product Questions -->
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="products">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>ما هي العلامات التجارية التي تتعامل معها الشركة؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نتعامل مع أبرز الماركات العالمية في قطاع الكهرباء والصناعة، من بينها: <strong>Schneider Electric، Siemens، ABB، Legrand، Bahra Cables، Philips</strong>، وغيرها. جميع منتجاتنا أصلية ومعتمدة.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="products">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>هل المنتجات تأتي مع شهادات الاعتماد؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نعم، جميع منتجاتنا مرفقة بشهادات الاعتماد الدولية مثل IEC، CE، ISO. يمكنك طلب نسخ من الشهادات والكتيبات الفنية (Datasheets) مع كل طلب.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="products">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>كيف أعرف أن المنتج متوفر في المخزون؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">تجد في صفحة كل منتج مؤشر توفر يُظهر الكمية المتاحة. يمكنك أيضاً الاتصال بنا مباشرة للتحقق من التوفر الفوري وإمكانية التوريد السريع للمنتجات غير المخزنة.</div>
+        </div>
+      </div>
+
+      <!-- Delivery Questions -->
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="delivery">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>ما مناطق التوصيل التي تغطونها؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نوفر التوصيل إلى جميع محافظات سوريا. نتمركز في حماة ونستطيع التوصيل خلال 1-3 أيام عمل داخل المحافظة، و3-7 أيام للمحافظات الأخرى. للمشاريع الكبيرة نُنسق الشحن مباشرة مع الموقع.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="delivery">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>هل تقدمون خدمة التركيب مع التوصيل؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نعم، نوفر خدمة التوريد والتركيب للمشاريع. يتضمن ذلك فريقاً هندسياً متخصصاً لتركيب لوحات التوزيع، أنظمة الأتمتة، وأنظمة الطاقة الشمسية. تواصل معنا لطلب هذه الخدمة ضمن عرض السعر.</div>
+        </div>
+      </div>
+
+      <!-- Technical Support Questions -->
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="technical">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>هل تقدمون استشارات هندسية قبل الشراء؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نعم، لدينا فريق من المهندسين المتخصصين يمكنهم مساعدتك في اختيار المواصفات الصحيحة، مراجعة المخططات الكهربائية، وتقديم التوصيات التقنية المناسبة لمشروعك قبل الشراء — دون تكلفة إضافية.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="technical">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>ما سياسة الضمان والإرجاع؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">جميع منتجاتنا تتمتع بضمان المصنّع الأصلي. فترة الضمان تتراوح بين سنة وخمس سنوات حسب المنتج. في حال وجود عيب مصنعي، نلتزم بالاستبدال أو الإصلاح خلال 7 أيام عمل من تاريخ الإبلاغ.</div>
+        </div>
+      </div>
+
+      <!-- Payment Questions -->
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="payment">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>ما طرق الدفع المتاحة؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نقبل الدفع نقداً، والتحويل البنكي. للمشاريع الكبيرة يمكن الاتفاق على جدول دفع مرحلي. الأسعار بالليرة السورية (ل.س) ويمكن تسعير بعض المنتجات بالدولار حسب الطلب.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-xl border border-outline-variant overflow-hidden" data-cat="payment">
+        <button class="faq-question w-full flex items-center justify-between p-5 text-right font-semibold text-on-surface hover:text-primary transition-colors" onclick="toggleFAQ(this)">
+          <span>هل تتعاملون مع عروض المناقصات الحكومية؟</span>
+          <span class="material-symbols-outlined faq-icon text-primary shrink-0 mr-3">expand_more</span>
+        </button>
+        <div class="faq-answer px-5 text-on-surface-variant font-body-md">
+          <div class="pb-5">نعم، لدينا خبرة في المشاركة بمناقصات الجهات الحكومية والمشاريع الكبرى. نوفر جميع الوثائق الرسمية المطلوبة مثل شهادات المنشأ، الكتيبات الفنية، وعروض الأسعار الرسمية. تواصل مع قسم المبيعات على sales@smarteleco.com.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Quick Contact Card -->
+      <div class="bg-deep-forest text-white rounded-xl p-6">
+        <h3 class="font-semibold text-lg mb-3">لم تجد إجابتك؟</h3>
+        <p class="text-white/80 text-sm mb-5">فريق الدعم الفني لدينا متاح للإجابة على استفساراتك</p>
+        <a href="https://wa.me/963986001965" class="flex items-center gap-2 bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-3 rounded-lg font-semibold text-sm mb-3 w-full justify-center">
+          <span class="material-symbols-outlined text-[20px]">chat</span>
+          واتساب مباشر
+        </a>
+        <a href="contact.html" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors text-white px-4 py-3 rounded-lg font-semibold text-sm w-full justify-center">
+          <span class="material-symbols-outlined text-[20px]">mail</span>
+          راسلنا بالبريد
+        </a>
+      </div>
+
+      <!-- RFQ Card -->
+      <div class="bg-white rounded-xl border border-outline-variant p-6">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-2xl">request_quote</span>
+        </div>
+        <h3 class="font-semibold text-on-surface mb-2">طلب عرض سعر</h3>
+        <p class="text-on-surface-variant text-sm mb-4">أضف المنتجات التي تحتاجها وأرسل طلب عرض سعر في دقائق</p>
+        <a href="cart.html" class="bg-primary text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-deep-forest transition-colors block text-center">ابدأ الطلب الآن</a>
+      </div>
+
+      <!-- Download Catalog -->
+      <div class="bg-surface-container-low rounded-xl border border-outline-variant p-6">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-2xl">picture_as_pdf</span>
+        </div>
+        <h3 class="font-semibold text-on-surface mb-2">كتالوج المنتجات</h3>
+        <p class="text-on-surface-variant text-sm mb-4">حمّل الكتالوج الشامل لجميع منتجاتنا وخدماتنا</p>
+        <a href="#" class="border border-primary text-primary px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary hover:text-white transition-colors block text-center">
+          <span class="material-symbols-outlined text-[16px] align-middle">download</span>
+          تحميل الكتالوج PDF
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-deep-forest text-white mt-auto">
+  <div class="max-w-container-max mx-auto px-margin-desktop py-stack-lg">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <div class="md:col-span-1">
+        <img id="footer-logo" src="" alt="شركة الكهرباء الذكية" class="h-12 w-auto object-contain mb-4 brightness-0 invert">
+        <p class="text-white/70 text-sm leading-relaxed">شركة رائدة في مجال تقديم الحلول الكهربائية والصناعية المتكاملة في سوريا.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-4">روابط سريعة</h4>
+        <ul class="space-y-2 text-white/70 text-sm">
+          <li><a href="index.html" class="hover:text-white transition-colors">الرئيسية</a></li>
+          <li><a href="about.html" class="hover:text-white transition-colors">من نحن</a></li>
+          <li><a href="products.html" class="hover:text-white transition-colors">المنتجات</a></li>
+          <li><a href="projects.html" class="hover:text-white transition-colors">المشاريع</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors">اتصل بنا</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-4">الخدمات</h4>
+        <ul class="space-y-2 text-white/70 text-sm">
+          <li><a href="services.html" class="hover:text-white transition-colors">الحلول الكهربائية</a></li>
+          <li><a href="services.html#solar" class="hover:text-white transition-colors">الطاقة الشمسية</a></li>
+          <li><a href="services.html#automation" class="hover:text-white transition-colors">الأتمتة الصناعية</a></li>
+          <li><a href="faq.html" class="hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+          <li><a href="privacy.html" class="hover:text-white transition-colors">سياسة الخصوصية</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-4">تواصل معنا</h4>
+        <ul class="space-y-2 text-white/70 text-sm">
+          <li class="flex items-start gap-2"><span class="material-symbols-outlined text-[16px] mt-0.5">location_on</span>ساحة العاصي، حماة، سوريا</li>
+          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call</span>+963 13 251 0480</li>
+          <li class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">mail</span>info@smarteleco.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 text-center text-white/50 text-sm">
+      جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2026
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFAQ(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Category filter
+document.querySelectorAll('.category-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    document.querySelectorAll('.faq-item').forEach(item => {
+      if (cat === 'all' || item.dataset.cat === cat) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+        item.classList.remove('open');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

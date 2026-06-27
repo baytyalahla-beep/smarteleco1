@@ -447,8 +447,8 @@ const SiteData = (() => {
           }
           if (p.owner === undefined) p.owner = "الشركة العامة للكهرباء";
           if (p.ownerEn === undefined) p.ownerEn = "General Electricity Company";
-          if (p.location === undefined) p.location = "المملكة العربية السعودية";
-          if (p.locationEn === undefined) p.locationEn = "Kingdom of Saudi Arabia";
+          if (p.location === undefined) p.location = "حماة، سوريا";
+          if (p.locationEn === undefined) p.locationEn = "Hama, Syria";
           if (p.duration === undefined) p.duration = "120 يوم";
           if (p.durationEn === undefined) p.durationEn = "120 Days";
           if (p.value === undefined) p.value = "غير محدد";

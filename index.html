@@ -131,6 +131,30 @@
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
     }
+    /* Dropdown Menu Styles */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 8px); right: 0;
+      background: white; border: 1px solid #bccac3; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,105,84,0.12); min-width: 200px;
+      z-index: 100; padding: 8px 0; direction: rtl;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown-menu:hover { display: block; }
+    .nav-dropdown-menu a {
+      display: flex; align-items: center; gap: 8px; padding: 10px 16px;
+      color: #3d4945; font-size: 14px; transition: all 0.2s;
+      border-right: 3px solid transparent;
+    }
+    .nav-dropdown-menu a:hover {
+      color: #006954; background: #f1f3ff;
+      border-right-color: #006954;
+    }
+    .nav-dropdown-trigger { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-dropdown-trigger .drop-arrow {
+      font-size: 16px; transition: transform 0.2s;
+    }
+    .nav-dropdown:hover .drop-arrow { transform: rotate(180deg); }
 </style>
 </head>
 <body class="bg-background text-on-background RTL" style="background-repeat: repeat; background-size: 400px; background-attachment: fixed; background-blend-mode: overlay; opacity: 0.97; background-color: rgb(249, 249, 255); --pattern-opacity: 0.03; background-image: linear-gradient(rgba(249, 249, 255, 0.97), rgba(249, 249, 255, 0.97)), url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCvxW1th19l-TeY-PDDQD0sQKB9urdB1UBq54xUlZ0RqmanxqKpsJw8kiGVUvIA2JjkJdNRR8Btg9xGMuuXDymqDksOSnNZuecwJa4VK8DLox2oXfMD8F2l7hqJH0DHklz_TKmwB6dizHx21IIOQtjmMynvI5U_vqeUo4tfvULBEbWEBoj7doNLsjJ9hef5gDn8tzLCpjJCMmz2zUuBP3aHS---mgRVskYs3TkMmtmdcLGzAZQxkNkNqq6Rxa-TMkF1uKjjrRS3i_s&quot;);">
@@ -174,13 +198,40 @@
 </div>
 </div>
 <!-- Navigation Links -->
-<nav class="flex items-center gap-8 py-3">
+<nav class="flex items-center gap-6 py-3">
 <a class="text-primary border-b-2 border-primary font-bold pb-1 text-label-lg font-label-lg" href="index.html">الرئيسية</a>
 <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="about.html">من نحن</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="products.html">المنتجات</a>
+<!-- Services Dropdown -->
+<div class="nav-dropdown">
+  <span class="nav-dropdown-trigger text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg">
+    الخدمات
+    <span class="material-symbols-outlined drop-arrow text-[16px]">expand_more</span>
+  </span>
+  <div class="nav-dropdown-menu">
+    <a href="services.html">جميع الخدمات</a>
+    <a href="services.html#electrical">الحلول الكهربائية</a>
+    <a href="services.html#solar">الطاقة الشمسية</a>
+    <a href="services.html#automation">الأتمتة الصناعية</a>
+    <a href="services.html#agriculture">الحلول الزراعية</a>
+  </div>
+</div>
+<!-- Products Dropdown -->
+<div class="nav-dropdown">
+  <span class="nav-dropdown-trigger text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg">
+    المنتجات
+    <span class="material-symbols-outlined drop-arrow text-[16px]">expand_more</span>
+  </span>
+  <div class="nav-dropdown-menu">
+    <a href="products.html">جميع المنتجات</a>
+    <a href="products.html?cat=أنظمة الحماية الكهربائية">أنظمة الحماية</a>
+    <a href="products.html?cat=أنظمة القيادة والتحكم">القيادة والتحكم</a>
+    <a href="products.html?cat=الأتمتة الصناعية">الأتمتة الصناعية</a>
+    <a href="products.html?cat=الأنظمة الكهروميكانيكية والحركة">الكهروميكانيكية</a>
+    <a href="offers.html">العروض الخاصة</a>
+  </div>
+</div>
 <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="brands.html">العلامات التجارية</a>
 <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="projects.html">المشاريع</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="#">العروض</a>
 <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="blog.html">المدونة</a>
 <a class="text-on-surface-variant hover:text-primary transition-colors text-label-lg font-label-lg" href="contact.html">اتصل بنا</a>
 </nav>
@@ -515,7 +566,7 @@
 <div class="font-headline-md text-headline-md font-bold text-white">Smart Electricity Company (SEC)</div>
 <p class="text-white/80 font-body-md text-body-md">شركة رائدة في مجال تقديم الحلول الكهربائية والصناعية المتكاملة والأتمتة في سوريا.</p>
 <div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-symbols-outlined text-white">share</span></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="https://wa.me/963986001965"><span class="material-symbols-outlined text-white">chat</span></a>
 <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-symbols-outlined text-white">camera</span></a>
 <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors" href="#"><span class="material-symbols-outlined text-white">public</span></a>
 </div>
@@ -527,16 +578,18 @@
 <li><a class="hover:text-primary-fixed transition-colors" href="products.html">المنتجات</a></li>
 <li><a class="hover:text-primary-fixed transition-colors" href="brands.html">العلامات التجارية</a></li>
 <li><a class="hover:text-primary-fixed transition-colors" href="projects.html">المشاريع</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="faq.html">الأسئلة الشائعة</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="privacy.html">سياسة الخصوصية</a></li>
 </ul>
 </div>
 <div class="space-y-4">
 <h3 class="font-headline-md text-body-lg font-bold">تسوق حسب القسم</h3>
 <ul class="space-y-2 text-white/80 font-body-md">
-<li><a class="hover:text-primary-fixed transition-colors" href="products.html">المفاتيح والأفياش</a></li>
-<li><a class="hover:text-primary-fixed transition-colors" href="products.html">القواطع الكهربائية</a></li>
-<li><a class="hover:text-primary-fixed transition-colors" href="products.html">الأسلاك والكابلات</a></li>
-<li><a class="hover:text-primary-fixed transition-colors" href="products.html">الإضاءة المنزلية</a></li>
-<li><a class="hover:text-primary-fixed transition-colors" href="products.html">أنظمة المراقبة</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html?cat=أنظمة الحماية الكهربائية">أنظمة الحماية</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html?cat=أنظمة القيادة والتحكم">القيادة والتحكم</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html?cat=الأتمتة الصناعية">الأتمتة الصناعية</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="products.html?cat=الأنظمة الكهروميكانيكية والحركة">الكهروميكانيكية</a></li>
+<li><a class="hover:text-primary-fixed transition-colors" href="services.html">خدماتنا</a></li>
 </ul>
 </div>
 <div class="space-y-4">
@@ -546,15 +599,15 @@
 <input class="flex-1 rounded-r-lg bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-primary" placeholder="بريدك الإلكتروني" type="email">
 <button class="bg-primary px-4 rounded-l-lg hover:bg-primary-container transition-all">اشترك</button>
 </div>
-<div class="pt-4 border-t border-white/10 flex gap-4">
-<img class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPigDjnBL0FlPHveGsCtmYTDdOd9M1k3UTD0SaTA-8jzFBjc1c8QnsuD07kB8emAEz-jFi6Ago4YIYsFfDdTD6AreS9KOrzLAqEeHLMWUT3a4qhWegFa0p4QPvcbNkD2FcG9gGL9IGhJMeOTg5pllg78Eaio0QhjJ0JjloQ-96DxoVUbcIKaFd1LhkEf4IlIMfKtDW3KGE2VweNuxLKuP5CDjrwshFKnwDcp2EjB9xtZD0VliIyysSrEJ_XNri8bMUhyU1HnHkRfs">
-<img class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1-JWnGm5pQHq4xJOq2zwQuH9VStVZROnzNeAoypa34AQExXS_zjnm7HAZbk6vqn30k--ypmXFeo3zcyfawn0LNdqsnmtP2D2i-vAfZ3iJrxiB9rY611CZn7YFUm8M52GrIp2dTexF-u5nflZDzLQaCE-1tMzgNvjSLRlgLPCApDZDg101vDMyKDaZJhbwYtzZZB6XZ5YeUqETsvd0QdTyHnpP3kbjRoC9DD65jopYhdssuN-O3LDiU3VJ51Vx2kQCGo4K2Qi7OMs">
-<img class="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XL4AVD6uoI9yLnxYubvD9K3Ae0IuiXHwSbEv6pojRC0x6UKOMywsxOHBxvEGngakBu1BmkG5bY2q6Gxk2MOQhCy7oTYQBBvOOtgOzX1vap9MI2O3UVVCO7x_5Syx2rGThuiuBakt-TfF0kdRaCkPiJ09mV9PoJ9JWnV7Hr3L2tQPBXq3jy1xl6lUzkPgKewYrsJ7FYTKmx_PGdjBAHPfIGwnqqcPgu-Uwoopl7_SONKNHrpw_9n1tSyoNp5_b5TINhTiB12pN10">
+<div class="pt-4 space-y-2 text-white/70 text-sm">
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">location_on</span>ساحة العاصي، حماة، سوريا</div>
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">call</span>+963 13 251 0480</div>
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">mail</span>info@smarteleco.com</div>
 </div>
 </div>
 </div>
 <div class="max-w-container-max mx-auto px-margin-desktop mt-stack-lg pt-stack-md border-t border-white/10 text-center text-white/60 text-label-sm font-label-sm">
-            جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2024
+جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2026 | حماة، سوريا
 </div>
 </footer>
 <!-- Scroll animations are handled globally by site-renderer.js -->

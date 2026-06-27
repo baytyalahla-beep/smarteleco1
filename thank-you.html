@@ -241,21 +241,23 @@
 <div class="flex items-center gap-2">
 <span class="font-headline-md text-headline-md text-success-teal">واتساب</span>
 </div>
-<p class="text-on-surface-variant text-sm">المبيعات المباشرة: 966xxxxxxxxx+</p>
+<p class="text-on-surface-variant text-sm">المبيعات المباشرة: +963 986 001 965</p>
 </div>
 </div>
 <!-- Industrial Success Graphic Placeholder -->
 <div class="w-full h-48 md:h-64 rounded-xl mb-stack-lg overflow-hidden relative group">
-<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A professional, wide-angle cinematic shot of a clean, modern electrical distribution warehouse. Soft overhead lighting illuminates organized rows of industrial electrical components and reels of copper cable. The atmosphere is professional, efficient, and authoritative, using a color palette of deep forest greens and clean whites to reflect the Smart Electricity Company (SEC) corporate identity. The scene is calm and represents logistical reliability." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_lAAuUdUqti4l03xYe3cfyhqOs9_WOH6v3WRpX8Q8eDgHRZDIkAvnT_6cXe1bs7GKpOTGYKQv7HsbmUfu0Bt2klgskOi25FExonentNjlf_d7y_m9D7DwIUodlZcAab24mqT0wOvv0spAautL1KOCq3mCE37IYJXvXOGftibSPe1-bA562yzccX8Aa1lsmK1Uddx7v_m0CMwYhfUqYKMA6VHXPPUkelQI7K3WzBoMg87X3TmBBQQPgnTX4NyOF5B3c7PtQKAMtD0')"></div>
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A professional warehouse shot" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_lAAuUdUqti4l03xYe3cfyhqOs9_WOH6v3WRpX8Q8eDgHRZDIkAvnT_6cXe1bs7GKpOTGYKQv7HsbmUfu0Bt2klgskOi25FExonentNjlf_d7y_m9D7DwIUodlZcAab24mqT0wOvv0spAautL1KOCq3mCE37IYJXvXOGftibSPe1-bA562yzccX8Aa1lsmK1Uddx7v_m0CMwYhfUqYKMA6VHXPPUkelQI7K3WzBoMg87X3TmBBQQPgnTX4NyOF5B3c7PtQKAMtD0')"></div>
 <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/60 to-transparent"></div>
 <div class="absolute bottom-6 right-6 text-white text-right">
 <h3 class="font-headline-md text-headline-md">نحن هنا لخدمتكم</h3>
 <p class="font-body-md text-body-md opacity-90">جودة نثق بها، توصيل نلتزم به.</p>
 </div>
 </div>
+<!-- Dynamic RFQ Details Section -->
+<div id="rfq-details-container" class="hidden max-w-2xl mx-auto bg-white p-8 rounded-xl border border-outline-variant shadow-md mb-stack-lg animate-fade-in text-right"></div>
 <!-- Action Buttons -->
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-<a class="px-10 py-4 bg-primary text-white font-bold rounded-lg shadow-md hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2" href="#">
+<a class="px-10 py-4 bg-primary text-white font-bold rounded-lg shadow-md hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2" href="index.html">
 <span class="material-symbols-outlined">home</span>
                     العودة للرئيسية
                 </a>
@@ -318,7 +320,7 @@
 <script>
         // Smooth entry animation for grid items
         document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.bg-white.rounded-xl');
+            const cards = document.querySelectorAll('.bg-white.rounded-xl, #rfq-details-container');
             cards.forEach((card, index) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
@@ -328,13 +330,119 @@
                     card.style.transform = 'translateY(0)';
                 }, 300 + (index * 150));
             });
-        });
 
-        // Add some random particles movement logic
-        const particles = document.querySelectorAll('.particle');
-        particles.forEach(p => {
-            p.style.left = Math.random() * 100 + '%';
-            p.style.animationDelay = Math.random() * 5 + 's';
+            // Particles
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(p => {
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 5 + 's';
+            });
+
+            // Dynamic RFQ Loader
+            const rfq = JSON.parse(localStorage.getItem('electric_house_latest_rfq'));
+            if (rfq) {
+                const lang = localStorage.getItem('electric_house_lang') || 'ar';
+                const isEn = lang === 'en';
+
+                // Update text headings
+                const headingEl = document.querySelector('h1.font-headline-xl');
+                const descEl = document.querySelector('p.font-body-lg');
+                
+                if (headingEl) headingEl.textContent = isEn ? "RFQ Submitted Successfully!" : "تم استلام طلب التسعير بنجاح!";
+                if (descEl) descEl.textContent = isEn 
+                    ? "Thank you. Your request for quotation has been registered. Our engineering team will review the BOQ and technical specifications and contact you within 24 hours."
+                    : "شكراً لتواصلك معنا. تم تسجيل طلب التسعير الخاص بمشروعكم بنجاح وسيقوم فريقنا الهندسي بدراسة الكميات والمواصفات الفنية والتواصل معكم خلال 24 ساعة.";
+
+                // Update bento cards
+                const bentoCards = document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-3 > div');
+                if (bentoCards.length >= 3) {
+                    // Card 1: Status
+                    bentoCards[0].querySelector('p.font-headline-md').textContent = isEn ? "Under Review" : "قيد الدراسة الفنية";
+                    bentoCards[0].querySelector('p.text-on-surface-variant').textContent = isEn ? "Eng. response within 24 hours" : "الرد الفني خلال 24 ساعة";
+                    // Card 2: RFQ ID
+                    bentoCards[1].querySelector('p.font-headline-md').textContent = rfq.rfqId;
+                    // Card 3: Contact Channel
+                    bentoCards[2].querySelector('.text-success-teal, [class*="text-success-teal"]').textContent = isEn ? "Professional Email" : "البريد الإلكتروني";
+                    bentoCards[2].querySelector('p.text-on-surface-variant, [class*="text-on-surface-variant"]').innerHTML = `<a href="mailto:${rfq.email}" class="hover:underline text-primary">${rfq.email}</a>`;
+                }
+
+                // Render RFQ Details card
+                const rfqContainer = document.getElementById('rfq-details-container');
+                if (rfqContainer) {
+                    rfqContainer.classList.remove('hidden');
+                    const fileHtml = rfq.boqFileName 
+                        ? `<p class="flex items-center gap-2 mt-1 text-sm font-bold text-deep-forest justify-end ${isEn ? 'justify-start' : 'justify-end'}"><span class="material-symbols-outlined text-red-600">picture_as_pdf</span> ${rfq.boqFileName}</p>`
+                        : `<p class="text-on-surface-variant text-sm mt-1">${isEn ? 'No BOQ file uploaded' : 'لم يتم إرفاق ملف مواصفات'}</p>`;
+                    
+                    const notesHtml = rfq.notes 
+                        ? `<p class="text-on-surface-variant text-sm mt-1 bg-surface-gray p-3 rounded-lg border border-outline-variant/30 leading-relaxed">${rfq.notes}</p>`
+                        : `<p class="text-on-surface-variant text-sm mt-1 italic">${isEn ? 'No notes provided' : 'لا توجد ملاحظات إضافية'}</p>`;
+
+                    const currency = isEn ? "SYP" : "ل.س";
+                    
+                    let itemsHtml = '';
+                    if (rfq.items && rfq.items.length > 0) {
+                        itemsHtml = `
+                            <div class="mt-6 border-t border-outline-variant/30 pt-4">
+                                <h4 class="font-bold text-deep-forest mb-2 text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'Requested Items' : 'الأصناف المطلوبة'}</h4>
+                                <ul class="divide-y divide-outline-variant/30">
+                                    ${rfq.items.map(item => `
+                                        <li class="py-2.5 flex justify-between items-center text-sm">
+                                            <span class="font-semibold text-on-surface text-right ${isEn ? 'text-left' : 'text-right'}">${item.name} <span class="text-on-surface-variant font-normal">(x${item.qty})</span></span>
+                                            <span class="font-bold text-deep-forest">${item.price ? `${(item.price * item.qty).toLocaleString()} ${currency}` : (isEn ? 'Requires RFQ Review' : 'يتطلب دراسة تسعير')}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    let totalsHtml = '';
+                    if (!rfq.hasHiddenPrice && rfq.subtotal > 0) {
+                        totalsHtml = `
+                            <div class="mt-4 border-t border-outline-variant/50 pt-4 space-y-1.5 text-sm">
+                                <div class="flex justify-between"><span class="text-on-surface-variant">${isEn ? 'Subtotal' : 'المجموع الفرعي'}</span><span class="font-bold">${rfq.subtotal.toLocaleString()} ${currency}</span></div>
+                                <div class="flex justify-between"><span class="text-on-surface-variant">${isEn ? 'VAT (15%)' : 'ضريبة القيمة المضافة (15%)'}</span><span class="font-bold">${rfq.vat.toLocaleString()} ${currency}</span></div>
+                                <div class="flex justify-between text-base font-bold text-deep-forest pt-1.5 border-t border-outline-variant/20"><span class="text-on-surface">${isEn ? 'Estimated Total' : 'الإجمالي التقديري'}</span><span>${rfq.finalTotal.toLocaleString()} ${currency}</span></div>
+                            </div>
+                        `;
+                    } else {
+                        totalsHtml = `
+                            <div class="mt-4 border-t border-outline-variant/50 pt-4 text-center">
+                                <span class="inline-block bg-primary/10 text-primary font-bold px-4 py-2 rounded text-sm">${isEn ? 'RFQ requires custom engineering pricing' : 'طلب التسعير يتطلب دراسة فنية ومالية مخصصة'}</span>
+                            </div>
+                        `;
+                    }
+
+                    rfqContainer.innerHTML = `
+                        <h3 class="font-headline-md text-headline-md text-deep-forest mb-4 pb-2 border-b border-outline-variant/50 text-right ${isEn ? 'text-left' : 'text-right'}">${isEn ? 'RFQ Submission Summary' : 'تفاصيل طلب التسعير B2B'}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-right ${isEn ? 'text-left' : 'text-right'} text-sm leading-relaxed">
+                            <div>
+                                <span class="text-on-surface-variant block">${isEn ? 'Requester Name' : 'اسم مقدم الطلب'}</span>
+                                <span class="font-bold text-on-surface">${rfq.name}</span>
+                            </div>
+                            <div>
+                                <span class="text-on-surface-variant block">${isEn ? 'Company / Institution' : 'الشركة / الجهة المالكة'}</span>
+                                <span class="font-bold text-on-surface">${rfq.company}</span>
+                            </div>
+                            <div>
+                                <span class="text-on-surface-variant block">${isEn ? 'Contact Mobile' : 'رقم الجوال'}</span>
+                                <span class="font-bold text-on-surface" dir="ltr">${rfq.phone}</span>
+                            </div>
+                            <div>
+                                <span class="text-on-surface-variant block">${isEn ? 'BOQ Specifications File' : 'ملف جدول الكميات (BOQ)'}</span>
+                                ${fileHtml}
+                            </div>
+                        </div>
+                        <div class="mt-4 text-right ${isEn ? 'text-left' : 'text-right'}">
+                            <span class="text-on-surface-variant text-sm block">${isEn ? 'Project Notes / Special Requirements' : 'ملاحظات المشروع أو شروط التوريد'}</span>
+                            ${notesHtml}
+                        </div>
+                        ${itemsHtml}
+                        ${totalsHtml}
+                    `;
+                }
+            }
         });
     </script>
 

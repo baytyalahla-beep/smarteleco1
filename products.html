@@ -198,16 +198,41 @@
 <!-- Will be populated dynamically -->
 </div>
 </div>
-<div>
-<h3 class="font-label-lg text-label-lg text-on-surface mb-stack-sm border-r-4 border-primary pr-2" data-i18n="price_range">نطاق السعر</h3>
-<div class="mt-4">
-<input id="price-range-slider" class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" type="range" min="0" max="10000" value="10000">
-<div class="flex justify-between mt-2 font-label-sm text-outline">
-<span id="price-min">0 ر.س</span>
-<span id="price-max">10000 ر.س</span>
+<!-- Application Filter -->
+<div class="mb-stack-lg">
+  <h3 class="font-label-lg text-label-lg text-on-surface mb-stack-sm border-r-4 border-primary pr-2">التطبيق الصناعي</h3>
+  <div class="flex flex-col gap-2 mt-4" id="applications-filter">
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="checkbox" class="app-filter-cb accent-primary w-4 h-4" value="التوزيع والحماية">
+      <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">التوزيع والحماية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="checkbox" class="app-filter-cb accent-primary w-4 h-4" value="تحكم المحركات">
+      <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">تحكم المحركات</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="checkbox" class="app-filter-cb accent-primary w-4 h-4" value="الطاقة الشمسية">
+      <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">الطاقة الشمسية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="checkbox" class="app-filter-cb accent-primary w-4 h-4" value="الأتمتة الصناعية">
+      <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">الأتمتة الصناعية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="checkbox" class="app-filter-cb accent-primary w-4 h-4" value="الحلول الزراعية">
+      <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">الحلول الزراعية</span>
+    </label>
+    <label class="flex items-center gap-2 cursor-pointer group">
+      <input type="checkbox" class="app-filter-cb accent-primary w-4 h-4" value="القياس والمراقبة">
+      <span class="text-on-surface-variant group-hover:text-primary transition-colors text-sm">القياس والمراقبة</span>
+    </label>
+  </div>
 </div>
-</div>
-</div>
+<!-- Clear Filters Button -->
+<button id="clear-filters-btn" class="w-full mt-2 py-2 text-sm text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all hidden">
+  <span class="material-symbols-outlined text-sm align-middle">filter_list_off</span>
+  إعادة تعيين جميع الفلاتر
+</button>
 </div>
 </aside>
 <!-- Product Grid -->
@@ -233,7 +258,7 @@
 <!-- Product Card 1 -->
 <div class="group bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 <div class="relative aspect-square bg-surface-gray overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A professional product photograph of a high-quality Legrand electrical switch mounted on a minimalist gray background. The lighting is soft and industrial, highlighting the matte finish and metallic accents of the switch. The image conveys technical precision and modern corporate design, consistent with a premium electrical supplier catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpqfGWQd2-I8BzH-weSJ874NH1OGNReIJApbv6SCFQ_UmZLqHlMQE5zlrb3PFzN9S0VTdovZvTHXMW0q8lxr-BJg6xsIAJ2kM3YusOeKjaxmNMW7k4Zi4Qya1jhNoh4cQJ8XoHx-DxDHjwodBeJNr4CyYMyMWTTq-kDosaoSvbdPrfyJLkPuvoEnOoYV7HT5HMg8jfW_aDEXxrcQQPyftMFsjcCTOq2Pmu8qQzEm4eUGs18mJ7e2m8dspFAalLxD78jDyMdBVLjtg">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="مفتاح كهربائي لوغراند" src="images/product_mccb_breaker.png">
 <div class="absolute top-3 right-3 flex flex-col gap-2">
 <span class="bg-error text-white text-[10px] font-bold px-2 py-1 rounded-full">خصم 15%</span>
 <span class="bg-primary text-white text-[10px] font-bold px-2 py-1 rounded-full">وصل حديثاً</span>
@@ -257,7 +282,7 @@
 <!-- Product Card 2 -->
 <div class="group bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 <div class="relative aspect-square bg-surface-gray overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close-up studio shot of professional-grade heavy-duty electrical cables by Bahra. The cross-section shows intricate copper wiring and high-quality colorful insulation. Set against a clean architectural white backdrop with subtle teal shadows to match the corporate branding. Lighting is sharp and professional, emphasizing the durability and industrial scale." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCcG_Kn297FA9eGoCm-LBHnU60xwo8dyfgMlyrulW1lCUVJDCyl-373rEFVyj1JWe9oH03rSB0ZNry8aFL7Njh82StFhs2W3NuB0ouhzJvDkhWeHBX-z0OiJx0wcRtD5CESNTd50vp9MunTVTxtoyE5CXEM1vMnSSVBiatw_kbsYqRI-5n7ps1PtaPjrmYKvxXMZ8g-FMGMGdYNzCoBGvW-gN8lRA8OPHud58cE_9rsy2_fZ6np0sXzsOHiupS5dHZ8pwB_y2tiUQ">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="كابل كهربائي بهرة" src="images/product_cable.png">
 </div>
 <div class="p-4 flex-grow flex flex-col">
 <span class="font-label-sm text-outline-variant uppercase tracking-wider mb-1">Bahra Cables</span>
@@ -276,7 +301,7 @@
 <!-- Product Card 3 -->
 <div class="group bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 <div class="relative aspect-square bg-surface-gray overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High-end Philips industrial LED floodlight fixture presented in a sleek, minimalist studio setting. The fixture has a matte black finish and cooling fins. Soft lighting highlights its robust construction and technical design. The overall aesthetic is professional and corporate, using a palette of deep teals and cool grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5RCtNCzKV0ULcdNG_soJgUA_3yzcSU95xJmBMaR8NQVEGILMsEqjujqRmP1ZCWHiFbBt8GgNkvzke6RAzhZy0HcyZUxyjWKKawmde6OuGiWep3L_jCx1M9v0XRaaJm0aXjzpW-twBgwchoomh12LlKqBfWk8jjlV8lVz73p8oPldn6QrZyXq30HD-PoCSH5u2AVnM73JYnkuZunfuQ5bUU_fyjNdT4VdLZ6GYxQwNREBu4iFqfVpUi_8KbkoihVpbHYFDWMQ5gcw">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="كشاف LED فيليبس" src="images/product_solar_inverter.png">
 </div>
 <div class="p-4 flex-grow flex flex-col">
 <span class="font-label-sm text-outline-variant uppercase tracking-wider mb-1">Philips</span>
@@ -295,7 +320,7 @@
 <!-- Product Card 4 -->
 <div class="group bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 <div class="relative aspect-square bg-surface-gray overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Professional multi-meter and electrical testing tools kit arranged neatly on a technical blueprint. The tools are bright yellow and black, standing out against the detailed line drawings of the schematic. The scene is illuminated by cool, bright daylight, conveying accuracy, professionalism, and engineering expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDM2H50-ojfTmOFrrBr5KX17y4D2MBhACaZiRcRgX3B57Gm5MYmex2gMOApL-oL8p2j-v-uyAnA5fGKoea8QElTlTzG0FnTrWg9-9XnL_4YKt5zX0bKRxWOCGYMZpGVF4lqins6Ns4n8B5J-nJiVoyc3MSdrAZyUF_hXjPEZIgQ4oVBK7NHyo_Q11jXLUo2_mhWh6kiD3DHyJbs_O_ZigAdBZcrLDfZVpbmw5sV-Qk0-jVhvD5pDjrQzicdCJnQFP8vcC45ApVzoI">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="جهاز قياس فلوك" src="images/product_irrigation.png">
 </div>
 <div class="p-4 flex-grow flex flex-col">
 <span class="font-label-sm text-outline-variant uppercase tracking-wider mb-1">Fluke</span>
@@ -314,7 +339,7 @@
 <!-- Product Card 5 -->
 <div class="group bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 <div class="relative aspect-square bg-surface-gray overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Modern architectural electrical panel with organized rows of circuit breakers and switches. The image uses a shallow depth of field, focusing on the precision of the components. The lighting is clean and industrial, with a professional blue and teal color grade that emphasizes technical safety and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8_tvojCyVmcaNm7oaZYVvXTkrNhIjU33klDwZDZP1NVtfkJyV1xCfEW7cDQLysEwpsM4Zq3TnolgF1Hwz3lOnBRSgbq7g1wot56hE3g4jwWhijd7O9mNuf4rahJgVXVhiRNYvqgZTqYjT6VO7NnODw3W95E6mC3EVo4an_09UhoFTu1eAA81irQ0vCcW2UV5PFPDm6G53qpC1Y9IvAFuH8UnAvcQtXDEGTZ0GfWsA6GTp00VSTUeebnfESCjIu1nOdjLlUBMiCk0">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="لوحة توزيع شنايدر" src="images/product_contactor.png">
 </div>
 <div class="p-4 flex-grow flex flex-col">
 <span class="font-label-sm text-outline-variant uppercase tracking-wider mb-1">Schneider</span>
@@ -333,7 +358,7 @@
 <!-- Product Card 6 -->
 <div class="group bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 <div class="relative aspect-square bg-surface-gray overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close-up of decorative interior lighting switches with a brushed gold finish against a textured dark teal wall. The image focus is on the luxurious material and tactile design of the switches. Warm ambient lighting creates an inviting atmosphere, blending corporate reliability with sophisticated architectural aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFYQcg2xU8l8zajLav0T1s8XYgA2GXrOEtglpGC_M1LG1iihUMyhq5mDd5XLvMTTHnHe7acxVoDzQcQtN69D9eUZsz9YV2c_cAPrNmbb2fFPd0mGvFqkLXgskR026zhbp5EDISSHj9Img8itONR_-8KPK-Py9AsYyG70j4cj1IyH9ohNcxyYnn8YZ2Od8baziev5Kn1H1WW8TExe1IdOerpVIYZbbNd_lyRoDaxAtHvLOvh1kq4kVjbACcRBiDHBpS7TZyFvTCT9E">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="مفتاح لوغراند فاخر" src="images/product_vfd_drive.png">
 </div>
 <div class="p-4 flex-grow flex flex-col">
 <span class="font-label-sm text-outline-variant uppercase tracking-wider mb-1">Legrand Luxury</span>

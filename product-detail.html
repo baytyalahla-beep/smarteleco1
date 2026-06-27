@@ -177,10 +177,10 @@
 <main class="max-w-container-max mx-auto px-margin-desktop py-stack-lg">
 <!-- Breadcrumbs -->
 <nav class="flex items-center gap-2 mb-8 text-on-surface-variant font-label-sm text-label-sm">
-<a class="hover:text-primary" href="#">الرئيسية</a>
-<span class="material-symbols-outlined text-[16px]">chevron_left</span>
-<a class="hover:text-primary" href="#">المنتجات</a>
-<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+<a class="hover:text-primary" href="index.html" data-i18n="home">الرئيسية</a>
+<span class="material-symbols-outlined text-[16px] dir-arrow">chevron_left</span>
+<a class="hover:text-primary" href="products.html" data-i18n="products">المنتجات</a>
+<span class="material-symbols-outlined text-[16px] dir-arrow">chevron_left</span>
 <span class="text-primary font-bold">قاطع تيار كهربائي ذكي 3 أقطاب</span>
 </nav>
 <!-- Product Hero Section -->
@@ -288,12 +288,16 @@
 </div>
 <!-- Detailed Specs / Description Section -->
 <div class="mt-20 border-t border-outline-variant pt-12">
-<div class="flex gap-8 border-b border-outline-variant mb-8 overflow-x-auto pb-4">
-<button class="text-primary font-bold border-b-2 border-primary pb-4 whitespace-nowrap">الوصف الفني</button>
-<button class="text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap">المواصفات الكاملة</button>
-<button class="text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap">كتيبات الاستخدام</button>
-<button class="text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap">المراجعات (12)</button>
+<!-- Tabs Header -->
+<div class="flex gap-6 border-b border-outline-variant mb-8 overflow-x-auto" id="product-tabs">
+  <button class="tab-btn text-primary font-bold border-b-2 border-primary pb-4 whitespace-nowrap transition-all" data-tab="description">الوصف الفني</button>
+  <button class="tab-btn text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap border-b-2 border-transparent transition-all" data-tab="specs">المواصفات الكاملة</button>
+  <button class="tab-btn text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap border-b-2 border-transparent transition-all" data-tab="techfiles">الملفات التقنية والكتيبات</button>
+  <button class="tab-btn text-on-surface-variant hover:text-primary pb-4 whitespace-nowrap border-b-2 border-transparent transition-all" data-tab="reviews">المراجعات (12)</button>
 </div>
+
+<!-- Tab: Description -->
+<div class="tab-content" id="tab-description">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
 <div class="space-y-4">
 <h3 class="font-headline-md text-headline-md text-deep-forest">مميزات المنتج</h3>
@@ -319,17 +323,25 @@
 <div class="bg-deep-forest text-white p-8 rounded-2xl relative overflow-hidden">
 <div class="relative z-10">
 <h3 class="font-headline-md text-headline-md mb-4 text-primary-fixed">الدعم الفني والخدمات</h3>
-<p class="font-body-md text-body-md mb-6 opacity-90">هل تحتاج إلى مساعدة في اختيار القاطع المناسب لمشروعك؟ مهندسونا جاهزون لتقديم الاستشارة الفنية المجانية.</p>
-<button class="bg-white text-deep-forest px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-primary-fixed transition-colors">
+<p class="font-body-md text-body-md mb-6 opacity-90">هل تحتاج إلى مسساعدة في اختيار القاطع المناسب لمشروعك؟ مهندسونا جاهزون لتقديم الاستشارة الفنية المجانية.</p>
+<a href="https://wa.me/963986001965" class="bg-white text-deep-forest px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-primary-fixed transition-colors inline-flex">
 <span class="material-symbols-outlined">call</span>
-<span class="">تحدث مع خبير</span>
-</button>
+<span>تحدث مع خبير</span>
+</a>
 </div>
-<!-- Subtle pattern overlay -->
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
 </div>
 </div>
 </div>
+
+<!-- Tab: Specs -->
+<div class="tab-content hidden" id="tab-specs"></div>
+
+<!-- Tab: Techfiles -->
+<div class="tab-content hidden" id="tab-techfiles"></div>
+
+<!-- Tab: Reviews -->
+<div class="tab-content hidden" id="tab-reviews"></div>
 <!-- Related Products Section -->
 <section class="mt-24">
 <div class="flex justify-between items-end mb-8">
@@ -342,7 +354,7 @@
 <span class="material-symbols-outlined">arrow_left</span>
 </a>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div id="related-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 <!-- Related Card 1 -->
 <div class="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm hover:shadow-md transition-all group">
 <div class="relative h-48 bg-surface-gray">
@@ -459,39 +471,7 @@
             جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2024
 </div>
 </footer>
-<script>
-        // Simple micro-interaction for Quantity counter
-        const qtyInput = document.querySelector('input[type="number"]');
-        const plusBtn = qtyInput.nextElementSibling;
-        const minusBtn = qtyInput.previousElementSibling;
-
-        plusBtn.addEventListener('click', () => {
-            qtyInput.value = parseInt(qtyInput.value) + 1;
-        });
-
-        minusBtn.addEventListener('click', () => {
-            if (parseInt(qtyInput.value) > 1) {
-                qtyInput.value = parseInt(qtyInput.value) - 1;
-            }
-        });
-
-        // Image gallery interaction
-        const thumbs = document.querySelectorAll('.grid-cols-4 img');
-        const mainImg = document.querySelector('.product-image-zoom img');
-
-        thumbs.forEach(thumb => {
-            thumb.parentElement.addEventListener('click', () => {
-                // Update main image src (in this demo it's just placeholder, but logic is there)
-                // mainImg.src = thumb.src; 
-                
-                // Visual feedback
-                thumbs.forEach(t => t.parentElement.classList.remove('border-primary'));
-                thumbs.forEach(t => t.parentElement.classList.add('border-outline-variant'));
-                thumb.parentElement.classList.remove('border-outline-variant');
-                thumb.parentElement.classList.add('border-primary');
-            });
-        });
-    </script>
+<!-- Inline script removed. All interactions handled by site-renderer.js to prevent duplicate calls. -->
 
 
 </body></html>
