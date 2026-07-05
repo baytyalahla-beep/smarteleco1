@@ -1586,6 +1586,65 @@ function renderHomePage(data) {
     });
   }
 
+  // Dynamic About Us Section (Homepage)
+  const aboutSecWrapper = document.getElementById('about-section-wrapper');
+  if (aboutSecWrapper && data.about) {
+    const ab = data.about;
+    const homeAboutDesc = document.getElementById('home-about-desc');
+    if (homeAboutDesc) homeAboutDesc.textContent = getLocalized(ab, 'description', lang);
+    const homeAboutImg = document.getElementById('home-about-img');
+    if (homeAboutImg && ab.image) homeAboutImg.src = ab.image;
+
+    // Bento Grid: Mission, Vision, Quote
+    const homeAboutMission = document.getElementById('home-about-mission');
+    if (homeAboutMission) homeAboutMission.textContent = getLocalized(ab, 'mission', lang);
+    const homeAboutVision = document.getElementById('home-about-vision');
+    if (homeAboutVision) homeAboutVision.textContent = getLocalized(ab, 'vision', lang);
+    const homeAboutQuote = document.getElementById('home-about-quote');
+    if (homeAboutQuote) homeAboutQuote.textContent = `"${getLocalized(ab, 'quote', lang)}"`;
+
+    // History Timeline
+    const timelineContainer = document.getElementById('home-about-timeline-container');
+    if (timelineContainer && ab.timeline) {
+      const icons = ['flag', 'trending_up', 'stars', 'rocket', 'workspace_premium'];
+      timelineContainer.innerHTML = ab.timeline.map((t, idx) => {
+        const tTitle = getLocalized(t, 'title', lang);
+        const tDesc = getLocalized(t, 'description', lang);
+        const icon = icons[idx % icons.length];
+        
+        if (idx % 2 === 0) {
+          return `
+            <div class="relative mb-12 flex justify-between items-center w-full">
+              <div class="w-5/12 hidden md:block"></div>
+              <div class="z-20 flex items-center justify-center bg-primary text-white w-10 h-10 rounded-full absolute right-1/2 translate-x-1/2 border-4 border-surface">
+                <span class="material-symbols-outlined text-sm">${icon}</span>
+              </div>
+              <div class="w-full md:w-5/12 bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-colors text-right" dir="rtl">
+                <span class="font-bold text-primary mb-2 block">${t.year}</span>
+                <h4 class="font-headline-md text-headline-md mb-2 text-deep-forest">${tTitle}</h4>
+                <p class="text-on-surface-variant font-body-md leading-relaxed">${tDesc}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="relative mb-12 flex justify-between items-center w-full">
+              <div class="w-full md:w-5/12 bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-colors text-right" dir="rtl">
+                <span class="font-bold text-primary mb-2 block">${t.year}</span>
+                <h4 class="font-headline-md text-headline-md mb-2 text-deep-forest">${tTitle}</h4>
+                <p class="text-on-surface-variant font-body-md leading-relaxed">${tDesc}</p>
+              </div>
+              <div class="z-20 flex items-center justify-center bg-primary text-white w-10 h-10 rounded-full absolute right-1/2 translate-x-1/2 border-4 border-surface">
+                <span class="material-symbols-outlined text-sm">${icon}</span>
+              </div>
+              <div class="w-5/12 hidden md:block"></div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+  }
+
   // Services
   const serviceSection = document.querySelector('#services-section');
   if (serviceSection && h.services) {
@@ -1593,7 +1652,7 @@ function renderHomePage(data) {
   }
 
   // Featured Products
-  const productsGrid = document.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4');
+  const productsGrid = document.querySelector('#products-section-wrapper .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4');
   if (productsGrid) {
     const featured = data.products.filter(p => p.featured);
     if (featured.length > 0) {
@@ -1726,17 +1785,17 @@ function renderHomePage(data) {
     
     // Map section elements to their keys
     const sectionsMap = {
-      hero: document.querySelector('section.relative'), // Hero section
-      banners: document.querySelector('section.grid-cols-1.md\\:grid-cols-2'), // Secondary banners
-      categories: document.querySelector('section.py-stack-lg.overflow-hidden'), // Main categories ticker
-      featured: document.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4')?.closest('section'), // Featured products
-      legrand: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('عالم ليجراند') || sec.textContent.includes('Legrand World')),
-      philips: document.querySelector('img[src*="AP1WRLsnpy"]')?.closest('section'),
-      bahra: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('كابلات بحرة') || sec.textContent.includes('Bahra Specialized Cables')),
-      tools: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('العدد والأدوات') || sec.textContent.includes('Hand Tools')),
-      cctv: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('أنظمة مراقبة') || sec.textContent.includes('Smart Surveillance')),
-      blog: Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.includes('مدونة') || sec.textContent.includes('Blog') || sec.textContent.includes('مركز المعرفة')),
-      brands: document.querySelector('section.py-stack-lg.border-t'),
+      hero: document.getElementById('hero-section'),
+      banners: document.getElementById('banners-section'),
+      categories: document.getElementById('categories-section'),
+      featured: document.getElementById('featured-section'),
+      legrand: document.getElementById('legrand-section'),
+      philips: document.getElementById('philips-section'),
+      bahra: document.getElementById('bahra-section'),
+      tools: document.getElementById('tools-section'),
+      cctv: document.getElementById('cctv-section'),
+      blog: document.getElementById('blog-section'),
+      brands: document.getElementById('brands-section-wrapper'),
       sectors: document.getElementById('sectors-section-wrapper'),
       projects: document.getElementById('projects-section-wrapper')
     };
@@ -1790,19 +1849,45 @@ function renderAboutPage(data) {
     });
   }
 
-  // Timeline
-  if (a.timeline) {
-    const timelineItems = document.querySelectorAll('.relative.mb-12, .relative.flex.justify-between');
-    a.timeline.forEach((t, i) => {
-      if (timelineItems[i]) {
-        const year = timelineItems[i].querySelector('.font-bold.text-primary');
-        const title = timelineItems[i].querySelector('h4');
-        const desc = timelineItems[i].querySelector('.text-on-surface-variant.font-body-md');
-        if (year) year.textContent = t.year;
-        if (title) title.textContent = getLocalized(t, 'title', lang);
-        if (desc) desc.textContent = getLocalized(t, 'description', lang);
+  // Dynamic Timeline Rendering
+  const timelineContainer = document.getElementById('about-timeline-container');
+  if (timelineContainer && a.timeline) {
+    const icons = ['flag', 'trending_up', 'stars', 'rocket', 'workspace_premium'];
+    timelineContainer.innerHTML = a.timeline.map((t, idx) => {
+      const tTitle = getLocalized(t, 'title', lang);
+      const tDesc = getLocalized(t, 'description', lang);
+      const icon = icons[idx % icons.length];
+      
+      if (idx % 2 === 0) {
+        return `
+          <div class="relative mb-12 flex justify-between items-center w-full">
+            <div class="w-5/12 hidden md:block"></div>
+            <div class="z-20 flex items-center justify-center bg-primary text-white w-10 h-10 rounded-full absolute right-1/2 translate-x-1/2 border-4 border-surface">
+              <span class="material-symbols-outlined text-sm">${icon}</span>
+            </div>
+            <div class="w-full md:w-5/12 bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-colors text-right" dir="rtl">
+              <span class="font-bold text-primary mb-2 block">${t.year}</span>
+              <h4 class="font-headline-md text-headline-md mb-2 text-deep-forest">${tTitle}</h4>
+              <p class="text-on-surface-variant font-body-md leading-relaxed">${tDesc}</p>
+            </div>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="relative mb-12 flex justify-between items-center w-full">
+            <div class="w-full md:w-5/12 bg-white p-6 rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-colors text-right" dir="rtl">
+              <span class="font-bold text-primary mb-2 block">${t.year}</span>
+              <h4 class="font-headline-md text-headline-md mb-2 text-deep-forest">${tTitle}</h4>
+              <p class="text-on-surface-variant font-body-md leading-relaxed">${tDesc}</p>
+            </div>
+            <div class="z-20 flex items-center justify-center bg-primary text-white w-10 h-10 rounded-full absolute right-1/2 translate-x-1/2 border-4 border-surface">
+              <span class="material-symbols-outlined text-sm">${icon}</span>
+            </div>
+            <div class="w-5/12 hidden md:block"></div>
+          </div>
+        `;
       }
-    });
+    }).join('');
   }
 }
 
@@ -3873,23 +3958,28 @@ function renderHorizontalProductCards(container, products, currency) {
 /* ========== SHARED: Service Cards ========== */
 function renderServiceCards(container, services) {
   const grid = container.querySelector('.grid') || container;
-  grid.innerHTML = services.map(s => `
-    <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:border-primary transition-all hover:shadow-lg flex flex-col">
-      <div class="h-40 overflow-hidden">
-        ${s.image ? `<img src="${s.image}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">` :
-        `<div class="w-full h-full bg-surface-gray flex items-center justify-center"><span class="material-symbols-outlined text-5xl text-primary/30">${s.icon}</span></div>`}
-      </div>
-      <div class="p-6 flex-1 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center gap-2 mb-3">
-            <span class="material-symbols-outlined text-primary">${s.icon}</span>
-            <h3 class="font-bold text-lg text-deep-forest">${s.title}</h3>
+  const lang = localStorage.getItem('electric_house_lang') || 'ar';
+  grid.innerHTML = services.map(s => {
+    const title = getLocalized(s, 'title', lang);
+    const description = getLocalized(s, 'description', lang);
+    return `
+      <div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden group hover:border-primary transition-all hover:shadow-lg flex flex-col text-right" dir="rtl">
+        <div class="h-40 overflow-hidden">
+          ${s.image ? `<img src="${s.image}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">` :
+          `<div class="w-full h-full bg-surface-gray flex items-center justify-center"><span class="material-symbols-outlined text-5xl text-primary/30">${s.icon || 'engineering'}</span></div>`}
+        </div>
+        <div class="p-6 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="material-symbols-outlined text-primary">${s.icon || 'engineering'}</span>
+              <h3 class="font-bold text-lg text-deep-forest">${title}</h3>
+            </div>
+            <p class="text-sm text-on-surface-variant">${description}</p>
           </div>
-          <p class="text-sm text-on-surface-variant">${s.description}</p>
         </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 /* ========== CART GLOBAL UTILITIES ========== */

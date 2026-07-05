@@ -1,7 +1,7 @@
 {
   "settings": {
-    "siteName": "Smart Electricity Company (SEC)",
-    "siteNameAr": "شركة الكهرباء الذكية",
+    "siteName": "Smart Electricity Company Test",
+    "siteNameAr": "",
     "siteNameEn": "Smart Electricity Company (SEC)",
     "phone": "+963 999 999 999",
     "email": "info@smarteleco.com",
@@ -43,7 +43,22 @@
     ],
     "addressesEn": [
       "Al-Assi Square, Opposite Syria International Islamic Bank, Hama, Syria"
-    ]
+    ],
+    "sectionVisibility": {
+      "hero": true,
+      "banners": false,
+      "categories": true,
+      "featured": false,
+      "legrand": false,
+      "philips": false,
+      "bahra": false,
+      "tools": false,
+      "cctv": false,
+      "blog": false,
+      "brands": true,
+      "sectors": true,
+      "projects": true
+    }
   },
   "sectors": [
     {
@@ -279,28 +294,30 @@
   },
   "products": [
     {
-      "id": 1,
       "name": "قاطع تيار كهربائي صناعي مقولب MCCB 160 أمبير",
       "nameEn": "Industrial MCCB Circuit Breaker 160A",
       "brand": "شنايدر إليكتريك",
-      "brandEn": "Schneider Electric",
       "price": 1850000,
       "originalPrice": 2100000,
       "isOffer": true,
       "stockTotal": 100,
       "stockSold": 45,
-      "category": "أنظمة الحماية الكهربائية",
+      "category": "Test Category",
       "image": "images/product_mccb_breaker.png",
-      "description": "قاطع تيار كهربائي صناعي ذو كفاءة عالية لحماية الموتورات والشبكات الصناعية.",
-      "descriptionEn": "High quality industrial molded case circuit breaker for motor and power distribution protection.",
-      "featured": true,
       "images": [
         "images/product_mccb_breaker.png",
         "",
         "",
         ""
       ],
-      "showPrice": true
+      "description": "قاطع تيار كهربائي صناعي ذو كفاءة عالية لحماية الموتورات والشبكات الصناعية.",
+      "descriptionEn": "High quality industrial molded case circuit breaker for motor and power distribution protection.",
+      "featured": true,
+      "showPrice": true,
+      "salesMode": "both",
+      "specifications": [],
+      "techFiles": [],
+      "id": 1
     },
     {
       "id": 2,
@@ -472,7 +489,7 @@
     }
   ],
   "categories": [
-    "أنظمة الحماية الكهربائية",
+    "Test Category",
     "أنظمة القيادة والتحكم",
     "أنظمة التحكم الصناعي",
     "الأتمتة الصناعية",
@@ -685,7 +702,10 @@
         "description": "التوسع في تقديم الحلول البرمجية والهندسية المتكاملة SCADA و PLC و VFD لكبرى المصانع والمنشآت.",
         "descriptionEn": "Expanding the supply of SCADA, PLC, and VFD integrated software and engineering solutions to major factories."
       }
-    ]
+    ],
+    "description": "تعتبر شركة الكهرباء الذكية (SEC) الشريك الاستراتيجي الهندسي الرائد في حماة وسوريا لتوريد وتصميم الأنظمة الكهربائية المتكاملة والأتمتة الصناعية ومشاريع الطاقة المتجددة، بما يضمن أعلى معايير الكفاءة والوثوقية.",
+    "descriptionEn": "Smart Electricity Company (SEC) is the leading strategic engineering partner in Hama and Syria for supplying and designing integrated electrical systems, industrial automation, and renewable energy projects.",
+    "image": "images/electrical_support_team.png"
   },
   "orders": [
     {
@@ -759,6 +779,14 @@
       "total": 482999.99999999994,
       "status": "طلب تسعير جديد",
       "customer": "مهندس مصطفى حمصي (مؤسسة حمصي للمقاولات)"
+    },
+    {
+      "id": "RFQ-2026-46142",
+      "date": "٥‏/٧‏/٢٠٢٦",
+      "product": "محلل طاقة كهربائي ذكي للشبكة ثلاثية الطور (x1)، كونتاكتور مغناطيسي صناعي 40 أمبير ثلاثي الأطوار (x4)",
+      "total": 4174499.9999999995,
+      "status": "طلب تسعير جديد",
+      "customer": "John Doe (Test Company)"
     }
   ]
 }

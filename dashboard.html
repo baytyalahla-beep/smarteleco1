@@ -479,21 +479,76 @@ textarea.form-input { min-height: 100px; resize: vertical; }
 <!-- ============ ABOUT PANEL ============ -->
 <div id="panel-about" class="panel space-y-6">
 <div class="card">
-<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">rocket_launch</span> المهمة</h3>
-<textarea id="a-mission" class="form-input" rows="4"></textarea>
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">info</span> نبذة تعريفية (الصفحة الرئيسية)</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">الوصف بالعربي</label>
+    <textarea id="a-description" class="form-input" rows="4"></textarea>
+  </div>
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">الوصف بالإنجليزي</label>
+    <textarea id="a-descriptionEn" class="form-input" rows="4"></textarea>
+  </div>
+  <div class="md:col-span-2">
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">صورة قسم من نحن</label>
+    <div class="flex gap-2">
+      <input id="a-image" class="form-input flex-1" placeholder="https://...">
+      <input type="file" id="file-about-img" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'a-image', 'about-img-preview')">
+      <button type="button" onclick="document.getElementById('file-about-img').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+    </div>
+    <div class="mt-2">
+      <img id="about-img-preview" class="h-32 object-contain rounded-lg border border-outline-variant" style="display: none;">
+    </div>
+  </div>
 </div>
+</div>
+
 <div class="card">
-<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">visibility</span> الرؤية</h3>
-<textarea id="a-vision" class="form-input" rows="3"></textarea>
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">rocket_launch</span> المهمة (Mission)</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">المهمة بالعربي</label>
+    <textarea id="a-mission" class="form-input" rows="4"></textarea>
+  </div>
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">المهمة بالإنجليزي</label>
+    <textarea id="a-missionEn" class="form-input" rows="4"></textarea>
+  </div>
 </div>
+</div>
+
 <div class="card">
-<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">format_quote</span> الاقتباس</h3>
-<input id="a-quote" class="form-input">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">visibility</span> الرؤية (Vision)</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">الرؤية بالعربي</label>
+    <textarea id="a-vision" class="form-input" rows="3"></textarea>
+  </div>
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">الرؤية بالإنجليزي</label>
+    <textarea id="a-visionEn" class="form-input" rows="3"></textarea>
+  </div>
 </div>
+</div>
+
+<div class="card">
+<h3 class="font-bold text-lg text-deep-forest mb-4 flex items-center gap-2"><span class="material-symbols-outlined">format_quote</span> الاقتباس (Management Quote)</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">الاقتباس بالعربي</label>
+    <input id="a-quote" class="form-input">
+  </div>
+  <div>
+    <label class="block text-sm font-semibold text-on-surface-variant mb-1">الاقتباس بالإنجليزي</label>
+    <input id="a-quoteEn" class="form-input">
+  </div>
+</div>
+</div>
+
 <div class="card">
 <div class="flex items-center justify-between mb-4">
-<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">timeline</span> التاريخ الزمني</h3>
-<button onclick="addTimelineItem()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة</button>
+<h3 class="font-bold text-lg text-deep-forest flex items-center gap-2"><span class="material-symbols-outlined">timeline</span> التاريخ الزمني (Timeline)</h3>
+<button onclick="addTimelineItem()" class="btn-primary flex items-center gap-2 text-sm"><span class="material-symbols-outlined text-[18px]">add</span> إضافة بند</button>
 </div>
 <div id="timeline-list" class="space-y-3"></div>
 </div>
@@ -1747,8 +1802,22 @@ function deleteBlogPost(id) { if (!confirm('حذف؟')) return; SiteData.saveDat
 function loadAbout() {
   const a = SiteData.getData('about');
   document.getElementById('a-mission').value = a.mission || '';
+  document.getElementById('a-missionEn').value = a.missionEn || '';
   document.getElementById('a-vision').value = a.vision || '';
+  document.getElementById('a-visionEn').value = a.visionEn || '';
   document.getElementById('a-quote').value = a.quote || '';
+  document.getElementById('a-quoteEn').value = a.quoteEn || '';
+  document.getElementById('a-description').value = a.description || '';
+  document.getElementById('a-descriptionEn').value = a.descriptionEn || '';
+  document.getElementById('a-image').value = a.image || '';
+  
+  const p = document.getElementById('about-img-preview');
+  if (p && a.image) {
+    p.src = a.image;
+    p.style.display = 'block';
+  } else if (p) {
+    p.style.display = 'none';
+  }
   renderTimeline(a.timeline);
 }
 function renderTimeline(timeline) {
@@ -1756,22 +1825,30 @@ function renderTimeline(timeline) {
   c.innerHTML = timeline.map((t, i) => `
     <div class="item-card flex-col items-start">
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-3">
-        <input class="form-input text-sm" value="${t.year}" placeholder="السنة" onchange="updateTimeline(${i},'year',this.value)">
-        <input class="form-input text-sm md:col-span-2" value="${t.title}" placeholder="العنوان" onchange="updateTimeline(${i},'title',this.value)">
-        <textarea class="form-input text-sm md:col-span-3" rows="2" placeholder="الوصف" onchange="updateTimeline(${i},'description',this.value)">${t.description}</textarea>
+        <input class="form-input text-sm" value="${t.year || ''}" placeholder="السنة" onchange="updateTimeline(${i},'year',this.value)">
+        <input class="form-input text-sm" value="${t.title || ''}" placeholder="العنوان بالعربي" onchange="updateTimeline(${i},'title',this.value)">
+        <input class="form-input text-sm" value="${t.titleEn || ''}" placeholder="العنوان بالإنجليزي" onchange="updateTimeline(${i},'titleEn',this.value)">
+        <textarea class="form-input text-sm md:col-span-3" rows="2" placeholder="الوصف بالعربي" onchange="updateTimeline(${i},'description',this.value)">${t.description || ''}</textarea>
+        <textarea class="form-input text-sm md:col-span-3" rows="2" placeholder="الوصف بالإنجليزي" onchange="updateTimeline(${i},'descriptionEn',this.value)">${t.descriptionEn || ''}</textarea>
       </div>
       <button onclick="deleteTimeline(${i})" class="btn-danger text-xs mt-2">حذف</button>
     </div>
   `).join('');
 }
 function updateTimeline(i, key, val) { const a = SiteData.getData('about'); a.timeline[i][key] = val; SiteData.saveData('about', a); }
-function addTimelineItem() { const a = SiteData.getData('about'); a.timeline.push({ year: '', title: '', description: '' }); SiteData.saveData('about', a); renderTimeline(a.timeline); }
+function addTimelineItem() { const a = SiteData.getData('about'); a.timeline.push({ year: '', title: '', titleEn: '', description: '', descriptionEn: '' }); SiteData.saveData('about', a); renderTimeline(a.timeline); }
 function deleteTimeline(i) { const a = SiteData.getData('about'); a.timeline.splice(i, 1); SiteData.saveData('about', a); renderTimeline(a.timeline); }
 function saveAbout() {
   const a = SiteData.getData('about');
   a.mission = document.getElementById('a-mission').value;
+  a.missionEn = document.getElementById('a-missionEn').value;
   a.vision = document.getElementById('a-vision').value;
+  a.visionEn = document.getElementById('a-visionEn').value;
   a.quote = document.getElementById('a-quote').value;
+  a.quoteEn = document.getElementById('a-quoteEn').value;
+  a.description = document.getElementById('a-description').value;
+  a.descriptionEn = document.getElementById('a-descriptionEn').value;
+  a.image = document.getElementById('a-image').value;
   SiteData.saveData('about', a);
   showToast('تم حفظ صفحة من نحن ✓');
 }
