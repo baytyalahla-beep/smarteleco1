@@ -1944,28 +1944,60 @@ function loadOrders() {
     'جديد': 'bg-tertiary-container text-white',
     'قيد المراجعة': 'bg-amber-100 text-amber-800',
     'تم الرد': 'bg-green-100 text-green-800',
-    'مغلق': 'bg-gray-100 text-gray-500'
+    'مغلق': 'bg-gray-100 text-gray-500',
+    'طلب تسعير جديد': 'bg-orange-100 text-orange-800'
   };
-  c.innerHTML = orders.map(o => `
-    <div class="item-card">
-      <div class="flex-shrink-0 font-bold text-primary text-sm">#${o.id}</div>
-      <div class="flex-1 min-w-0">
-        <h4 class="font-bold text-sm">${o.product}</h4>
-        <p class="text-xs text-on-surface-variant">${o.customer} · ${o.date}</p>
+  
+  // Sort: newest first (RFQ orders at top)
+  const sorted = [...orders].reverse();
+  
+  c.innerHTML = sorted.map(o => {
+    const statusClass = statusColors[o.status] || 'bg-surface-gray text-on-surface-variant';
+    const isRFQ = o.source === 'rfq-form' || (o.id && o.id.startsWith('RFQ-'));
+    
+    // Build details section for RFQ orders
+    let detailsHTML = '';
+    if (isRFQ || o.phone || o.email || o.notes || o.attachment) {
+      detailsHTML = `
+        <div class="mt-3 pt-3 border-t border-outline-variant/30 space-y-2 text-xs text-on-surface-variant">
+          ${o.phone ? `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">call</span><span dir="ltr">${o.phone}</span></div>` : ''}
+          ${o.email ? `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">mail</span><span>${o.email}</span></div>` : ''}
+          ${o.notes ? `<div class="flex items-start gap-2"><span class="material-symbols-outlined text-[14px] mt-0.5">description</span><span class="line-clamp-3">${o.notes}</span></div>` : ''}
+          ${o.attachment ? `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">attach_file</span><a href="${o.attachment}" target="_blank" class="text-primary hover:underline font-bold">${o.attachmentName || 'ملف مرفق'}</a></div>` : ''}
+        </div>
+      `;
+    }
+    
+    return `
+    <div class="bg-white border ${isRFQ ? 'border-orange-200 bg-orange-50/30' : 'border-outline-variant/30'} rounded-xl p-4 hover:shadow-md transition-all">
+      <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex-shrink-0">
+          <span class="material-symbols-outlined text-2xl ${isRFQ ? 'text-orange-500' : 'text-primary'}">${isRFQ ? 'request_quote' : 'receipt_long'}</span>
+        </div>
+        <div class="flex-shrink-0 font-bold text-primary text-sm">#${o.id}</div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-bold text-sm truncate">${o.customer || '—'}</h4>
+          <p class="text-xs text-on-surface-variant truncate">${o.product}</p>
+          <p class="text-xs text-outline mt-0.5">${o.date}</p>
+        </div>
+        ${o.total ? `<div class="text-sm font-bold whitespace-nowrap">${o.total.toLocaleString()} ${SiteData.getData('settings').currency || ''}</div>` : ''}
+        <span class="stat-badge ${statusClass}">${o.status}</span>
+        <select class="form-input text-xs w-32 py-1" onchange="updateOrderStatus('${o.id}', this.value)" style="font-size:11px">
+          <option ${o.status==='طلب تسعير جديد'?'selected':''}>طلب تسعير جديد</option>
+          <option ${o.status==='جديد'?'selected':''}>جديد</option>
+          <option ${o.status==='قيد المراجعة'?'selected':''}>قيد المراجعة</option>
+          <option ${o.status==='تم الرد'?'selected':''}>تم الرد</option>
+          <option ${o.status==='قيد المعالجة'?'selected':''}>قيد المعالجة</option>
+          <option ${o.status==='تم الشحن'?'selected':''}>تم الشحن</option>
+          <option ${o.status==='مكتمل'?'selected':''}>مكتمل</option>
+          <option ${o.status==='مغلق'?'selected':''}>مغلق</option>
+        </select>
+        <button onclick="deleteOrder('${o.id}')" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
       </div>
-      <div class="text-sm font-bold whitespace-nowrap">${o.total} ${SiteData.getData('settings').currency}</div>
-      <select class="form-input text-xs w-28 py-1" onchange="updateOrderStatus('${o.id}', this.value)" style="font-size:12px">
-        <option ${o.status==='جديد'?'selected':''}>جديد</option>
-        <option ${o.status==='قيد المراجعة'?'selected':''}>قيد المراجعة</option>
-        <option ${o.status==='تم الرد'?'selected':''}>تم الرد</option>
-        <option ${o.status==='قيد المعالجة'?'selected':''}>قيد المعالجة</option>
-        <option ${o.status==='تم الشحن'?'selected':''}>تم الشحن</option>
-        <option ${o.status==='مكتمل'?'selected':''}>مكتمل</option>
-        <option ${o.status==='مغلق'?'selected':''}>مغلق</option>
-      </select>
-      <button onclick="deleteOrder('${o.id}')" class="p-1.5 hover:bg-error-container rounded-lg text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+      ${detailsHTML}
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 function updateOrderStatus(id, status) { const orders = SiteData.getData('orders'); const o = orders.find(x => x.id === id); if (o) { o.status = status; SiteData.saveData('orders', orders); showToast('تم تحديث الحالة ✓'); } }
 function deleteOrder(id) { if (!confirm('حذف هذا الطلب؟')) return; SiteData.saveData('orders', SiteData.getData('orders').filter(o => o.id !== id)); loadOrders(); showToast('تم الحذف'); }

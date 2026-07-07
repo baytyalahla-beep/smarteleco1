@@ -647,24 +647,39 @@
     <div class="lg:col-span-5 bg-white text-on-surface p-8 rounded-2xl shadow-2xl border border-outline-variant/30 text-right" dir="rtl">
       <h3 class="font-headline-md text-headline-md text-deep-forest mb-2" data-i18n="request_quote_now">طلب عرض سعر مباشر</h3>
       <p class="text-sm text-on-surface-variant mb-6" data-i18n="request_quote_now_desc">يرجى ملء النموذج وسيتصل بك أحد مهندسينا الاستشاريين لمناقشة التفاصيل.</p>
-      <form onsubmit="event.preventDefault(); alert('تم إرسال طلب الاستشارة بنجاح. سيقوم فريقنا بالاتصال بكم خلال 24 ساعة.');" class="space-y-4">
+      <form id="rfq-form" onsubmit="event.preventDefault(); submitRFQ();" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-on-surface-variant mb-1" data-i18n="full_name">الاسم الكامل</label>
-          <input type="text" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="مثال: م. أحمد الحموي" required>
+          <input id="rfq-name" type="text" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="مثال: م. أحمد الحموي" required>
         </div>
         <div>
           <label class="block text-xs font-bold text-on-surface-variant mb-1" data-i18n="company_name">اسم الجهة أو الشركة</label>
-          <input type="text" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="مثال: شركة المقاولات الحديثة" required>
+          <input id="rfq-company" type="text" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="مثال: شركة المقاولات الحديثة" required>
         </div>
         <div>
           <label class="block text-xs font-bold text-on-surface-variant mb-1" data-i18n="phone_number">رقم الهاتف / الجوال</label>
-          <input type="tel" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="مثال: 0999999999" required>
+          <input id="rfq-phone" type="tel" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="مثال: 0999999999" required>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant mb-1">البريد الإلكتروني (اختياري)</label>
+          <input id="rfq-email" type="email" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2.5 text-sm" placeholder="example@email.com">
         </div>
         <div>
           <label class="block text-xs font-bold text-on-surface-variant mb-1" data-i18n="notes">ملاحظات أو متطلبات خاصة</label>
-          <textarea class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-sm" rows="3" placeholder="اكتب تفاصيل مشروعك أو الخدمات المطلوبة..."></textarea>
+          <textarea id="rfq-notes" class="w-full bg-surface-gray border border-outline-variant rounded-lg px-4 py-2 text-sm" rows="3" placeholder="اكتب تفاصيل مشروعك أو الخدمات المطلوبة..."></textarea>
         </div>
-        <button type="submit" class="btn-primary w-full py-3 mt-2 flex items-center justify-center gap-2">
+        <div>
+          <label class="block text-xs font-bold text-on-surface-variant mb-1">إرفاق ملف (PDF, Word, Excel, صورة)</label>
+          <div class="relative">
+            <input id="rfq-file" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" class="hidden" onchange="onRfqFileSelected(this)">
+            <button type="button" onclick="document.getElementById('rfq-file').click()" class="w-full flex items-center justify-center gap-2 bg-surface-gray border-2 border-dashed border-outline-variant rounded-lg px-4 py-3 text-sm text-on-surface-variant hover:border-primary hover:bg-primary/5 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[20px]">attach_file</span>
+              <span id="rfq-file-label">اضغط لاختيار ملف</span>
+            </button>
+          </div>
+          <p id="rfq-file-info" class="text-xs text-on-surface-variant mt-1 hidden"></p>
+        </div>
+        <button type="submit" id="rfq-submit-btn" class="btn-primary w-full py-3 mt-2 flex items-center justify-center gap-2">
           <span class="material-symbols-outlined">send</span>
           <span data-i18n="send_request">إرسال الطلب</span>
         </button>
@@ -724,5 +739,101 @@
 جميع الحقوق محفوظة لشركة الكهرباء الذكية © 2026 | حماة، سوريا
 </div>
 </footer>
+
+<script>
+// ========== RFQ Form Submission ==========
+function onRfqFileSelected(input) {
+  const label = document.getElementById('rfq-file-label');
+  const info = document.getElementById('rfq-file-info');
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+    label.textContent = file.name;
+    info.textContent = `حجم الملف: ${sizeMB} MB`;
+    info.classList.remove('hidden');
+    // Change button style to indicate file selected
+    input.parentElement.querySelector('button').classList.add('border-primary', 'bg-primary/5', 'text-primary');
+  } else {
+    label.textContent = 'اضغط لاختيار ملف';
+    info.classList.add('hidden');
+  }
+}
+
+async function submitRFQ() {
+  const btn = document.getElementById('rfq-submit-btn');
+  const originalContent = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> <span>جاري الإرسال...</span>';
+
+  try {
+    const name = document.getElementById('rfq-name').value.trim();
+    const company = document.getElementById('rfq-company').value.trim();
+    const phone = document.getElementById('rfq-phone').value.trim();
+    const email = document.getElementById('rfq-email').value.trim();
+    const notes = document.getElementById('rfq-notes').value.trim();
+    const fileInput = document.getElementById('rfq-file');
+
+    let attachmentUrl = '';
+    let attachmentName = '';
+
+    // Upload file if selected
+    if (fileInput.files && fileInput.files[0]) {
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      try {
+        const uploadRes = await fetch('/api/upload-file', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) {
+          attachmentUrl = uploadData.url;
+          attachmentName = uploadData.originalName || fileInput.files[0].name;
+        }
+      } catch (uploadErr) {
+        console.error('File upload error:', uploadErr);
+      }
+    }
+
+    // Generate unique order ID
+    const orderId = 'RFQ-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+    const dateStr = new Date().toLocaleDateString('ar-SA');
+
+    // Build product description from notes
+    const productDesc = notes || 'طلب عرض سعر مباشر';
+
+    // Create order object
+    const newOrder = {
+      id: orderId,
+      date: dateStr,
+      product: productDesc,
+      total: 0,
+      status: 'طلب تسعير جديد',
+      customer: company ? `${name} (${company})` : name,
+      phone: phone,
+      email: email,
+      notes: notes,
+      attachment: attachmentUrl,
+      attachmentName: attachmentName,
+      source: 'rfq-form'
+    };
+
+    // Save to SiteData orders
+    const orders = SiteData.getData('orders') || [];
+    orders.push(newOrder);
+    SiteData.saveData('orders', orders);
+
+    // Reset form
+    document.getElementById('rfq-form').reset();
+    document.getElementById('rfq-file-label').textContent = 'اضغط لاختيار ملف';
+    document.getElementById('rfq-file-info').classList.add('hidden');
+
+    // Redirect to thank-you or show success
+    window.location.href = 'thank-you.html';
+  } catch (err) {
+    console.error('RFQ submission error:', err);
+    alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+    btn.disabled = false;
+    btn.innerHTML = originalContent;
+  }
+}
+</script>
 
 </body></html>

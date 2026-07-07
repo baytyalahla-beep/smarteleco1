@@ -674,6 +674,9 @@
     }
   ],
   "about": {
+    "description": "تعتبر شركة الكهرباء الذكية (SEC) الشريك الاستراتيجي الهندسي الرائد في حماة وسوريا لتوريد وتصميم الأنظمة الكهربائية المتكاملة والأتمتة الصناعية ومشاريع الطاقة المتجددة، بما يضمن أعلى معايير الكفاءة والوثوقية.",
+    "descriptionEn": "Smart Electricity Company (SEC) is the leading strategic engineering partner in Hama and Syria for supplying and designing integrated electrical systems, industrial automation, and renewable energy projects.",
+    "image": "images/electrical_support_team.png",
     "mission": "تمكين الصناعة من خلال تقديم حلول هندسية متكاملة تساعد العملاء على تحقيق أعلى مستويات الكفاءة التشغيلية والاستدامة.",
     "missionEn": "Empowering industries through integrated engineering solutions that rebuild and develop electrical and industrial systems while improving operational efficiency and sustainability.",
     "vision": "أن نكون من الشركات الرائدة في مجال الحلول الكهربائية والصناعية الذكية، والمساهمين في تطوير البنية التحتية الصناعية في المنطقة.",
@@ -702,10 +705,7 @@
         "description": "التوسع في تقديم الحلول البرمجية والهندسية المتكاملة SCADA و PLC و VFD لكبرى المصانع والمنشآت.",
         "descriptionEn": "Expanding the supply of SCADA, PLC, and VFD integrated software and engineering solutions to major factories."
       }
-    ],
-    "description": "تعتبر شركة الكهرباء الذكية (SEC) الشريك الاستراتيجي الهندسي الرائد في حماة وسوريا لتوريد وتصميم الأنظمة الكهربائية المتكاملة والأتمتة الصناعية ومشاريع الطاقة المتجددة، بما يضمن أعلى معايير الكفاءة والوثوقية.",
-    "descriptionEn": "Smart Electricity Company (SEC) is the leading strategic engineering partner in Hama and Syria for supplying and designing integrated electrical systems, industrial automation, and renewable energy projects.",
-    "image": "images/electrical_support_team.png"
+    ]
   },
   "orders": [
     {
@@ -787,6 +787,20 @@
       "total": 4174499.9999999995,
       "status": "طلب تسعير جديد",
       "customer": "John Doe (Test Company)"
+    },
+    {
+      "id": "RFQ-2026-99127",
+      "date": "٧‏/٧‏/٢٠٢٦",
+      "product": "صب",
+      "total": 0,
+      "status": "طلب تسعير جديد",
+      "customer": "محمد شبل (رواد الرقمية)",
+      "phone": "0567337666",
+      "email": "masaratibdaa@gmail.com",
+      "notes": "صب",
+      "attachment": "",
+      "attachmentName": "",
+      "source": "rfq-form"
     }
   ]
 }

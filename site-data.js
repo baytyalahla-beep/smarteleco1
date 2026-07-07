@@ -496,91 +496,97 @@ const SiteData = (() => {
     ]
   };
 
+  /** Sanitize data with defaults */
+  function sanitizeData(data) {
+    // Merge with defaults for any missing keys
+    const merged = deepMerge(DEFAULT_DATA, data);
+    
+    // Sanitize products
+    if (merged.products) {
+      merged.products.forEach(p => {
+        if (!p.images || !Array.isArray(p.images)) {
+          p.images = [p.image || "", "", "", ""];
+        }
+        if (p.showPrice === undefined) {
+          p.showPrice = true;
+        }
+        if (p.originalPrice === undefined) {
+          p.originalPrice = p.price;
+        }
+        if (p.isOffer === undefined) {
+          p.isOffer = false;
+        }
+        if (p.stockTotal === undefined) {
+          p.stockTotal = 100;
+        }
+        if (p.stockSold === undefined) {
+          p.stockSold = 0;
+        }
+        if (p.nameEn === undefined) {
+          p.nameEn = p.name;
+        }
+        if (p.descriptionEn === undefined) {
+          p.descriptionEn = p.description || "";
+        }
+      });
+    }
+    
+    // Sanitize projects
+    if (merged.projects) {
+      merged.projects.forEach(p => {
+        if (!p.images || !Array.isArray(p.images)) {
+          p.images = [p.image || ""];
+        }
+        if (p.techFiles === undefined) {
+          p.techFiles = [
+            { nameAr: "مواصفات الملف الفني", nameEn: "Technical Specifications Sheet", size: "2.4 MB" },
+            { nameAr: "رسومات هندسية ومخططات", nameEn: "Engineering Design Drawings", size: "8.1 MB" },
+            { nameAr: "العقود والمستندات الرسمية", nameEn: "Contracts & Official Approvals", size: "1.5 MB" }
+          ];
+        }
+        if (p.owner === undefined) p.owner = "الشركة العامة للكهرباء";
+        if (p.ownerEn === undefined) p.ownerEn = "General Electricity Company";
+        if (p.location === undefined) p.location = "حماة، سوريا";
+        if (p.locationEn === undefined) p.locationEn = "Hama, Syria";
+        if (p.duration === undefined) p.duration = "120 يوم";
+        if (p.durationEn === undefined) p.durationEn = "120 Days";
+        if (p.value === undefined) p.value = "غير محدد";
+        if (p.valueEn === undefined) p.valueEn = "Not Specified";
+        if (p.nameEn === undefined) p.nameEn = p.name;
+        if (p.descriptionEn === undefined) p.descriptionEn = p.description || "";
+        if (p.categoryEn === undefined) p.categoryEn = p.category;
+        if (p.statusEn === undefined) p.statusEn = p.status;
+      });
+    }
+    
+    // Sanitize services
+    if (merged.homepage && merged.homepage.services) {
+      merged.homepage.services.forEach(s => {
+        if (s.style === undefined) s.style = "light";
+        if (s.features === undefined) s.features = [];
+        if (s.featuresEn === undefined) s.featuresEn = [];
+        if (s.titleEn === undefined) s.titleEn = s.title;
+        if (s.descriptionEn === undefined) s.descriptionEn = s.description;
+        if (s.stats === undefined) s.stats = [];
+      });
+    }
+
+    // Sanitize homepage hero images
+    if (merged.homepage) {
+      if (!merged.homepage.heroImages || !Array.isArray(merged.homepage.heroImages) || merged.homepage.heroImages.length === 0) {
+        merged.homepage.heroImages = [merged.homepage.heroImage || "images/solar_energy_station.png"];
+      }
+    }
+    
+    return merged;
+  }
+
   /** Get all data or a specific section */
   function getData(section) {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const data = raw ? JSON.parse(raw) : { ...DEFAULT_DATA };
-      // Merge with defaults for any missing keys
-      const merged = deepMerge(DEFAULT_DATA, data);
-      
-      // Sanitize products
-      if (merged.products) {
-        merged.products.forEach(p => {
-          if (!p.images || !Array.isArray(p.images)) {
-            p.images = [p.image || "", "", "", ""];
-          }
-          if (p.showPrice === undefined) {
-            p.showPrice = true;
-          }
-          if (p.originalPrice === undefined) {
-            p.originalPrice = p.price;
-          }
-          if (p.isOffer === undefined) {
-            p.isOffer = false;
-          }
-          if (p.stockTotal === undefined) {
-            p.stockTotal = 100;
-          }
-          if (p.stockSold === undefined) {
-            p.stockSold = 0;
-          }
-          if (p.nameEn === undefined) {
-            p.nameEn = p.name;
-          }
-          if (p.descriptionEn === undefined) {
-            p.descriptionEn = p.description || "";
-          }
-        });
-      }
-      
-      // Sanitize projects
-      if (merged.projects) {
-        merged.projects.forEach(p => {
-          if (!p.images || !Array.isArray(p.images)) {
-            p.images = [p.image || ""];
-          }
-          if (p.techFiles === undefined) {
-            p.techFiles = [
-              { nameAr: "مواصفات الملف الفني", nameEn: "Technical Specifications Sheet", size: "2.4 MB" },
-              { nameAr: "رسومات هندسية ومخططات", nameEn: "Engineering Design Drawings", size: "8.1 MB" },
-              { nameAr: "العقود والمستندات الرسمية", nameEn: "Contracts & Official Approvals", size: "1.5 MB" }
-            ];
-          }
-          if (p.owner === undefined) p.owner = "الشركة العامة للكهرباء";
-          if (p.ownerEn === undefined) p.ownerEn = "General Electricity Company";
-          if (p.location === undefined) p.location = "حماة، سوريا";
-          if (p.locationEn === undefined) p.locationEn = "Hama, Syria";
-          if (p.duration === undefined) p.duration = "120 يوم";
-          if (p.durationEn === undefined) p.durationEn = "120 Days";
-          if (p.value === undefined) p.value = "غير محدد";
-          if (p.valueEn === undefined) p.valueEn = "Not Specified";
-          if (p.nameEn === undefined) p.nameEn = p.name;
-          if (p.descriptionEn === undefined) p.descriptionEn = p.description || "";
-          if (p.categoryEn === undefined) p.categoryEn = p.category;
-          if (p.statusEn === undefined) p.statusEn = p.status;
-        });
-      }
-      
-      // Sanitize services
-      if (merged.homepage && merged.homepage.services) {
-        merged.homepage.services.forEach(s => {
-          if (s.style === undefined) s.style = "light";
-          if (s.features === undefined) s.features = [];
-          if (s.featuresEn === undefined) s.featuresEn = [];
-          if (s.titleEn === undefined) s.titleEn = s.title;
-          if (s.descriptionEn === undefined) s.descriptionEn = s.description;
-          if (s.stats === undefined) s.stats = [];
-        });
-      }
-
-      // Sanitize homepage hero images
-      if (merged.homepage) {
-        if (!merged.homepage.heroImages || !Array.isArray(merged.homepage.heroImages) || merged.homepage.heroImages.length === 0) {
-          merged.homepage.heroImages = [merged.homepage.heroImage || "images/solar_energy_station.png"];
-        }
-      }
-      
+      const merged = sanitizeData(data);
       return section ? merged[section] : merged;
     } catch (e) {
       console.error('SiteData.getData error:', e);
@@ -651,7 +657,8 @@ const SiteData = (() => {
       .then(r => r.json())
       .then(serverData => {
         const localData = getData();
-        if (!isDeepEqual(localData, serverData)) {
+        const sanitizedServerData = sanitizeData(serverData);
+        if (!isDeepEqual(localData, sanitizedServerData)) {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(serverData));
           if (localData && Object.keys(localData).length > 0) {
             console.log('Site data updated from server, reloading page to reflect changes...');

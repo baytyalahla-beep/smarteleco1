@@ -401,6 +401,29 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   res.json({ success: true, url: fileUrl });
 });
 
+// File Upload Endpoint (PDF, images, etc.) for RFQ attachments
+const fileUpload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    const allowed = ['.pdf', '.png', '.jpg', '.jpeg', '.doc', '.docx', '.xls', '.xlsx'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('نوع الملف غير مدعوم'), false);
+    }
+  },
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB max
+});
+
+app.post('/api/upload-file', fileUpload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: 'No file uploaded' });
+  }
+  const fileUrl = `/uploads/${req.file.filename}`;
+  res.json({ success: true, url: fileUrl, originalName: req.file.originalname });
+});
+
 // Fallback for SPA routing if needed
 app.get('*', (req, res, next) => {
   const ext = path.extname(req.path);
