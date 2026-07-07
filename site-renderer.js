@@ -1500,11 +1500,11 @@ function renderHomePage(data) {
     // Dynamic slideshow
     let images = h.heroImages || [];
     if (!Array.isArray(images) || images.length === 0) {
-      images = [h.heroImage || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY'];
+      images = [h.heroImage || 'images/solar_energy_station.png'];
     }
     images = images.filter(img => img && img.trim() !== '');
     if (images.length === 0) {
-      images = ['https://lh3.googleusercontent.com/aida-public/AB6AXuBg6AW-rBEfnFJxcXgFh3P7KBpWz23OJggV5lfBwSECw3cIJKRlM-q8lgmXUMKPGw0M6S8-xjrBJVKBdkCmIEWGiTm8jdO3sR9kQIAPQ2L4fwTRHpGkWBXnS1FYpDiKqaWgcNvXEllXLnwSUd3epD8PkqiXEZPNQy0k_g2mV3CQRUz_M9bVQV2HQCpqZLQoH-03fwEd9TZZ8fPtLPzHxNhSAhHfHyMGblhInXxjdKkJT8OxBjsm8pMKtLf-EiY4rKvEsllVlsY'];
+      images = ['images/solar_energy_station.png'];
     }
 
     const innerContainer = heroSection.querySelector('.w-full.h-full.relative');
@@ -1929,7 +1929,7 @@ function renderServicesPage(data) {
           <div class="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
           <div>
             <div class="h-48 w-full overflow-hidden relative">
-              <img src="${s.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8'}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="${s.image || 'images/solar_energy_station.png'}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-[#004A3C] to-transparent"></div>
             </div>
             <div class="p-8 pt-6">
@@ -1956,7 +1956,7 @@ function renderServicesPage(data) {
       `;
     } else if (s.style === 'image') {
       return `
-        <div class="relative rounded-2xl overflow-hidden h-[420px] flex flex-col justify-end p-8 shadow-lg group hover:scale-[1.02] transition-all duration-300 bg-cover bg-center" style="background-image: url('${s.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBJz4IPWMjFJ4q8AYdvgEdHcxNlZFgxzrtU2fXpRphDG_Fs0mMWRU-6SHWTxcWBBnWCdAv6PnlqJDlRcMz9u8INyEXKx6kLbvEVeYUU5lMvfhXEyc4NxBN25Cw_RbcPFG3GZsVXPaW0dQkZjy9p72VQ19o9KCmHHI3D4Ep-SXWK9YM-J6qVJuxuCL46XHOa6jkKTfr1aPR9N6sBBQHqLMo7rPKFP3hzzwz-dShV4S1CsYy0EsXnOiuMBCORNHAMcfHHZpbYEm8'}')">
+        <div class="relative rounded-2xl overflow-hidden h-[420px] flex flex-col justify-end p-8 shadow-lg group hover:scale-[1.02] transition-all duration-300 bg-cover bg-center" style="background-image: url('${s.image || 'images/solar_energy_station.png'}')">
           <div class="absolute inset-0 bg-gradient-to-t from-deep-forest via-deep-forest/60 to-transparent z-10"></div>
           <div class="relative z-20 text-white">
             <span class="material-symbols-outlined text-4xl text-primary-fixed bg-white/10 p-2.5 rounded-xl mb-4 inline-block">${s.icon}</span>
@@ -1980,7 +1980,7 @@ function renderServicesPage(data) {
         <div class="bg-white text-on-surface rounded-2xl flex flex-col justify-between h-full shadow-md border border-outline-variant/30 relative overflow-hidden group hover:shadow-lg hover:border-primary transition-all duration-300">
           <div>
             <div class="h-48 w-full overflow-hidden relative">
-              <img src="${s.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBbcqI9I-D2WNM85FZ5AQhxemwEEwf0ryDKVqbKJEMOW_dNt8MBJCgHpW2gQhK1Hxuz90jt2EPMqnMNEpLJSJkfvSBJm_1wEulm3lhgLvpQPUbYuSsEQjq-7VKw4n2R0rQq_dqKwjJ1mCJOVcP6rAcvIeCVmfkfQ0vaqbZNfCi4f3z9HX2QY7U2oq9r4h_2r4RXWF_MKTA6GXKLRZWx5xcZJJ-3VJJxpkDe8r1OHUC-I3TtHqyI5XkAm8m0C-H2bBcHa2lC3Gl7A'}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="${s.image || 'images/industrial_substation_aramco.png'}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-white to-transparent"></div>
             </div>
             <div class="p-8 pt-6">
@@ -2021,7 +2021,7 @@ function renderServicesPage(data) {
         <div class="bg-white text-on-surface rounded-2xl flex flex-col justify-between h-full shadow-md border border-outline-variant/30 relative overflow-hidden group hover:shadow-lg hover:border-primary transition-all duration-300">
           <div>
             <div class="h-48 w-full overflow-hidden relative">
-              <img src="${s.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBbcqI9I-D2WNM85FZ5AQhxemwEEwf0ryDKVqbKJEMOW_dNt8MBJCgHpW2gQhK1Hxuz90jt2EPMqnMNEpLJSJkfvSBJm_1wEulm3lhgLvpQPUbYuSsEQjq-7VKw4n2R0rQq_dqKwjJ1mCJOVcP6rAcvIeCVmfkfQ0vaqbZNfCi4f3z9HX2QY7U2oq9r4h_2r4RXWF_MKTA6GXKLRZWx5xcZJJ-3VJJxpkDe8r1OHUC-I3TtHqyI5XkAm8m0C-H2bBcHa2lC3Gl7A'}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="${s.image || 'images/industrial_substation_aramco.png'}" alt="${sTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <div class="absolute inset-0 bg-gradient-to-t from-white to-transparent"></div>
             </div>
             <div class="p-8 pt-6">
@@ -2590,7 +2590,7 @@ function renderProductDetailPage(data) {
     // Main Image
     const mainImg = document.querySelector('.product-image-zoom img');
     if (mainImg) {
-      mainImg.src = product.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtV_B92R57OHsYyhkagOFqVoFphaz0nDtdVH7_jTVWYtVI1_C-siYoj8LIArD97HHH5vPlqN8gRUhPg2SgeqDPe-pSb4JEH7hU-Y0-GNo6tLzmfKd2VHZCKOwyoFGAjpPno5Vr3KnDasXEFztyHwL6NgAqaLoHgi_FG5ymA1OET2Y9zi0tso9CNCOLrYHZgv1ucAI1xK_VK774dCyfJ5DPj5cRLXvUX0_ecAgQahW-1Yh03Nj5BRJDAsMD7uB0R7ag2FvVF8pbSI4';
+      mainImg.src = product.image || 'images/product_mccb_breaker.png';
     }
     
     // Render Gallery
@@ -3694,7 +3694,7 @@ function renderCartPage(data) {
     cartItemsHtml += `
       <div class="bg-white rounded-xl shadow-sm border border-outline-variant p-4 md:p-6 flex flex-col md:flex-row gap-6 items-center hover:shadow-md transition-shadow">
         <div class="w-32 h-32 flex-shrink-0 bg-surface-gray rounded-lg overflow-hidden border border-outline-variant">
-          <img class="w-full h-full object-cover" src="${p.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtV_B92R57OHsYyhkagOFqVoFphaz0nDtdVH7_jTVWYtVI1_C-siYoj8LIArD97HHH5vPlqN8gRUhPg2SgeqDPe-pSb4JEH7hU-Y0-GNo6tLzmfKd2VHZCKOwyoFGAjpPno5Vr3KnDasXEFztyHwL6NgAqaLoHgi_FG5ymA1OET2Y9zi0tso9CNCOLrYHZgv1ucAI1xK_VK774dCyfJ5DPj5cRLXvUX0_ecAgQahW-1Yh03Nj5BRJDAsMD7uB0R7ag2FvVF8pbSI4'}">
+          <img class="w-full h-full object-cover" src="${p.image || 'images/product_mccb_breaker.png'}">
         </div>
         <div class="flex-grow text-center md:text-right">
           <span class="text-primary font-label-lg text-label-lg px-2 py-1 bg-secondary-container/30 rounded mb-2 inline-block">${isEn ? (p.brandEn || p.brand) : p.brand}</span>

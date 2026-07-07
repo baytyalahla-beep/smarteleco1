@@ -24,7 +24,7 @@ const SiteData = (() => {
       currencyEn: "USD",
       phoneIntl: "+963 13 251 0480",
       phoneMobile: "+963 986 001 965",
-      logoUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4nouzhXpYneqSQt08kVW_kjXmtskDEO6_7Ay7_pITtMEx1KAyTqwqZBJ4qiLyFn78O4Exmt1OhRbT-UPzyvFBWXz03UidmiJ1R-IZjSHf2P9Ys6vQLDlIFiZKTH2Kvz_XeyfEeeE-bemGqGtYa7ylIzvWmbMBNeRgk2KfTIX-safg1uKpPjNcRADqDJSoE9EdDbkTmiWTeNdjsDjc0cbz465OmtlrdGcqS5AZ6SEMsUOgV6RpCTv87AQrtmaC_UmR9gI5UT94rRU",
+      logoUrl: "images/logo.png",
       username: "admin",
       password: "admin123",
       facebook: "https://facebook.com",
