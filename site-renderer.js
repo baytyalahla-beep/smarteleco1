@@ -120,7 +120,36 @@ const TRANSLATIONS = {
     categories: "الفئات",
     brands: "العلامات التجارية",
     search_results: "نتائج البحث لـ",
-    no_products: "لا توجد منتجات تطابق خيارات البحث."
+    no_products: "لا توجد منتجات تطابق خيارات البحث.",
+    about_sec: "نبذة عن شركة الكهرباء الذكية (SEC)",
+    years_exp: "سنوات من التميز",
+    completed_proj_count: "مشروع صناعي منجز",
+    read_more: "اقرأ المزيد عن الشركة",
+    global_brands: "ماركة عالمية",
+    expert_engineers: "مهندساً خبيراً",
+    completed_projects: "مشروع منجز",
+    excellence_culture: "ثقافة التميز والابتكار",
+    excellence_culture_desc: "نستثمر في كوادرنا لنقدم أفضل الاستشارات الفنية لعملائنا.",
+    success_journey: "رحلة النجاح",
+    our_sectors: "القطاعات الصناعية التي نخدمها",
+    why_sec: "لماذا تختار شركة الكهرباء الذكية (SEC)؟",
+    why_sec_desc: "نلتزم بأعلى معايير الجودة لضمان رضا عملائنا وتحقيق تطلعاتهم",
+    verified_brands: "ماركة عالمية معتمدة",
+    verified_brands_desc: "نحن موزعون معتمدون لكبرى العلامات التجارية العالمية.",
+    expert_engs: "مهندسون استشاريون خبراء",
+    expert_engs_desc: "نقدم استشارات هندسية ودراسات متكاملة للمشاريع والمنشآت.",
+    b2b_prices: "أسعار خاصة بالجملة",
+    b2b_prices_desc: "خصومات وعروض مميزة للمقاولين وأصحاب المنشآت الصناعية.",
+    after_sales: "خدمات دعم ما بعد البيع",
+    after_sales_desc: "ضمان حقيقي للصيانة وقطع الغيار والزيارات الفنية الميدانية.",
+    request_quote_now: "طلب عرض سعر مباشر",
+    request_quote_now_desc: "يرجى ملء النموذج وسيتصل بك أحد مهندسينا الاستشاريين لمناقشة التفاصيل.",
+    full_name: "الاسم الكامل",
+    phone_number: "رقم الهاتف / الجوال",
+    notes: "ملاحظات أو متطلبات خاصة",
+    send_request: "إرسال الطلب",
+    view_all_projects: "عرض جميع المشاريع",
+    view_all: "عرض الكل"
   },
   en: {
     branches: "Branches",
@@ -237,7 +266,36 @@ const TRANSLATIONS = {
     categories: "Categories",
     brands: "Brands",
     search_results: "Search results for",
-    no_products: "No products match the selected criteria."
+    no_products: "No products match the selected criteria.",
+    about_sec: "About Smart Electricity Company (SEC)",
+    years_exp: "Years of Excellence",
+    completed_proj_count: "Completed Industrial Projects",
+    read_more: "Read More About the Company",
+    global_brands: "Global Brands",
+    expert_engineers: "Expert Engineers",
+    completed_projects: "Completed Projects",
+    excellence_culture: "Culture of Excellence & Innovation",
+    excellence_culture_desc: "We invest in our staff to provide the best technical consultations to our clients.",
+    success_journey: "Journey of Success",
+    our_sectors: "Industrial Sectors We Serve",
+    why_sec: "Why Choose Smart Electricity Company (SEC)?",
+    why_sec_desc: "We commit to the highest quality standards to ensure customer satisfaction and achieve their aspirations",
+    verified_brands: "Verified Global Brands",
+    verified_brands_desc: "We are authorized distributors for major global brands.",
+    expert_engs: "Expert Consulting Engineers",
+    expert_engs_desc: "We provide engineering consultations and complete studies for projects.",
+    b2b_prices: "Special Wholesale Prices",
+    b2b_prices_desc: "Special discounts and offers for contractors and industrial owners.",
+    after_sales: "After-Sales Support Services",
+    after_sales_desc: "Real warranty for maintenance, spare parts, and field technical visits.",
+    request_quote_now: "Direct Quote Request",
+    request_quote_now_desc: "Please fill the form and one of our consulting engineers will contact you.",
+    full_name: "Full Name",
+    phone_number: "Phone / Mobile Number",
+    notes: "Notes or Special Requirements",
+    send_request: "Send Request",
+    view_all_projects: "View All Projects",
+    view_all: "View All"
   }
 };
 
@@ -4544,37 +4602,47 @@ function initDynamicTranslator() {
     "النتائج المطابقة:": "Matching Results:"
   };
 
+    const normalizeWhitespace = (str) => {
+      return str.replace(/\s+/g, ' ').trim();
+    };
+
+    const normalizedMapping = {};
+    for (const key in textMapping) {
+      normalizedMapping[normalizeWhitespace(key)] = textMapping[key];
+    }
+
     const translateNodes = () => {
-    // 1. Text nodes
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-    let node;
-    while (node = walker.nextNode()) {
-      const txt = node.nodeValue.trim();
-      if (textMapping[txt]) {
-        node.nodeValue = node.nodeValue.replace(txt, textMapping[txt]);
+      // 1. Text nodes
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+      let node;
+      while (node = walker.nextNode()) {
+        const txtNorm = normalizeWhitespace(node.nodeValue);
+        if (normalizedMapping[txtNorm]) {
+          node.nodeValue = normalizedMapping[txtNorm];
+        }
       }
-    }
-    
-    // 2. Document Title
-    const titleTxt = document.title.trim();
-    if (textMapping[titleTxt]) {
-        document.title = textMapping[titleTxt];
-    }
+      
+      // 2. Document Title
+      const titleTxtNorm = normalizeWhitespace(document.title);
+      if (normalizedMapping[titleTxtNorm]) {
+          document.title = normalizedMapping[titleTxtNorm];
+      }
 
-    // 3. Placeholders
-    document.querySelectorAll('[placeholder]').forEach(el => {
-      const txt = el.getAttribute('placeholder').trim();
-      if (textMapping[txt]) {
-        el.setAttribute('placeholder', textMapping[txt]);
-      }
-    });
+      // 3. Placeholders
+      document.querySelectorAll('[placeholder]').forEach(el => {
+        const txtNorm = normalizeWhitespace(el.getAttribute('placeholder'));
+        if (normalizedMapping[txtNorm]) {
+          el.setAttribute('placeholder', normalizedMapping[txtNorm]);
+        }
+      });
 
-    // 4. Title attributes
-    document.querySelectorAll('[title]').forEach(el => {
-      const txt = el.getAttribute('title').trim();
-      if (textMapping[txt]) {
-        el.setAttribute('title', textMapping[txt]);
-      }
+      // 4. Title attributes
+      document.querySelectorAll('[title]').forEach(el => {
+        const txtNorm = normalizeWhitespace(el.getAttribute('title'));
+        if (normalizedMapping[txtNorm]) {
+          el.setAttribute('title', normalizedMapping[txtNorm]);
+        }
+      });
     });
   };
 
