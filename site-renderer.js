@@ -807,31 +807,31 @@ function renderHeader(s, currentPage) {
     style.textContent = `
       @media (max-width: 768px) {
         /* Hide Top Utility Bar */
-        header > div > div:first-of-type {
+        header > div:first-of-type {
           display: none !important;
         }
         /* Compact Main Header Bar */
-        header > div > div:nth-of-type(2) {
+        header > div:nth-of-type(2) {
           flex-wrap: wrap !important;
           padding: 0.5rem 1.0rem !important;
           gap: 0.5rem !important;
         }
         /* Search bar full width */
-        header > div > div:nth-of-type(2) > div:nth-of-type(2) {
+        header > div:nth-of-type(2) > div:nth-of-type(2) {
           order: 3 !important;
           width: 100% !important;
           max-width: 100% !important;
           margin-top: 0.25rem !important;
         }
         /* Logo sizing */
-        header > div > div:nth-of-type(2) > div:first-of-type {
+        header > div:nth-of-type(2) > div:first-of-type {
           height: 2.2rem !important;
         }
         /* Hide action labels */
-        header > div > div:nth-of-type(2) > div:nth-of-type(3) span.text-label-sm {
+        header > div:nth-of-type(2) > div:nth-of-type(3) span.text-label-sm {
           display: none !important;
         }
-        header > div > div:nth-of-type(2) > div:nth-of-type(3) {
+        header > div:nth-of-type(2) > div:nth-of-type(3) {
           gap: 0.75rem !important;
         }
         /* Hide desktop nav */
@@ -861,7 +861,7 @@ function renderHeader(s, currentPage) {
   }
 
   // 2. Add Mobile Toggle Hamburger Button
-  const mainHeaderBar = header.querySelector('div > div:nth-of-type(2)');
+  const mainHeaderBar = header.querySelector('div:nth-of-type(2)') || header.querySelector('.flex.items-center.justify-between');
   if (mainHeaderBar && !document.getElementById('mobile-menu-toggle')) {
     const toggleBtn = document.createElement('button');
     toggleBtn.id = 'mobile-menu-toggle';
@@ -1007,7 +1007,12 @@ function renderHeader(s, currentPage) {
   // Logo
   const logo = header.querySelector('img');
   if (logo) {
-    if (s.logoUrl) logo.src = s.logoUrl;
+    if (s.logoUrl) {
+      logo.src = s.logoUrl;
+      logo.onerror = () => {
+        logo.src = 'images/logo.png';
+      };
+    }
     const parent = logo.parentElement;
     if (parent) {
       parent.classList.remove('h-12');
@@ -1173,7 +1178,7 @@ function renderFooter(s) {
   const nameEl = footer.querySelector('.font-headline-md');
   if (nameEl) {
     if (s.logoUrl) {
-      nameEl.innerHTML = `<img src="${s.logoUrl}" alt="${s.siteNameAr || s.siteName}" class="max-h-16 w-auto object-contain mb-4">`;
+      nameEl.innerHTML = `<img src="${s.logoUrl}" alt="${s.siteNameAr || s.siteName}" class="max-h-16 w-auto object-contain mb-4" onerror="this.src='images/logo.png'">`;
     } else {
       nameEl.textContent = s.siteName;
     }
@@ -1877,11 +1882,50 @@ function renderHomePage(data) {
             </a>
           </div>
         </div>
+  // 9. Categories Section (Marquee)
+  const marqueeContent = document.querySelector('.marquee-content');
+  if (marqueeContent && data.categories) {
+    const dbCategories = data.categories || [];
+    
+    // Helper to map icons to category names
+    const getCategoryIcon = (catName) => {
+      const iconMap = {
+        "القواطع الكهربائية": "bolt",
+        "المفاتيح والأفياش": "toggle_on",
+        "الأسلاك والكابلات": "cable",
+        "الإضاءة": "lightbulb",
+        "أجهزة القياس": "speed",
+        "أنظمة المراقبة": "videocam",
+        "لوحات التوزيع": "dashboard",
+        "أنظمة الطاقة الشمسية": "solar_power",
+        "أنظمة الحماية الكهربائية": "security",
+        "أنظمة القيادة والتحكم": "settings",
+        "أنظمة التحكم الصناعي": "precision_manufacturing",
+        "الأتمتة الصناعية": "memory",
+        "الأنظمة الكهروميكانيكية والحركة": "motion_photos_on",
+        "أجهزة القياس والتحكم الفني": "troubleshoot",
+        "المعدات والأدوات والسلامة المهنية": "construction"
+      };
+      return iconMap[catName] || "category";
+    };
+
+    const itemsHtml = dbCategories.map(cat => {
+      const cName = isEn ? (CATEGORY_TRANSLATIONS[cat] || cat) : cat;
+      const icon = getCategoryIcon(cat);
+      return `
+        <a href="products.html?category=${encodeURIComponent(cat)}" class="flex flex-col items-center gap-3 p-4 hover:bg-surface-gray rounded-xl transition-all group cursor-pointer border border-transparent hover:border-outline-variant w-44 flex-shrink-0">
+          <div class="w-20 h-20 bg-surface-gray rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+            <span class="material-symbols-outlined text-4xl">${icon}</span>
+          </div>
+          <span class="font-label-lg text-label-lg text-on-surface">${cName}</span>
+        </a>
       `;
     }).join('');
+
+    marqueeContent.innerHTML = itemsHtml + itemsHtml;
   }
 
-  // 9. Section Visibility Manager
+  // 10. Section Visibility Manager
   if (s && s.sectionVisibility) {
     const vis = s.sectionVisibility;
     
