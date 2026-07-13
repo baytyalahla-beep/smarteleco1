@@ -4,16 +4,25 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'u856730022_smarteleco1',
-  password: process.env.DB_PASSWORD || 'Smarteleco1@$6',
-  database: process.env.DB_NAME || 'u856730022_smarteleco1',
-  port: parseInt(process.env.DB_PORT || '3306'),
+const poolConfig = {
+  user: process.env.DB_USER || 'u856730022_smarteleco2',
+  password: process.env.DB_PASSWORD || 'SmartEleco2025#Sec',
+  database: process.env.DB_NAME || 'u856730022_smarteleco2',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-});
+};
+
+// Use Unix socket on Linux (Hostinger) for proper localhost auth
+// Use TCP on Windows (local development)
+if (process.platform !== 'win32') {
+  poolConfig.socketPath = process.env.DB_SOCKET || '/var/run/mysqld/mysqld.sock';
+} else {
+  poolConfig.host = process.env.DB_HOST || 'localhost';
+  poolConfig.port = parseInt(process.env.DB_PORT || '3306');
+}
+
+const pool = mysql.createPool(poolConfig);
 
 let dbConnected = false;
 
