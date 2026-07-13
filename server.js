@@ -3,7 +3,8 @@ const multer = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { pool, initializeDatabase, isDbConnected, getDefaultData } = require('./db');
+const db = require('./db');
+const { initializeDatabase, isDbConnected, getDefaultData } = db;
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -55,12 +56,12 @@ app.get('/api/data', async (req, res) => {
   }
 
   try {
-    const [settingsRows] = await pool.query('SELECT key_name, value_data FROM settings');
-    const [productRows] = await pool.query('SELECT * FROM products');
-    const [brandRows] = await pool.query('SELECT * FROM brands');
-    const [projectRows] = await pool.query('SELECT * FROM projects');
-    const [blogRows] = await pool.query('SELECT * FROM blog_posts');
-    const [orderRows] = await pool.query('SELECT * FROM orders');
+    const [settingsRows] = await db.pool.query('SELECT key_name, value_data FROM settings');
+    const [productRows] = await db.pool.query('SELECT * FROM products');
+    const [brandRows] = await db.pool.query('SELECT * FROM brands');
+    const [projectRows] = await db.pool.query('SELECT * FROM projects');
+    const [blogRows] = await db.pool.query('SELECT * FROM blog_posts');
+    const [orderRows] = await db.pool.query('SELECT * FROM orders');
 
     const data = {};
 
@@ -149,7 +150,7 @@ app.get('/api/data', async (req, res) => {
     }));
 
     // Inject username and password from users table into settings.username/password for UI compatibility
-    const [userRows] = await pool.query('SELECT username, password FROM users LIMIT 1');
+    const [userRows] = await db.pool.query('SELECT username, password FROM users LIMIT 1');
     if (userRows.length > 0) {
       if (!data.settings) data.settings = {};
       data.settings.username = userRows[0].username;
@@ -181,7 +182,7 @@ app.post('/api/data', async (req, res) => {
   }
 
   const { settings, banners, homepage, about, categories, sectors, faqs, messages, products, brands, projects, blogPosts, orders } = req.body;
-  const connection = await pool.getConnection();
+  const connection = await db.pool.getConnection();
 
   try {
     await connection.beginTransaction();
@@ -377,7 +378,7 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
-    const [rows] = await pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [
+    const [rows] = await db.pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [
       username,
       password
     ]);
