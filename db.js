@@ -4,26 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const poolConfig = {
-  user: process.env.DB_USER || 'u856730022_smarteleco2',
-  password: process.env.DB_PASSWORD || 'SmartEleco2025#Sec',
-  database: process.env.DB_NAME || 'u856730022_smarteleco2',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-};
-
-// Use Unix socket on Linux (Hostinger) for proper localhost auth
-// Use TCP on Windows (local development)
-if (process.platform !== 'win32') {
-  poolConfig.socketPath = process.env.DB_SOCKET || '/var/run/mysqld/mysqld.sock';
-} else {
-  poolConfig.host = process.env.DB_HOST || 'localhost';
-  poolConfig.port = parseInt(process.env.DB_PORT || '3306');
-}
-
-const pool = mysql.createPool(poolConfig);
-
+let pool;
 let dbConnected = false;
 
 function getDefaultData() {
@@ -49,8 +30,72 @@ function getDefaultData() {
   return {};
 }
 
+async function tryConnection(config, label) {
+  try {
+    const testPool = mysql.createPool(config);
+    const conn = await testPool.getConnection();
+    conn.release();
+    console.log(`SUCCESS: Connected via ${label}`);
+    return testPool;
+  } catch (err) {
+    console.log(`FAILED ${label}: ${err.message}`);
+    return null;
+  }
+}
+
 async function initializeDatabase() {
   console.log('Initializing database connection...');
+  
+  const baseConfig = {
+    user: process.env.DB_USER || 'u856730022_smarteleco2',
+    password: process.env.DB_PASSWORD || 'SmartEleco2025#Sec',
+    database: process.env.DB_NAME || 'u856730022_smarteleco2',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  };
+
+  // On Windows (local dev), just use TCP
+  if (process.platform === 'win32') {
+    pool = mysql.createPool({
+      ...baseConfig,
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '3306')
+    });
+  } else {
+    // On Linux (Hostinger), try multiple connection methods
+    const socketPaths = [
+      '/tmp/mysql.sock',
+      '/var/lib/mysql/mysql.sock',
+      '/var/run/mysqld/mysqld.sock',
+      '/run/mysqld/mysqld.sock',
+      '/var/mysql/mysql.sock'
+    ];
+
+    // Try each socket path
+    for (const sockPath of socketPaths) {
+      pool = await tryConnection({ ...baseConfig, socketPath: sockPath }, `socket ${sockPath}`);
+      if (pool) break;
+    }
+
+    // If no socket worked, try TCP
+    if (!pool) {
+      pool = await tryConnection({
+        ...baseConfig,
+        host: '127.0.0.1',
+        port: parseInt(process.env.DB_PORT || '3306')
+      }, 'TCP 127.0.0.1');
+    }
+    if (!pool) {
+      pool = await tryConnection({
+        ...baseConfig,
+        host: 'localhost',
+        port: parseInt(process.env.DB_PORT || '3306')
+      }, 'TCP localhost');
+    }
+  }
+
+  // Verify connection
   try {
     const connection = await pool.getConnection();
     connection.release();
@@ -292,7 +337,7 @@ async function initializeDatabase() {
 }
 
 module.exports = {
-  pool,
+  get pool() { return pool; },
   initializeDatabase,
   isDbConnected: () => dbConnected,
   getDefaultData
