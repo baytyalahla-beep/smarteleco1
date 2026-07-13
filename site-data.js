@@ -655,7 +655,7 @@ const SiteData = (() => {
 
   // Auto-sync data from server in browser environment
   if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
-    fetch('/api/data')
+    fetch('/api/data?t=' + Date.now())
       .then(r => r.json())
       .then(serverData => {
         const localData = getData();

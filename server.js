@@ -42,6 +42,10 @@ const upload = multer({ storage: storage });
 
 // Get all site data from database (or fallback to JSON)
 app.get('/api/data', async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
   if (!isDbConnected()) {
     console.log('Database not connected. Serving from local fallback data.json...');
     if (fs.existsSync(DATA_FILE)) {
@@ -200,6 +204,20 @@ app.post('/api/data', async (req, res) => {
       delete settingsToSave.username;
       delete settingsToSave.password;
       sections.settings = settingsToSave;
+
+      // Sync logo file immediately to avoid flickering
+      if (settings.logoUrl && settings.logoUrl.startsWith('/uploads/')) {
+        const logoPath = path.join(__dirname, settings.logoUrl);
+        const targetPath = path.join(__dirname, 'images', 'logo.png');
+        if (fs.existsSync(logoPath)) {
+          try {
+            fs.copyFileSync(logoPath, targetPath);
+            console.log('Successfully synchronized images/logo.png with uploaded logo:', settings.logoUrl);
+          } catch (err) {
+            console.error('Failed to sync logo file:', err);
+          }
+        }
+      }
     }
 
     for (const key of Object.keys(sections)) {
@@ -437,7 +455,25 @@ app.get('*', (req, res, next) => {
 
 // Initialize DB first, then start server
 initializeDatabase()
-  .then(() => {
+  .then(async () => {
+    // Sync logo from DB on startup to prevent flickering
+    try {
+      const [rows] = await db.pool.query("SELECT value_data FROM settings WHERE key_name = 'settings'");
+      if (rows.length > 0) {
+        const settingsData = JSON.parse(rows[0].value_data);
+        if (settingsData && settingsData.logoUrl && settingsData.logoUrl.startsWith('/uploads/')) {
+          const logoPath = path.join(__dirname, settingsData.logoUrl);
+          const targetPath = path.join(__dirname, 'images', 'logo.png');
+          if (fs.existsSync(logoPath)) {
+            fs.copyFileSync(logoPath, targetPath);
+            console.log('Synchronized logo on startup successfully from:', settingsData.logoUrl);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Failed to sync logo on startup:', e);
+    }
+
     app.listen(PORT, () => {
       console.log(`Smart Electricity Company (SEC) server running on port ${PORT}`);
     });
