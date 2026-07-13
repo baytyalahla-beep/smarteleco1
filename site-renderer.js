@@ -1110,7 +1110,14 @@ function renderHeader(s, currentPage) {
           
           <div class="border-t border-outline-variant/30 pt-6 space-y-4">
             <div class="flex justify-center items-center">
-               <span class="text-sm font-bold text-deep-forest">${isEn ? 'USD ($)' : 'دولار أمريكي ($)'}</span>
+               <span class="text-sm font-bold text-deep-forest">
+                 ${(() => {
+                   const s = (typeof SiteData !== 'undefined') ? SiteData.getData('settings') : {};
+                   return isEn 
+                     ? (s.currencyEn || 'SYP') 
+                     : `${s.currency || 'ل.س'} (${s.currencyEn || 'SYP'})`;
+                 })()}
+               </span>
             </div>
             <div class="text-[11px] text-on-surface-variant text-center">
               ${isEn ? 'Smart Electricity Company' : 'شركة الكهرباء الذكية'}

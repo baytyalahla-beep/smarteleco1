@@ -365,6 +365,15 @@ app.post('/api/data', async (req, res) => {
     }
 
     await connection.commit();
+    
+    // Save backup copy to local data.json file
+    try {
+      fs.writeFileSync(DATA_FILE, JSON.stringify(req.body, null, 2), 'utf8');
+      console.log('Successfully saved database backup to local data.json file.');
+    } catch (fsErr) {
+      console.error('Failed to write backup copy to data.json:', fsErr);
+    }
+
     res.json({ success: true, message: 'Data saved successfully in MySQL' });
   } catch (err) {
     await connection.rollback();
