@@ -1548,9 +1548,8 @@ function applyLayoutTranslations(lang) {
     }
 
     // Language & Currency Switcher
-    const utilBars = header.querySelectorAll('.flex.justify-between .flex.gap-4');
-    if (utilBars.length >= 2) {
-      const langContainer = utilBars[utilBars.length - 1]; // usually the second one
+    const langContainer = header.querySelector('.flex.justify-between .flex.gap-4') || header.querySelector('.justify-between .flex.gap-4');
+    if (langContainer) {
       const displayLang = lang === 'en' ? 'العربية' : 'English';
       const sData = (typeof SiteData !== 'undefined') ? SiteData.getData('settings') : {};
       const currencyLabel = lang === 'ar'
@@ -1558,6 +1557,7 @@ function applyLayoutTranslations(lang) {
         : `${sData.currencyEn || 'SYP'} (${sData.currency || t.currency})`;
       langContainer.innerHTML = `
         <button onclick="toggleLanguage()" class="hover:text-primary font-bold transition-colors" id="lang-switcher">${displayLang}</button>
+        <span class="text-outline/40">|</span>
         <span>${currencyLabel}</span>
       `;
     }
