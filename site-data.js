@@ -577,6 +577,8 @@ const SiteData = (() => {
         merged.homepage.heroImages = [merged.homepage.heroImage || "images/solar_energy_station.png"];
       }
     }
+
+
     
     return merged;
   }

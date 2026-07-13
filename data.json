@@ -1,9 +1,9 @@
 {
   "settings": {
-    "siteName": "Smart Electricity Company Test",
-    "siteNameAr": "",
+    "siteName": "Smart Electricity Company (SEC)",
+    "siteNameAr": "شركة الكهرباء الذكية",
     "siteNameEn": "Smart Electricity Company (SEC)",
-    "phone": "+963 999 999 999",
+    "phone": "+963 986 001 965",
     "email": "info@smarteleco.com",
     "salesEmail": "sales@smarteleco.com",
     "address": "ساحة العاصي، مقابل بنك سوريا الدولي الإسلامي، حماة، سوريا",
@@ -16,7 +16,7 @@
     "currencyEn": "SYP",
     "phoneIntl": "+963 13 251 0480",
     "phoneMobile": "+963 986 001 965",
-    "logoUrl": "/uploads/1781941445260________________________________500_x_500______________8_.png",
+    "logoUrl": "images/logo.png",
     "username": "admin",
     "password": "admin123",
     "facebook": "https://facebook.com",
@@ -31,7 +31,7 @@
     "whatsapp": "https://wa.me/963986001965",
     "mapEmbedUrl": "",
     "phones": [
-      "+963 999 999 999",
+      "+963 986 001 965",
       "+963 13 251 0480"
     ],
     "emails": [

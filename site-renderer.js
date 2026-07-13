@@ -249,7 +249,14 @@ const CATEGORY_TRANSLATIONS = {
   "أجهزة القياس": "Measuring Devices",
   "أنظمة المراقبة": "CCTV Systems",
   "لوحات التوزيع": "Distribution Boards",
-  "أنظمة الطاقة الشمسية": "Solar Power Systems"
+  "أنظمة الطاقة الشمسية": "Solar Power Systems",
+  "أنظمة الحماية الكهربائية": "Electrical Protection Systems",
+  "أنظمة القيادة والتحكم": "Drive & Control Systems",
+  "أنظمة التحكم الصناعي": "Industrial Control Systems",
+  "الأتمتة الصناعية": "Industrial Automation",
+  "الأنظمة الكهروميكانيكية والحركة": "Electromechanical & Motion Systems",
+  "أجهزة القياس والتحكم الفني": "Measuring & Technical Control",
+  "المعدات والأدوات والسلامة المهنية": "Equipment, Tools & Occupational Safety"
 };
 
 window.toggleLanguage = function() {
@@ -956,23 +963,27 @@ function renderHeader(s, currentPage) {
     sp.childNodes.forEach(node => {
       if (node.nodeType === 3) { // Text Node
         const val = node.nodeValue.trim();
-        if (val === '920000000' || val.match(/^9\d{8}$/)) {
-          node.nodeValue = ' ' + s.phone;
+        if (val === '920000000' || val.match(/^9\d{8}$/) || val.match(/^\+?\d[\d\s\-]+$/)) {
+          const phones = s.phones || [s.phone];
+          node.nodeValue = ' ' + phones[0];
         }
       }
     });
   });
 
-  // Language switcher setup
+  // Language & Currency switcher setup
   const lang = localStorage.getItem('electric_house_lang') || 'ar';
   const utilsBar = header.querySelector('.flex.justify-between.items-center');
   if (utilsBar) {
     const langContainer = utilsBar.querySelector('.flex.gap-4:last-of-type');
     if (langContainer) {
+      const currencyLabel = lang === 'ar'
+        ? `${s.currency || 'ل.س'} (${s.currencyEn || 'SYP'})`
+        : `${s.currencyEn || 'SYP'} (${s.currency || 'ل.س'})`;
       langContainer.innerHTML = `
         <span class="text-sm font-semibold flex items-center gap-1">
           <span class="material-symbols-outlined text-sm">payments</span>
-          <span>${lang === 'ar' ? 'دولار أمريكي ($)' : 'USD ($)'}</span>
+          <span>${currencyLabel}</span>
         </span>
       `;
     }
@@ -1181,6 +1192,27 @@ function renderFooter(s) {
     const blogLink = quickLinksCol.querySelector('a[href="blog.html"]');
     if (blogLink) {
       blogLink.textContent = isEn ? 'Knowledge Center' : 'مركز المعرفة';
+    }
+  }
+
+  // Dynamic Contact Info in Footer
+  const contactContainer = footer.querySelector('.pt-4.space-y-2');
+  if (contactContainer) {
+    const lang = localStorage.getItem('electric_house_lang') || 'ar';
+    const isEn = lang === 'en';
+    const addressItem = contactContainer.children[0];
+    const phoneItem = contactContainer.children[1];
+    const emailItem = contactContainer.children[2];
+
+    if (addressItem && s.contactAddress) {
+      const addressText = (isEn && s.contactAddressEn) ? s.contactAddressEn : s.contactAddress;
+      addressItem.innerHTML = `<span class="material-symbols-outlined text-[16px]">location_on</span>${addressText}`;
+    }
+    if (phoneItem && s.contactPhone) {
+      phoneItem.innerHTML = `<span class="material-symbols-outlined text-[16px]">call</span>${s.contactPhone}`;
+    }
+    if (emailItem && s.contactEmail) {
+      emailItem.innerHTML = `<span class="material-symbols-outlined text-[16px]">mail</span>${s.contactEmail}`;
     }
   }
 }
@@ -1450,9 +1482,13 @@ function applyLayoutTranslations(lang) {
     if (utilBars.length >= 2) {
       const langContainer = utilBars[utilBars.length - 1]; // usually the second one
       const displayLang = lang === 'en' ? 'العربية' : 'English';
+      const sData = (typeof SiteData !== 'undefined') ? SiteData.getData('settings') : {};
+      const currencyLabel = lang === 'ar'
+        ? `${sData.currency || t.currency} (${sData.currencyEn || 'SYP'})`
+        : `${sData.currencyEn || 'SYP'} (${sData.currency || t.currency})`;
       langContainer.innerHTML = `
         <button onclick="toggleLanguage()" class="hover:text-primary font-bold transition-colors" id="lang-switcher">${displayLang}</button>
-        <span>${t.currency}</span>
+        <span>${currencyLabel}</span>
       `;
     }
   }
@@ -1655,8 +1691,9 @@ function renderHomePage(data) {
   const productsGrid = document.querySelector('#products-section-wrapper .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4');
   if (productsGrid) {
     const featured = data.products.filter(p => p.featured);
+    const currency = (lang === 'en') ? (s.currencyEn || s.currency || 'SYP') : (s.currency || 'ل.س');
     if (featured.length > 0) {
-      renderProductCards(productsGrid, featured, s.currency);
+      renderProductCards(productsGrid, featured, currency);
     }
   }
 
@@ -1667,7 +1704,7 @@ function renderHomePage(data) {
     const mostSoldContainer = mostSoldHeader.parentElement.nextElementSibling;
     if (mostSoldContainer) {
       const mostSoldProducts = [...data.products].sort((a, b) => (b.stockSold || 0) - (a.stockSold || 0)).slice(0, 4);
-      renderHorizontalProductCards(mostSoldContainer, mostSoldProducts, s.currency);
+      renderHorizontalProductCards(mostSoldContainer, mostSoldProducts, currency);
     }
   }
 
@@ -4488,7 +4525,23 @@ function initDynamicTranslator() {
     "180.00 ر.س": "180.00 SAR",
     "85.00 ر.س": "85.00 SAR",
     "45.00 ر.س": "45.00 SAR",
-    "320.00 ر.س": "320.00 SAR"
+    "320.00 ر.س": "320.00 SAR",
+    "تصفية حسب": "Filter By",
+    "الفئة": "Category",
+    "السعر": "Price",
+    "تصفية": "Filter",
+    "الكل": "All",
+    "إلغاء التصفية": "Clear Filter",
+    "ترتيب حسب": "Sort By",
+    "السعر: من الأقل للأعلى": "Price: Low to High",
+    "السعر: من الأعلى للأقل": "Price: High to Low",
+    "الاسم: أ - ي": "Name: A - Z",
+    "الاسم: ي - أ": "Name: Z - A",
+    "الأحدث": "Newest",
+    "جميع المنتجات": "All Products",
+    "بحث": "Search",
+    "لا توجد منتجات تطابق معايير البحث.": "No products match the search criteria.",
+    "النتائج المطابقة:": "Matching Results:"
   };
 
     const translateNodes = () => {
