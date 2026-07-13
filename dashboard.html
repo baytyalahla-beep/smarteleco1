@@ -221,8 +221,12 @@ textarea.form-input { min-height: 100px; resize: vertical; }
   <label class="block text-sm font-semibold text-on-surface-variant mb-1">رابط الشعار (Logo URL)</label>
   <div class="flex gap-2">
     <input id="s-logoUrl" class="form-input flex-1" placeholder="https://...">
-    <input type="file" id="file-logo" accept="image/*" class="hidden" onchange="handleImageUpload(this, 's-logoUrl')">
+    <input type="file" id="file-logo" accept="image/*" class="hidden" onchange="handleImageUpload(this, 's-logoUrl', 'logo-preview')">
     <button type="button" onclick="document.getElementById('file-logo').click()" class="px-4 bg-surface-gray border border-outline-variant rounded-lg font-bold text-sm hover:bg-outline-variant/30 whitespace-nowrap">رفع ملف</button>
+  </div>
+  <div class="mt-2 flex items-center gap-3">
+    <img id="logo-preview" class="h-16 w-auto object-contain border border-outline-variant/30 rounded p-1 bg-surface-gray hidden" src="">
+    <span class="text-xs text-outline" id="logo-preview-text">لا يوجد شعار محمل حالياً</span>
   </div>
 </div>
 <div class="md:col-span-2">
@@ -858,6 +862,10 @@ function handleImageUpload(inputEl, targetInputId, previewImgId) {
           p.src = res.url;
           p.style.display = 'block';
         }
+        const txt = document.getElementById(previewImgId + '-text');
+        if (txt) {
+          txt.style.display = 'none';
+        }
       }
       showToast('تم رفع الصورة بنجاح ✓');
     } else {
@@ -906,6 +914,20 @@ function loadSettings() {
     const el = document.getElementById('s-' + k);
     if (el) el.value = s[k] || '';
   });
+  
+  const logoPreview = document.getElementById('logo-preview');
+  const logoText = document.getElementById('logo-preview-text');
+  if (logoPreview && logoText) {
+    if (s.logoUrl) {
+      logoPreview.src = s.logoUrl;
+      logoPreview.style.display = 'block';
+      logoText.style.display = 'none';
+    } else {
+      logoPreview.style.display = 'none';
+      logoText.style.display = 'block';
+    }
+  }
+
   renderSettingsList('phones', s.phones || []);
   renderSettingsList('emails', s.emails || []);
   renderSettingsList('addresses', s.addresses || []);
@@ -2317,6 +2339,20 @@ function saveFaqs() {
 const loaders = { settings: loadSettings, homepage: loadHomepage, products: loadProducts, categories: loadCategories, brands: loadBrands, projects: loadProjects, blog: loadBlog, about: loadAbout, contact: loadContact, orders: loadOrders, banners: loadBanners, services: loadHomepage, sectors: loadSectors, faqs: loadFaqs };
 
 // ========== AUTHENTICATION ==========
+// ========== AUTHENTICATION & SYNC ==========
+function syncDataAndLoadSettings() {
+  fetch('/api/data?t=' + Date.now())
+    .then(res => res.json())
+    .then(serverData => {
+      localStorage.setItem('electric_house_cms', JSON.stringify(serverData));
+      loadSettings();
+    })
+    .catch(err => {
+      console.error('Failed to sync settings from server:', err);
+      loadSettings(); // fallback
+    });
+}
+
 function attemptLogin() {
   const u = document.getElementById('login-username').value;
   const p = document.getElementById('login-password').value;
@@ -2333,7 +2369,7 @@ function attemptLogin() {
       sessionStorage.setItem('cms_authenticated', 'true');
       document.getElementById('login-overlay').style.display = 'none';
       errorEl.classList.add('hidden');
-      loadSettings();
+      syncDataAndLoadSettings();
     } else {
       errorEl.classList.remove('hidden');
     }
@@ -2350,7 +2386,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (auth !== 'true') {
     document.getElementById('login-overlay').style.display = 'flex';
   } else {
-    loadSettings();
+    syncDataAndLoadSettings();
   }
 });
 </script>
